@@ -296,7 +296,8 @@ Section Cross References
     battmonitor.o(i.BatteryAlertResetDetect) refers to battmonitor.o(.data) for .data
     battmonitor.o(i.BatteryMonitorHandler) refers to adc.o(i.ADC_GetResult) for ADC_GetResult
     battmonitor.o(i.BatteryMonitorHandler) refers to d2f.o(.text) for __aeabi_d2f
-    battmonitor.o(i.BatteryMonitorHandler) refers to flef.o(x$fpl$fleqf) for __aeabi_cfcmple
+    battmonitor.o(i.BatteryMonitorHandler) refers to fmul.o(x$fpl$fmul) for __aeabi_fmul
+    battmonitor.o(i.BatteryMonitorHandler) refers to frlef.o(x$fpl$frleqf) for __aeabi_cfrcmple
     battmonitor.o(i.BatteryMonitorHandler) refers to battmonitor.o(.data) for .data
     battmonitor.o(i.BatteryMonitorHandler) refers to modelogic.o(.data) for LightMode
     battmonitor.o(i.BatteryMonitorHandler) refers to ledmgmt.o(.data) for CurrentLEDIndex
@@ -1361,132 +1362,132 @@ Image Symbol Table
     i.AFIO_GPxConfig                         0x0000199c   Section        0  ht32f5xxxx_gpio.o(i.AFIO_GPxConfig)
     i.BatteryAlertResetDetect                0x00001a80   Section        0  battmonitor.o(i.BatteryAlertResetDetect)
     i.BatteryMonitorHandler                  0x00001aa8   Section        0  battmonitor.o(i.BatteryMonitorHandler)
-    i.CKCU_GetClockReadyStatus               0x00001b8c   Section        0  ht32f5xxxx_ckcu.o(i.CKCU_GetClockReadyStatus)
-    i.CKCU_HSICmd                            0x00001ba0   Section        0  ht32f5xxxx_ckcu.o(i.CKCU_HSICmd)
-    i.CKCU_PeripClockConfig                  0x00001bb8   Section        0  ht32f5xxxx_ckcu.o(i.CKCU_PeripClockConfig)
-    i.CKCU_SetADCnPrescaler                  0x00001be0   Section        0  ht32f5xxxx_ckcu.o(i.CKCU_SetADCnPrescaler)
-    i.CRC_DeInit                             0x00001bfc   Section        0  ht32f5xxxx_crc.o(i.CRC_DeInit)
-    i.CalculateActualTemp                    0x00001c0c   Section        0  tempcontrol.o(i.CalculateActualTemp)
-    i.CheckForFlashLock                      0x00001da4   Section        0  flashprot.o(i.CheckForFlashLock)
-    i.ControlMainLEDHandler                  0x00001e58   Section        0  modelogic.o(i.ControlMainLEDHandler)
-    i.DeepSleepTimerCallBack                 0x00001f84   Section        0  deepsleep.o(i.DeepSleepTimerCallBack)
-    i.DisableHBTimer                         0x00001fa0   Section        0  mcubeattimer.o(i.DisableHBTimer)
-    i.DisplayBatteryVoltage                  0x00001fdc   Section        0  battmonitor.o(i.DisplayBatteryVoltage)
-    i.DisplaySystemTemp                      0x000020b0   Section        0  tempcontrol.o(i.DisplaySystemTemp)
-    i.DisplayTemp                            0x00002274   Section        0  tempcontrol.o(i.DisplayTemp)
-    i.EXTI4_15_IRQHandler                    0x000022cc   Section        0  ht32f5xxxx_01_it.o(i.EXTI4_15_IRQHandler)
-    i.EXTI_ClearEdgeFlag                     0x000022e4   Section        0  ht32f5xxxx_exti.o(i.EXTI_ClearEdgeFlag)
-    i.EXTI_GetEdgeFlag                       0x000022f4   Section        0  ht32f5xxxx_exti.o(i.EXTI_GetEdgeFlag)
-    i.EXTI_Init                              0x0000230c   Section        0  ht32f5xxxx_exti.o(i.EXTI_Init)
-    i.EXTI_IntConfig                         0x0000232c   Section        0  ht32f5xxxx_exti.o(i.EXTI_IntConfig)
-    i.EnableHBTimer                          0x00002348   Section        0  mcubeattimer.o(i.EnableHBTimer)
-    i.EnteredLowPowerMode                    0x000023ac   Section        0  deepsleep.o(i.EnteredLowPowerMode)
-    i.ExitLowPowerMode                       0x0000246c   Section        0  deepsleep.o(i.ExitLowPowerMode)
-    i.FLASH_EraseOptionByte                  0x0000254c   Section        0  ht32f5xxxx_flash.o(i.FLASH_EraseOptionByte)
-    i.FLASH_ErasePage                        0x00002568   Section        0  ht32f5xxxx_flash.o(i.FLASH_ErasePage)
-    i.FLASH_GetOptionByteStatus              0x0000257c   Section        0  ht32f5xxxx_flash.o(i.FLASH_GetOptionByteStatus)
-    i.FLASH_ProgramOptionByte                0x000025b0   Section        0  ht32f5xxxx_flash.o(i.FLASH_ProgramOptionByte)
-    i.FLASH_ProgramWordData                  0x0000261c   Section        0  ht32f5xxxx_flash.o(i.FLASH_ProgramWordData)
-    i.FLASH_WaitForOperationEnd              0x00002634   Section        0  ht32f5xxxx_flash.o(i.FLASH_WaitForOperationEnd)
-    i.FillThermalFilterBuf                   0x0000268c   Section        0  tempcontrol.o(i.FillThermalFilterBuf)
-    i.GPIO_ClearOutBits                      0x000026f4   Section        0  ht32f5xxxx_gpio.o(i.GPIO_ClearOutBits)
-    i.GPIO_DirectionConfig                   0x000026f8   Section        0  ht32f5xxxx_gpio.o(i.GPIO_DirectionConfig)
-    i.GPIO_DisableDebugPort                  0x00002708   Section        0  ht32f5xxxx_gpio.o(i.GPIO_DisableDebugPort)
-    i.GPIO_DriveConfig                       0x00002740   Section        0  ht32f5xxxx_gpio.o(i.GPIO_DriveConfig)
-    i.GPIO_InputConfig                       0x00002778   Section        0  ht32f5xxxx_gpio.o(i.GPIO_InputConfig)
-    i.GPIO_ReadInBit                         0x00002788   Section        0  ht32f5xxxx_gpio.o(i.GPIO_ReadInBit)
-    i.GPIO_SetOutBits                        0x00002792   Section        0  ht32f5xxxx_gpio.o(i.GPIO_SetOutBits)
-    i.GPTM0_IRQHandler                       0x00002798   Section        0  ht32f5xxxx_01_it.o(i.GPTM0_IRQHandler)
-    i.GPTM1_IRQHandler                       0x000027e0   Section        0  ht32f5xxxx_01_it.o(i.GPTM1_IRQHandler)
-    i.HardFault_Handler                      0x0000281c   Section        0  ht32f5xxxx_01_it.o(i.HardFault_Handler)
-    i.InternalADC_Init                       0x00002868   Section        0  adc.o(i.InternalADC_Init)
-    i.LEDMgmt_CallBack                       0x00002938   Section        0  ledmgmt.o(i.LEDMgmt_CallBack)
-    i.LED_AddStrobe                          0x00002a70   Section        0  ledmgmt.o(i.LED_AddStrobe)
-    i.LED_Init                               0x00002abc   Section        0  ledmgmt.o(i.LED_Init)
-    i.LED_Reset                              0x00002b24   Section        0  ledmgmt.o(i.LED_Reset)
-    i.LightLogicSetup                        0x00002b48   Section        0  modelogic.o(i.LightLogicSetup)
-    i.LightModeStateMachine                  0x00002bfc   Section        0  modelogic.o(i.LightModeStateMachine)
-    i.MCTM_CHBRKCTRConfig                    0x00002f00   Section        0  ht32f5xxxx_mctm.o(i.MCTM_CHBRKCTRConfig)
-    i.MCTM_CHMOECmd                          0x00002f32   Section        0  ht32f5xxxx_mctm.o(i.MCTM_CHMOECmd)
-    i.MainProgramRegionCRC                   0x00002f44   Section        0  flashprot.o(i.MainProgramRegionCRC)
-    i.NMI_Handler                            0x00002fc0   Section        0  ht32f5xxxx_01_it.o(i.NMI_Handler)
-    i.PIDStepdownCalc                        0x00002fc4   Section        0  tempcontrol.o(i.PIDStepdownCalc)
-    i.PWMTimerInit                           0x000030f0   Section        0  pwmdim.o(i.PWMTimerInit)
-    i.PWRCU_CheckReadyAccessed               0x0000318c   Section        0  ht32f5xxxx_pwrcu.o(i.PWRCU_CheckReadyAccessed)
-    i.PendSV_Handler                         0x000031ac   Section        0  ht32f5xxxx_01_it.o(i.PendSV_Handler)
-    i.RSTCU_PeripReset                       0x000031b0   Section        0  ht32f5xxxx_rstcu.o(i.RSTCU_PeripReset)
-    i.RTC_DeInit                             0x000031d8   Section        0  ht32f5xxxx_rtc.o(i.RTC_DeInit)
-    i.RTC_LSILoadTrimData                    0x00003204   Section        0  ht32f5xxxx_rtc.o(i.RTC_LSILoadTrimData)
-    i.RampAdjustHandler                      0x00003240   Section        0  modelogic.o(i.RampAdjustHandler)
-    i.ReverseModeCycleOpHandler              0x000032fc   Section        0  modelogic.o(i.ReverseModeCycleOpHandler)
-    i.SVC_Handler                            0x00003364   Section        0  ht32f5xxxx_01_it.o(i.SVC_Handler)
-    i.SYSTICK_ClockSourceConfig              0x00003368   Section        0  ht32_cm0plus_misc.o(i.SYSTICK_ClockSourceConfig)
-    i.SYSTICK_CounterCmd                     0x00003380   Section        0  ht32_cm0plus_misc.o(i.SYSTICK_CounterCmd)
-    i.SYSTICK_IntConfig                      0x000033a4   Section        0  ht32_cm0plus_misc.o(i.SYSTICK_IntConfig)
-    i.SetPWMDuty                             0x000033bc   Section        0  pwmdim.o(i.SetPWMDuty)
-    i.SideKeyInit                            0x0000340c   Section        0  sidekey.o(i.SideKeyInit)
-    i.SideKey_Callback                       0x00003490   Section        0  sidekey.o(i.SideKey_Callback)
-    i.SideKey_LogicHandler                   0x00003534   Section        0  sidekey.o(i.SideKey_LogicHandler)
-    i.SideKey_TIM_Callback                   0x000035c8   Section        0  sidekey.o(i.SideKey_TIM_Callback)
-    i.SysTick_Handler                        0x0000360c   Section        0  ht32f5xxxx_01_it.o(i.SysTick_Handler)
-    i.SystemInit                             0x00003620   Section        0  system_ht32f5xxxx_01.o(i.SystemInit)
-    i.TM_ClearFlag                           0x0000372c   Section        0  ht32f5xxxx_tm.o(i.TM_ClearFlag)
-    i.TM_Cmd                                 0x00003736   Section        0  ht32f5xxxx_tm.o(i.TM_Cmd)
-    i.TM_GetFlagStatus                       0x0000374a   Section        0  ht32f5xxxx_tm.o(i.TM_GetFlagStatus)
-    i.TM_IntConfig                           0x00003754   Section        0  ht32f5xxxx_tm.o(i.TM_IntConfig)
-    i.TM_OutputInit                          0x00003764   Section        0  ht32f5xxxx_tm.o(i.TM_OutputInit)
-    i.TM_SetCounterReload                    0x00003810   Section        0  ht32f5xxxx_tm.o(i.TM_SetCounterReload)
-    i.TM_TimeBaseInit                        0x00003818   Section        0  ht32f5xxxx_tm.o(i.TM_TimeBaseInit)
-    i.__ARM_fpclassify                       0x00003858   Section        0  fpclassify.o(i.__ARM_fpclassify)
-    i.__kernel_poly                          0x00003884   Section        0  poly.o(i.__kernel_poly)
-    i.__mathlib_dbl_divzero                  0x00003930   Section        0  dunder.o(i.__mathlib_dbl_divzero)
-    i.__mathlib_dbl_infnan                   0x00003944   Section        0  dunder.o(i.__mathlib_dbl_infnan)
-    i.__mathlib_dbl_infnan2                  0x0000394e   Section        0  dunder.o(i.__mathlib_dbl_infnan2)
-    i.__mathlib_dbl_invalid                  0x00003956   Section        0  dunder.o(i.__mathlib_dbl_invalid)
-    i.__mathlib_dbl_overflow                 0x00003968   Section        0  dunder.o(i.__mathlib_dbl_overflow)
-    i.__mathlib_dbl_underflow                0x0000397c   Section        0  dunder.o(i.__mathlib_dbl_underflow)
-    i.delay_init                             0x00003990   Section        0  delay.o(i.delay_init)
-    i.delay_ms                               0x000039bc   Section        0  delay.o(i.delay_ms)
-    i.delay_us                               0x00003a08   Section        0  delay.o(i.delay_us)
-    i.fmaxf                                  0x00003a54   Section        0  fmaxf.o(i.fmaxf)
-    i.fminf                                  0x00003a7a   Section        0  fminf.o(i.fminf)
-    i.getSideKeyClickAndHoldEvent            0x00003aa0   Section        0  sidekey.o(i.getSideKeyClickAndHoldEvent)
-    i.getSideKeyDoubleClickAndHoldEvent      0x00003aac   Section        0  sidekey.o(i.getSideKeyDoubleClickAndHoldEvent)
-    i.getSideKeyHoldEvent                    0x00003ab8   Section        0  sidekey.o(i.getSideKeyHoldEvent)
-    i.getSideKeyLongPressEvent               0x00003ac4   Section        0  sidekey.o(i.getSideKeyLongPressEvent)
-    i.getSideKeyShortPressCount              0x00003adc   Section        0  sidekey.o(i.getSideKeyShortPressCount)
-    i.getSideKeyTripleClickAndHoldEvent      0x00003b04   Section        0  sidekey.o(i.getSideKeyTripleClickAndHoldEvent)
-    i.iroundf                                0x00003b10   Section        0  lineartabop.o(i.iroundf)
-    i.log                                    0x00003b40   Section        0  log.o(i.log)
-    i.main                                   0x00003e94   Section        0  main.o(i.main)
-    i.pow                                    0x00003f10   Section        0  pow.o(i.pow)
-    i.sqrt                                   0x0000490c   Section        0  sqrt.o(i.sqrt)
-    x$fpl$deqf                               0x00004954   Section      100  deqf.o(x$fpl$deqf)
-    x$fpl$drleqf                             0x000049b8   Section      104  drlef.o(x$fpl$drleqf)
-    x$fpl$fadd                               0x00004a20   Section      140  faddsub.o(x$fpl$fadd)
-    _fadd1                                   0x00004a2d   Thumb Code     0  faddsub.o(x$fpl$fadd)
-    x$fpl$fleqf                              0x00004aac   Section       84  flef.o(x$fpl$fleqf)
-    x$fpl$fmul                               0x00004b00   Section      176  fmul.o(x$fpl$fmul)
-    x$fpl$frsb                               0x00004bb0   Section       24  faddsub.o(x$fpl$frsb)
-    x$fpl$fsub                               0x00004bc8   Section      208  faddsub.o(x$fpl$fsub)
-    _fsub1                                   0x00004bd5   Thumb Code     0  faddsub.o(x$fpl$fsub)
-    .constdata                               0x00004c98   Section       20  modelogic.o(.constdata)
-    x$fpl$usenofp                            0x00004c98   Section        0  usenofp.o(x$fpl$usenofp)
-    .constdata                               0x00004cac   Section      128  ddiv.o(.constdata)
-    ddiv_reciptbl                            0x00004cac   Data         128  ddiv.o(.constdata)
-    .constdata                               0x00004d2c   Section       64  fdiv.o(.constdata)
-    fdiv_tab                                 0x00004d2c   Data          64  fdiv.o(.constdata)
-    .constdata                               0x00004d70   Section       56  log.o(.constdata)
-    Lg2                                      0x00004d70   Data          24  log.o(.constdata)
-    Lg                                       0x00004d88   Data          32  log.o(.constdata)
-    .constdata                               0x00004da8   Section      136  pow.o(.constdata)
-    bp                                       0x00004da8   Data          16  pow.o(.constdata)
-    dp_h                                     0x00004db8   Data          16  pow.o(.constdata)
-    dp_l                                     0x00004dc8   Data          16  pow.o(.constdata)
-    L                                        0x00004dd8   Data          48  pow.o(.constdata)
-    P                                        0x00004e08   Data          40  pow.o(.constdata)
-    .constdata                               0x00004e30   Section        8  qnan.o(.constdata)
-    .conststring                             0x00004e38   Section      181  ledmgmt.o(.conststring)
+    i.CKCU_GetClockReadyStatus               0x00001b9c   Section        0  ht32f5xxxx_ckcu.o(i.CKCU_GetClockReadyStatus)
+    i.CKCU_HSICmd                            0x00001bb0   Section        0  ht32f5xxxx_ckcu.o(i.CKCU_HSICmd)
+    i.CKCU_PeripClockConfig                  0x00001bc8   Section        0  ht32f5xxxx_ckcu.o(i.CKCU_PeripClockConfig)
+    i.CKCU_SetADCnPrescaler                  0x00001bf0   Section        0  ht32f5xxxx_ckcu.o(i.CKCU_SetADCnPrescaler)
+    i.CRC_DeInit                             0x00001c0c   Section        0  ht32f5xxxx_crc.o(i.CRC_DeInit)
+    i.CalculateActualTemp                    0x00001c1c   Section        0  tempcontrol.o(i.CalculateActualTemp)
+    i.CheckForFlashLock                      0x00001db4   Section        0  flashprot.o(i.CheckForFlashLock)
+    i.ControlMainLEDHandler                  0x00001e68   Section        0  modelogic.o(i.ControlMainLEDHandler)
+    i.DeepSleepTimerCallBack                 0x00001f94   Section        0  deepsleep.o(i.DeepSleepTimerCallBack)
+    i.DisableHBTimer                         0x00001fb0   Section        0  mcubeattimer.o(i.DisableHBTimer)
+    i.DisplayBatteryVoltage                  0x00001fec   Section        0  battmonitor.o(i.DisplayBatteryVoltage)
+    i.DisplaySystemTemp                      0x000020c0   Section        0  tempcontrol.o(i.DisplaySystemTemp)
+    i.DisplayTemp                            0x00002284   Section        0  tempcontrol.o(i.DisplayTemp)
+    i.EXTI4_15_IRQHandler                    0x000022dc   Section        0  ht32f5xxxx_01_it.o(i.EXTI4_15_IRQHandler)
+    i.EXTI_ClearEdgeFlag                     0x000022f4   Section        0  ht32f5xxxx_exti.o(i.EXTI_ClearEdgeFlag)
+    i.EXTI_GetEdgeFlag                       0x00002304   Section        0  ht32f5xxxx_exti.o(i.EXTI_GetEdgeFlag)
+    i.EXTI_Init                              0x0000231c   Section        0  ht32f5xxxx_exti.o(i.EXTI_Init)
+    i.EXTI_IntConfig                         0x0000233c   Section        0  ht32f5xxxx_exti.o(i.EXTI_IntConfig)
+    i.EnableHBTimer                          0x00002358   Section        0  mcubeattimer.o(i.EnableHBTimer)
+    i.EnteredLowPowerMode                    0x000023bc   Section        0  deepsleep.o(i.EnteredLowPowerMode)
+    i.ExitLowPowerMode                       0x0000247c   Section        0  deepsleep.o(i.ExitLowPowerMode)
+    i.FLASH_EraseOptionByte                  0x0000255c   Section        0  ht32f5xxxx_flash.o(i.FLASH_EraseOptionByte)
+    i.FLASH_ErasePage                        0x00002578   Section        0  ht32f5xxxx_flash.o(i.FLASH_ErasePage)
+    i.FLASH_GetOptionByteStatus              0x0000258c   Section        0  ht32f5xxxx_flash.o(i.FLASH_GetOptionByteStatus)
+    i.FLASH_ProgramOptionByte                0x000025c0   Section        0  ht32f5xxxx_flash.o(i.FLASH_ProgramOptionByte)
+    i.FLASH_ProgramWordData                  0x0000262c   Section        0  ht32f5xxxx_flash.o(i.FLASH_ProgramWordData)
+    i.FLASH_WaitForOperationEnd              0x00002644   Section        0  ht32f5xxxx_flash.o(i.FLASH_WaitForOperationEnd)
+    i.FillThermalFilterBuf                   0x0000269c   Section        0  tempcontrol.o(i.FillThermalFilterBuf)
+    i.GPIO_ClearOutBits                      0x00002704   Section        0  ht32f5xxxx_gpio.o(i.GPIO_ClearOutBits)
+    i.GPIO_DirectionConfig                   0x00002708   Section        0  ht32f5xxxx_gpio.o(i.GPIO_DirectionConfig)
+    i.GPIO_DisableDebugPort                  0x00002718   Section        0  ht32f5xxxx_gpio.o(i.GPIO_DisableDebugPort)
+    i.GPIO_DriveConfig                       0x00002750   Section        0  ht32f5xxxx_gpio.o(i.GPIO_DriveConfig)
+    i.GPIO_InputConfig                       0x00002788   Section        0  ht32f5xxxx_gpio.o(i.GPIO_InputConfig)
+    i.GPIO_ReadInBit                         0x00002798   Section        0  ht32f5xxxx_gpio.o(i.GPIO_ReadInBit)
+    i.GPIO_SetOutBits                        0x000027a2   Section        0  ht32f5xxxx_gpio.o(i.GPIO_SetOutBits)
+    i.GPTM0_IRQHandler                       0x000027a8   Section        0  ht32f5xxxx_01_it.o(i.GPTM0_IRQHandler)
+    i.GPTM1_IRQHandler                       0x000027f0   Section        0  ht32f5xxxx_01_it.o(i.GPTM1_IRQHandler)
+    i.HardFault_Handler                      0x0000282c   Section        0  ht32f5xxxx_01_it.o(i.HardFault_Handler)
+    i.InternalADC_Init                       0x00002878   Section        0  adc.o(i.InternalADC_Init)
+    i.LEDMgmt_CallBack                       0x00002948   Section        0  ledmgmt.o(i.LEDMgmt_CallBack)
+    i.LED_AddStrobe                          0x00002a80   Section        0  ledmgmt.o(i.LED_AddStrobe)
+    i.LED_Init                               0x00002acc   Section        0  ledmgmt.o(i.LED_Init)
+    i.LED_Reset                              0x00002b34   Section        0  ledmgmt.o(i.LED_Reset)
+    i.LightLogicSetup                        0x00002b58   Section        0  modelogic.o(i.LightLogicSetup)
+    i.LightModeStateMachine                  0x00002c0c   Section        0  modelogic.o(i.LightModeStateMachine)
+    i.MCTM_CHBRKCTRConfig                    0x00002f10   Section        0  ht32f5xxxx_mctm.o(i.MCTM_CHBRKCTRConfig)
+    i.MCTM_CHMOECmd                          0x00002f42   Section        0  ht32f5xxxx_mctm.o(i.MCTM_CHMOECmd)
+    i.MainProgramRegionCRC                   0x00002f54   Section        0  flashprot.o(i.MainProgramRegionCRC)
+    i.NMI_Handler                            0x00002fd0   Section        0  ht32f5xxxx_01_it.o(i.NMI_Handler)
+    i.PIDStepdownCalc                        0x00002fd4   Section        0  tempcontrol.o(i.PIDStepdownCalc)
+    i.PWMTimerInit                           0x00003100   Section        0  pwmdim.o(i.PWMTimerInit)
+    i.PWRCU_CheckReadyAccessed               0x0000319c   Section        0  ht32f5xxxx_pwrcu.o(i.PWRCU_CheckReadyAccessed)
+    i.PendSV_Handler                         0x000031bc   Section        0  ht32f5xxxx_01_it.o(i.PendSV_Handler)
+    i.RSTCU_PeripReset                       0x000031c0   Section        0  ht32f5xxxx_rstcu.o(i.RSTCU_PeripReset)
+    i.RTC_DeInit                             0x000031e8   Section        0  ht32f5xxxx_rtc.o(i.RTC_DeInit)
+    i.RTC_LSILoadTrimData                    0x00003214   Section        0  ht32f5xxxx_rtc.o(i.RTC_LSILoadTrimData)
+    i.RampAdjustHandler                      0x00003250   Section        0  modelogic.o(i.RampAdjustHandler)
+    i.ReverseModeCycleOpHandler              0x0000330c   Section        0  modelogic.o(i.ReverseModeCycleOpHandler)
+    i.SVC_Handler                            0x00003374   Section        0  ht32f5xxxx_01_it.o(i.SVC_Handler)
+    i.SYSTICK_ClockSourceConfig              0x00003378   Section        0  ht32_cm0plus_misc.o(i.SYSTICK_ClockSourceConfig)
+    i.SYSTICK_CounterCmd                     0x00003390   Section        0  ht32_cm0plus_misc.o(i.SYSTICK_CounterCmd)
+    i.SYSTICK_IntConfig                      0x000033b4   Section        0  ht32_cm0plus_misc.o(i.SYSTICK_IntConfig)
+    i.SetPWMDuty                             0x000033cc   Section        0  pwmdim.o(i.SetPWMDuty)
+    i.SideKeyInit                            0x0000341c   Section        0  sidekey.o(i.SideKeyInit)
+    i.SideKey_Callback                       0x000034a0   Section        0  sidekey.o(i.SideKey_Callback)
+    i.SideKey_LogicHandler                   0x00003544   Section        0  sidekey.o(i.SideKey_LogicHandler)
+    i.SideKey_TIM_Callback                   0x000035d8   Section        0  sidekey.o(i.SideKey_TIM_Callback)
+    i.SysTick_Handler                        0x0000361c   Section        0  ht32f5xxxx_01_it.o(i.SysTick_Handler)
+    i.SystemInit                             0x00003630   Section        0  system_ht32f5xxxx_01.o(i.SystemInit)
+    i.TM_ClearFlag                           0x0000373c   Section        0  ht32f5xxxx_tm.o(i.TM_ClearFlag)
+    i.TM_Cmd                                 0x00003746   Section        0  ht32f5xxxx_tm.o(i.TM_Cmd)
+    i.TM_GetFlagStatus                       0x0000375a   Section        0  ht32f5xxxx_tm.o(i.TM_GetFlagStatus)
+    i.TM_IntConfig                           0x00003764   Section        0  ht32f5xxxx_tm.o(i.TM_IntConfig)
+    i.TM_OutputInit                          0x00003774   Section        0  ht32f5xxxx_tm.o(i.TM_OutputInit)
+    i.TM_SetCounterReload                    0x00003820   Section        0  ht32f5xxxx_tm.o(i.TM_SetCounterReload)
+    i.TM_TimeBaseInit                        0x00003828   Section        0  ht32f5xxxx_tm.o(i.TM_TimeBaseInit)
+    i.__ARM_fpclassify                       0x00003868   Section        0  fpclassify.o(i.__ARM_fpclassify)
+    i.__kernel_poly                          0x00003894   Section        0  poly.o(i.__kernel_poly)
+    i.__mathlib_dbl_divzero                  0x00003940   Section        0  dunder.o(i.__mathlib_dbl_divzero)
+    i.__mathlib_dbl_infnan                   0x00003954   Section        0  dunder.o(i.__mathlib_dbl_infnan)
+    i.__mathlib_dbl_infnan2                  0x0000395e   Section        0  dunder.o(i.__mathlib_dbl_infnan2)
+    i.__mathlib_dbl_invalid                  0x00003966   Section        0  dunder.o(i.__mathlib_dbl_invalid)
+    i.__mathlib_dbl_overflow                 0x00003978   Section        0  dunder.o(i.__mathlib_dbl_overflow)
+    i.__mathlib_dbl_underflow                0x0000398c   Section        0  dunder.o(i.__mathlib_dbl_underflow)
+    i.delay_init                             0x000039a0   Section        0  delay.o(i.delay_init)
+    i.delay_ms                               0x000039cc   Section        0  delay.o(i.delay_ms)
+    i.delay_us                               0x00003a18   Section        0  delay.o(i.delay_us)
+    i.fmaxf                                  0x00003a64   Section        0  fmaxf.o(i.fmaxf)
+    i.fminf                                  0x00003a8a   Section        0  fminf.o(i.fminf)
+    i.getSideKeyClickAndHoldEvent            0x00003ab0   Section        0  sidekey.o(i.getSideKeyClickAndHoldEvent)
+    i.getSideKeyDoubleClickAndHoldEvent      0x00003abc   Section        0  sidekey.o(i.getSideKeyDoubleClickAndHoldEvent)
+    i.getSideKeyHoldEvent                    0x00003ac8   Section        0  sidekey.o(i.getSideKeyHoldEvent)
+    i.getSideKeyLongPressEvent               0x00003ad4   Section        0  sidekey.o(i.getSideKeyLongPressEvent)
+    i.getSideKeyShortPressCount              0x00003aec   Section        0  sidekey.o(i.getSideKeyShortPressCount)
+    i.getSideKeyTripleClickAndHoldEvent      0x00003b14   Section        0  sidekey.o(i.getSideKeyTripleClickAndHoldEvent)
+    i.iroundf                                0x00003b20   Section        0  lineartabop.o(i.iroundf)
+    i.log                                    0x00003b50   Section        0  log.o(i.log)
+    i.main                                   0x00003ea4   Section        0  main.o(i.main)
+    i.pow                                    0x00003f20   Section        0  pow.o(i.pow)
+    i.sqrt                                   0x0000491c   Section        0  sqrt.o(i.sqrt)
+    x$fpl$deqf                               0x00004964   Section      100  deqf.o(x$fpl$deqf)
+    x$fpl$drleqf                             0x000049c8   Section      104  drlef.o(x$fpl$drleqf)
+    x$fpl$fadd                               0x00004a30   Section      140  faddsub.o(x$fpl$fadd)
+    _fadd1                                   0x00004a3d   Thumb Code     0  faddsub.o(x$fpl$fadd)
+    x$fpl$fmul                               0x00004abc   Section      176  fmul.o(x$fpl$fmul)
+    x$fpl$frleqf                             0x00004b6c   Section       88  frlef.o(x$fpl$frleqf)
+    x$fpl$frsb                               0x00004bc4   Section       24  faddsub.o(x$fpl$frsb)
+    x$fpl$fsub                               0x00004bdc   Section      208  faddsub.o(x$fpl$fsub)
+    _fsub1                                   0x00004be9   Thumb Code     0  faddsub.o(x$fpl$fsub)
+    .constdata                               0x00004cac   Section       20  modelogic.o(.constdata)
+    x$fpl$usenofp                            0x00004cac   Section        0  usenofp.o(x$fpl$usenofp)
+    .constdata                               0x00004cc0   Section      128  ddiv.o(.constdata)
+    ddiv_reciptbl                            0x00004cc0   Data         128  ddiv.o(.constdata)
+    .constdata                               0x00004d40   Section       64  fdiv.o(.constdata)
+    fdiv_tab                                 0x00004d40   Data          64  fdiv.o(.constdata)
+    .constdata                               0x00004d80   Section       56  log.o(.constdata)
+    Lg2                                      0x00004d80   Data          24  log.o(.constdata)
+    Lg                                       0x00004d98   Data          32  log.o(.constdata)
+    .constdata                               0x00004db8   Section      136  pow.o(.constdata)
+    bp                                       0x00004db8   Data          16  pow.o(.constdata)
+    dp_h                                     0x00004dc8   Data          16  pow.o(.constdata)
+    dp_l                                     0x00004dd8   Data          16  pow.o(.constdata)
+    L                                        0x00004de8   Data          48  pow.o(.constdata)
+    P                                        0x00004e18   Data          40  pow.o(.constdata)
+    .constdata                               0x00004e40   Section        8  qnan.o(.constdata)
+    .conststring                             0x00004e48   Section      181  ledmgmt.o(.conststring)
     .data                                    0x20000000   Section        2  main.o(.data)
     .data                                    0x20000004   Section        4  ht32f5xxxx_01_it.o(.data)
     LEDTimer                                 0x20000004   Data           4  ht32f5xxxx_01_it.o(.data)
@@ -1735,126 +1736,126 @@ Image Symbol Table
     AFIO_EXTISourceConfig                    0x00001971   Thumb Code    38  ht32f5xxxx_gpio.o(i.AFIO_EXTISourceConfig)
     AFIO_GPxConfig                           0x0000199d   Thumb Code   222  ht32f5xxxx_gpio.o(i.AFIO_GPxConfig)
     BatteryAlertResetDetect                  0x00001a81   Thumb Code    30  battmonitor.o(i.BatteryAlertResetDetect)
-    BatteryMonitorHandler                    0x00001aa9   Thumb Code   178  battmonitor.o(i.BatteryMonitorHandler)
-    CKCU_GetClockReadyStatus                 0x00001b8d   Thumb Code    16  ht32f5xxxx_ckcu.o(i.CKCU_GetClockReadyStatus)
-    CKCU_HSICmd                              0x00001ba1   Thumb Code    18  ht32f5xxxx_ckcu.o(i.CKCU_HSICmd)
-    CKCU_PeripClockConfig                    0x00001bb9   Thumb Code    36  ht32f5xxxx_ckcu.o(i.CKCU_PeripClockConfig)
-    CKCU_SetADCnPrescaler                    0x00001be1   Thumb Code    22  ht32f5xxxx_ckcu.o(i.CKCU_SetADCnPrescaler)
-    CRC_DeInit                               0x00001bfd   Thumb Code    16  ht32f5xxxx_crc.o(i.CRC_DeInit)
-    CalculateActualTemp                      0x00001c0d   Thumb Code   358  tempcontrol.o(i.CalculateActualTemp)
-    CheckForFlashLock                        0x00001da5   Thumb Code   166  flashprot.o(i.CheckForFlashLock)
-    ControlMainLEDHandler                    0x00001e59   Thumb Code   250  modelogic.o(i.ControlMainLEDHandler)
-    DeepSleepTimerCallBack                   0x00001f85   Thumb Code    24  deepsleep.o(i.DeepSleepTimerCallBack)
-    DisableHBTimer                           0x00001fa1   Thumb Code    52  mcubeattimer.o(i.DisableHBTimer)
-    DisplayBatteryVoltage                    0x00001fdd   Thumb Code   166  battmonitor.o(i.DisplayBatteryVoltage)
-    DisplaySystemTemp                        0x000020b1   Thumb Code   372  tempcontrol.o(i.DisplaySystemTemp)
-    DisplayTemp                              0x00002275   Thumb Code    60  tempcontrol.o(i.DisplayTemp)
-    EXTI4_15_IRQHandler                      0x000022cd   Thumb Code    24  ht32f5xxxx_01_it.o(i.EXTI4_15_IRQHandler)
-    EXTI_ClearEdgeFlag                       0x000022e5   Thumb Code    12  ht32f5xxxx_exti.o(i.EXTI_ClearEdgeFlag)
-    EXTI_GetEdgeFlag                         0x000022f5   Thumb Code    20  ht32f5xxxx_exti.o(i.EXTI_GetEdgeFlag)
-    EXTI_Init                                0x0000230d   Thumb Code    26  ht32f5xxxx_exti.o(i.EXTI_Init)
-    EXTI_IntConfig                           0x0000232d   Thumb Code    22  ht32f5xxxx_exti.o(i.EXTI_IntConfig)
-    EnableHBTimer                            0x00002349   Thumb Code    86  mcubeattimer.o(i.EnableHBTimer)
-    EnteredLowPowerMode                      0x000023ad   Thumb Code   172  deepsleep.o(i.EnteredLowPowerMode)
-    ExitLowPowerMode                         0x0000246d   Thumb Code   202  deepsleep.o(i.ExitLowPowerMode)
-    FLASH_EraseOptionByte                    0x0000254d   Thumb Code    18  ht32f5xxxx_flash.o(i.FLASH_EraseOptionByte)
-    FLASH_ErasePage                          0x00002569   Thumb Code    16  ht32f5xxxx_flash.o(i.FLASH_ErasePage)
-    FLASH_GetOptionByteStatus                0x0000257d   Thumb Code    48  ht32f5xxxx_flash.o(i.FLASH_GetOptionByteStatus)
-    FLASH_ProgramOptionByte                  0x000025b1   Thumb Code    92  ht32f5xxxx_flash.o(i.FLASH_ProgramOptionByte)
-    FLASH_ProgramWordData                    0x0000261d   Thumb Code    18  ht32f5xxxx_flash.o(i.FLASH_ProgramWordData)
-    FLASH_WaitForOperationEnd                0x00002635   Thumb Code    78  ht32f5xxxx_flash.o(i.FLASH_WaitForOperationEnd)
-    FillThermalFilterBuf                     0x0000268d   Thumb Code    82  tempcontrol.o(i.FillThermalFilterBuf)
-    GPIO_ClearOutBits                        0x000026f5   Thumb Code     4  ht32f5xxxx_gpio.o(i.GPIO_ClearOutBits)
-    GPIO_DirectionConfig                     0x000026f9   Thumb Code    16  ht32f5xxxx_gpio.o(i.GPIO_DirectionConfig)
-    GPIO_DisableDebugPort                    0x00002709   Thumb Code    52  ht32f5xxxx_gpio.o(i.GPIO_DisableDebugPort)
-    GPIO_DriveConfig                         0x00002741   Thumb Code    56  ht32f5xxxx_gpio.o(i.GPIO_DriveConfig)
-    GPIO_InputConfig                         0x00002779   Thumb Code    16  ht32f5xxxx_gpio.o(i.GPIO_InputConfig)
-    GPIO_ReadInBit                           0x00002789   Thumb Code    10  ht32f5xxxx_gpio.o(i.GPIO_ReadInBit)
-    GPIO_SetOutBits                          0x00002793   Thumb Code     4  ht32f5xxxx_gpio.o(i.GPIO_SetOutBits)
-    GPTM0_IRQHandler                         0x00002799   Thumb Code    56  ht32f5xxxx_01_it.o(i.GPTM0_IRQHandler)
-    GPTM1_IRQHandler                         0x000027e1   Thumb Code    50  ht32f5xxxx_01_it.o(i.GPTM1_IRQHandler)
-    HardFault_Handler                        0x0000281d   Thumb Code    60  ht32f5xxxx_01_it.o(i.HardFault_Handler)
-    InternalADC_Init                         0x00002869   Thumb Code   196  adc.o(i.InternalADC_Init)
-    LEDMgmt_CallBack                         0x00002939   Thumb Code   300  ledmgmt.o(i.LEDMgmt_CallBack)
-    LED_AddStrobe                            0x00002a71   Thumb Code    68  ledmgmt.o(i.LED_AddStrobe)
-    LED_Init                                 0x00002abd   Thumb Code    96  ledmgmt.o(i.LED_Init)
-    LED_Reset                                0x00002b25   Thumb Code    28  ledmgmt.o(i.LED_Reset)
-    LightLogicSetup                          0x00002b49   Thumb Code   144  modelogic.o(i.LightLogicSetup)
-    LightModeStateMachine                    0x00002bfd   Thumb Code   736  modelogic.o(i.LightModeStateMachine)
-    MCTM_CHBRKCTRConfig                      0x00002f01   Thumb Code    50  ht32f5xxxx_mctm.o(i.MCTM_CHBRKCTRConfig)
-    MCTM_CHMOECmd                            0x00002f33   Thumb Code    18  ht32f5xxxx_mctm.o(i.MCTM_CHMOECmd)
-    MainProgramRegionCRC                     0x00002f45   Thumb Code   106  flashprot.o(i.MainProgramRegionCRC)
-    NMI_Handler                              0x00002fc1   Thumb Code     2  ht32f5xxxx_01_it.o(i.NMI_Handler)
-    PIDStepdownCalc                          0x00002fc5   Thumb Code   236  tempcontrol.o(i.PIDStepdownCalc)
-    PWMTimerInit                             0x000030f1   Thumb Code   144  pwmdim.o(i.PWMTimerInit)
-    PWRCU_CheckReadyAccessed                 0x0000318d   Thumb Code    22  ht32f5xxxx_pwrcu.o(i.PWRCU_CheckReadyAccessed)
-    PendSV_Handler                           0x000031ad   Thumb Code     2  ht32f5xxxx_01_it.o(i.PendSV_Handler)
-    RSTCU_PeripReset                         0x000031b1   Thumb Code    36  ht32f5xxxx_rstcu.o(i.RSTCU_PeripReset)
-    RTC_DeInit                               0x000031d9   Thumb Code    34  ht32f5xxxx_rtc.o(i.RTC_DeInit)
-    RTC_LSILoadTrimData                      0x00003205   Thumb Code    52  ht32f5xxxx_rtc.o(i.RTC_LSILoadTrimData)
-    RampAdjustHandler                        0x00003241   Thumb Code   166  modelogic.o(i.RampAdjustHandler)
-    ReverseModeCycleOpHandler                0x000032fd   Thumb Code    84  modelogic.o(i.ReverseModeCycleOpHandler)
-    SVC_Handler                              0x00003365   Thumb Code     2  ht32f5xxxx_01_it.o(i.SVC_Handler)
-    SYSTICK_ClockSourceConfig                0x00003369   Thumb Code    20  ht32_cm0plus_misc.o(i.SYSTICK_ClockSourceConfig)
-    SYSTICK_CounterCmd                       0x00003381   Thumb Code    32  ht32_cm0plus_misc.o(i.SYSTICK_CounterCmd)
-    SYSTICK_IntConfig                        0x000033a5   Thumb Code    20  ht32_cm0plus_misc.o(i.SYSTICK_IntConfig)
-    SetPWMDuty                               0x000033bd   Thumb Code    64  pwmdim.o(i.SetPWMDuty)
-    SideKeyInit                              0x0000340d   Thumb Code   118  sidekey.o(i.SideKeyInit)
-    SideKey_Callback                         0x00003491   Thumb Code   138  sidekey.o(i.SideKey_Callback)
-    SideKey_LogicHandler                     0x00003535   Thumb Code   136  sidekey.o(i.SideKey_LogicHandler)
-    SideKey_TIM_Callback                     0x000035c9   Thumb Code    64  sidekey.o(i.SideKey_TIM_Callback)
-    SysTick_Handler                          0x0000360d   Thumb Code    14  ht32f5xxxx_01_it.o(i.SysTick_Handler)
-    SystemInit                               0x00003621   Thumb Code   244  system_ht32f5xxxx_01.o(i.SystemInit)
-    TM_ClearFlag                             0x0000372d   Thumb Code    10  ht32f5xxxx_tm.o(i.TM_ClearFlag)
-    TM_Cmd                                   0x00003737   Thumb Code    20  ht32f5xxxx_tm.o(i.TM_Cmd)
-    TM_GetFlagStatus                         0x0000374b   Thumb Code    10  ht32f5xxxx_tm.o(i.TM_GetFlagStatus)
-    TM_IntConfig                             0x00003755   Thumb Code    16  ht32f5xxxx_tm.o(i.TM_IntConfig)
-    TM_OutputInit                            0x00003765   Thumb Code   168  ht32f5xxxx_tm.o(i.TM_OutputInit)
-    TM_SetCounterReload                      0x00003811   Thumb Code     6  ht32f5xxxx_tm.o(i.TM_SetCounterReload)
-    TM_TimeBaseInit                          0x00003819   Thumb Code    60  ht32f5xxxx_tm.o(i.TM_TimeBaseInit)
-    __ARM_fpclassify                         0x00003859   Thumb Code    40  fpclassify.o(i.__ARM_fpclassify)
-    __kernel_poly                            0x00003885   Thumb Code   172  poly.o(i.__kernel_poly)
-    __mathlib_dbl_divzero                    0x00003931   Thumb Code    16  dunder.o(i.__mathlib_dbl_divzero)
-    __mathlib_dbl_infnan                     0x00003945   Thumb Code    10  dunder.o(i.__mathlib_dbl_infnan)
-    __mathlib_dbl_infnan2                    0x0000394f   Thumb Code     8  dunder.o(i.__mathlib_dbl_infnan2)
-    __mathlib_dbl_invalid                    0x00003957   Thumb Code    16  dunder.o(i.__mathlib_dbl_invalid)
-    __mathlib_dbl_overflow                   0x00003969   Thumb Code    16  dunder.o(i.__mathlib_dbl_overflow)
-    __mathlib_dbl_underflow                  0x0000397d   Thumb Code    14  dunder.o(i.__mathlib_dbl_underflow)
-    delay_init                               0x00003991   Thumb Code    38  delay.o(i.delay_init)
-    delay_ms                                 0x000039bd   Thumb Code    68  delay.o(i.delay_ms)
-    delay_us                                 0x00003a09   Thumb Code    72  delay.o(i.delay_us)
-    fmaxf                                    0x00003a55   Thumb Code    38  fmaxf.o(i.fmaxf)
-    fminf                                    0x00003a7b   Thumb Code    38  fminf.o(i.fminf)
-    getSideKeyClickAndHoldEvent              0x00003aa1   Thumb Code     6  sidekey.o(i.getSideKeyClickAndHoldEvent)
-    getSideKeyDoubleClickAndHoldEvent        0x00003aad   Thumb Code     6  sidekey.o(i.getSideKeyDoubleClickAndHoldEvent)
-    getSideKeyHoldEvent                      0x00003ab9   Thumb Code     6  sidekey.o(i.getSideKeyHoldEvent)
-    getSideKeyLongPressEvent                 0x00003ac5   Thumb Code    20  sidekey.o(i.getSideKeyLongPressEvent)
-    getSideKeyShortPressCount                0x00003add   Thumb Code    36  sidekey.o(i.getSideKeyShortPressCount)
-    getSideKeyTripleClickAndHoldEvent        0x00003b05   Thumb Code     6  sidekey.o(i.getSideKeyTripleClickAndHoldEvent)
-    iroundf                                  0x00003b11   Thumb Code    40  lineartabop.o(i.iroundf)
-    log                                      0x00003b41   Thumb Code   790  log.o(i.log)
-    main                                     0x00003e95   Thumb Code   116  main.o(i.main)
-    pow                                      0x00003f11   Thumb Code  2548  pow.o(i.pow)
-    sqrt                                     0x0000490d   Thumb Code    66  sqrt.o(i.sqrt)
-    __aeabi_cdcmpeq                          0x00004955   Thumb Code     0  deqf.o(x$fpl$deqf)
-    _dcmpeq                                  0x00004955   Thumb Code    94  deqf.o(x$fpl$deqf)
-    __aeabi_cdrcmple                         0x000049b9   Thumb Code     0  drlef.o(x$fpl$drleqf)
-    _drcmple                                 0x000049b9   Thumb Code   100  drlef.o(x$fpl$drleqf)
-    __aeabi_fadd                             0x00004a21   Thumb Code     0  faddsub.o(x$fpl$fadd)
-    _fadd                                    0x00004a21   Thumb Code   134  faddsub.o(x$fpl$fadd)
-    __aeabi_cfcmple                          0x00004aad   Thumb Code     0  flef.o(x$fpl$fleqf)
-    _fcmple                                  0x00004aad   Thumb Code    78  flef.o(x$fpl$fleqf)
-    __aeabi_fmul                             0x00004b01   Thumb Code     0  fmul.o(x$fpl$fmul)
-    _fmul                                    0x00004b01   Thumb Code   172  fmul.o(x$fpl$fmul)
-    __aeabi_frsub                            0x00004bb1   Thumb Code     0  faddsub.o(x$fpl$frsb)
-    _frsb                                    0x00004bb1   Thumb Code    24  faddsub.o(x$fpl$frsb)
-    __aeabi_fsub                             0x00004bc9   Thumb Code     0  faddsub.o(x$fpl$fsub)
-    _fsub                                    0x00004bc9   Thumb Code   204  faddsub.o(x$fpl$fsub)
-    CycleModeRatio                           0x00004c98   Data          20  modelogic.o(.constdata)
-    __I$use$fp                               0x00004c98   Number         0  usenofp.o(x$fpl$usenofp)
-    __mathlib_zero                           0x00004e30   Data           8  qnan.o(.constdata)
-    Region$$Table$$Base                      0x00004ef0   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x00004f10   Number         0  anon$$obj.o(Region$$Table)
+    BatteryMonitorHandler                    0x00001aa9   Thumb Code   192  battmonitor.o(i.BatteryMonitorHandler)
+    CKCU_GetClockReadyStatus                 0x00001b9d   Thumb Code    16  ht32f5xxxx_ckcu.o(i.CKCU_GetClockReadyStatus)
+    CKCU_HSICmd                              0x00001bb1   Thumb Code    18  ht32f5xxxx_ckcu.o(i.CKCU_HSICmd)
+    CKCU_PeripClockConfig                    0x00001bc9   Thumb Code    36  ht32f5xxxx_ckcu.o(i.CKCU_PeripClockConfig)
+    CKCU_SetADCnPrescaler                    0x00001bf1   Thumb Code    22  ht32f5xxxx_ckcu.o(i.CKCU_SetADCnPrescaler)
+    CRC_DeInit                               0x00001c0d   Thumb Code    16  ht32f5xxxx_crc.o(i.CRC_DeInit)
+    CalculateActualTemp                      0x00001c1d   Thumb Code   358  tempcontrol.o(i.CalculateActualTemp)
+    CheckForFlashLock                        0x00001db5   Thumb Code   166  flashprot.o(i.CheckForFlashLock)
+    ControlMainLEDHandler                    0x00001e69   Thumb Code   250  modelogic.o(i.ControlMainLEDHandler)
+    DeepSleepTimerCallBack                   0x00001f95   Thumb Code    24  deepsleep.o(i.DeepSleepTimerCallBack)
+    DisableHBTimer                           0x00001fb1   Thumb Code    52  mcubeattimer.o(i.DisableHBTimer)
+    DisplayBatteryVoltage                    0x00001fed   Thumb Code   166  battmonitor.o(i.DisplayBatteryVoltage)
+    DisplaySystemTemp                        0x000020c1   Thumb Code   372  tempcontrol.o(i.DisplaySystemTemp)
+    DisplayTemp                              0x00002285   Thumb Code    60  tempcontrol.o(i.DisplayTemp)
+    EXTI4_15_IRQHandler                      0x000022dd   Thumb Code    24  ht32f5xxxx_01_it.o(i.EXTI4_15_IRQHandler)
+    EXTI_ClearEdgeFlag                       0x000022f5   Thumb Code    12  ht32f5xxxx_exti.o(i.EXTI_ClearEdgeFlag)
+    EXTI_GetEdgeFlag                         0x00002305   Thumb Code    20  ht32f5xxxx_exti.o(i.EXTI_GetEdgeFlag)
+    EXTI_Init                                0x0000231d   Thumb Code    26  ht32f5xxxx_exti.o(i.EXTI_Init)
+    EXTI_IntConfig                           0x0000233d   Thumb Code    22  ht32f5xxxx_exti.o(i.EXTI_IntConfig)
+    EnableHBTimer                            0x00002359   Thumb Code    86  mcubeattimer.o(i.EnableHBTimer)
+    EnteredLowPowerMode                      0x000023bd   Thumb Code   172  deepsleep.o(i.EnteredLowPowerMode)
+    ExitLowPowerMode                         0x0000247d   Thumb Code   202  deepsleep.o(i.ExitLowPowerMode)
+    FLASH_EraseOptionByte                    0x0000255d   Thumb Code    18  ht32f5xxxx_flash.o(i.FLASH_EraseOptionByte)
+    FLASH_ErasePage                          0x00002579   Thumb Code    16  ht32f5xxxx_flash.o(i.FLASH_ErasePage)
+    FLASH_GetOptionByteStatus                0x0000258d   Thumb Code    48  ht32f5xxxx_flash.o(i.FLASH_GetOptionByteStatus)
+    FLASH_ProgramOptionByte                  0x000025c1   Thumb Code    92  ht32f5xxxx_flash.o(i.FLASH_ProgramOptionByte)
+    FLASH_ProgramWordData                    0x0000262d   Thumb Code    18  ht32f5xxxx_flash.o(i.FLASH_ProgramWordData)
+    FLASH_WaitForOperationEnd                0x00002645   Thumb Code    78  ht32f5xxxx_flash.o(i.FLASH_WaitForOperationEnd)
+    FillThermalFilterBuf                     0x0000269d   Thumb Code    82  tempcontrol.o(i.FillThermalFilterBuf)
+    GPIO_ClearOutBits                        0x00002705   Thumb Code     4  ht32f5xxxx_gpio.o(i.GPIO_ClearOutBits)
+    GPIO_DirectionConfig                     0x00002709   Thumb Code    16  ht32f5xxxx_gpio.o(i.GPIO_DirectionConfig)
+    GPIO_DisableDebugPort                    0x00002719   Thumb Code    52  ht32f5xxxx_gpio.o(i.GPIO_DisableDebugPort)
+    GPIO_DriveConfig                         0x00002751   Thumb Code    56  ht32f5xxxx_gpio.o(i.GPIO_DriveConfig)
+    GPIO_InputConfig                         0x00002789   Thumb Code    16  ht32f5xxxx_gpio.o(i.GPIO_InputConfig)
+    GPIO_ReadInBit                           0x00002799   Thumb Code    10  ht32f5xxxx_gpio.o(i.GPIO_ReadInBit)
+    GPIO_SetOutBits                          0x000027a3   Thumb Code     4  ht32f5xxxx_gpio.o(i.GPIO_SetOutBits)
+    GPTM0_IRQHandler                         0x000027a9   Thumb Code    56  ht32f5xxxx_01_it.o(i.GPTM0_IRQHandler)
+    GPTM1_IRQHandler                         0x000027f1   Thumb Code    50  ht32f5xxxx_01_it.o(i.GPTM1_IRQHandler)
+    HardFault_Handler                        0x0000282d   Thumb Code    60  ht32f5xxxx_01_it.o(i.HardFault_Handler)
+    InternalADC_Init                         0x00002879   Thumb Code   196  adc.o(i.InternalADC_Init)
+    LEDMgmt_CallBack                         0x00002949   Thumb Code   300  ledmgmt.o(i.LEDMgmt_CallBack)
+    LED_AddStrobe                            0x00002a81   Thumb Code    68  ledmgmt.o(i.LED_AddStrobe)
+    LED_Init                                 0x00002acd   Thumb Code    96  ledmgmt.o(i.LED_Init)
+    LED_Reset                                0x00002b35   Thumb Code    28  ledmgmt.o(i.LED_Reset)
+    LightLogicSetup                          0x00002b59   Thumb Code   144  modelogic.o(i.LightLogicSetup)
+    LightModeStateMachine                    0x00002c0d   Thumb Code   736  modelogic.o(i.LightModeStateMachine)
+    MCTM_CHBRKCTRConfig                      0x00002f11   Thumb Code    50  ht32f5xxxx_mctm.o(i.MCTM_CHBRKCTRConfig)
+    MCTM_CHMOECmd                            0x00002f43   Thumb Code    18  ht32f5xxxx_mctm.o(i.MCTM_CHMOECmd)
+    MainProgramRegionCRC                     0x00002f55   Thumb Code   106  flashprot.o(i.MainProgramRegionCRC)
+    NMI_Handler                              0x00002fd1   Thumb Code     2  ht32f5xxxx_01_it.o(i.NMI_Handler)
+    PIDStepdownCalc                          0x00002fd5   Thumb Code   236  tempcontrol.o(i.PIDStepdownCalc)
+    PWMTimerInit                             0x00003101   Thumb Code   144  pwmdim.o(i.PWMTimerInit)
+    PWRCU_CheckReadyAccessed                 0x0000319d   Thumb Code    22  ht32f5xxxx_pwrcu.o(i.PWRCU_CheckReadyAccessed)
+    PendSV_Handler                           0x000031bd   Thumb Code     2  ht32f5xxxx_01_it.o(i.PendSV_Handler)
+    RSTCU_PeripReset                         0x000031c1   Thumb Code    36  ht32f5xxxx_rstcu.o(i.RSTCU_PeripReset)
+    RTC_DeInit                               0x000031e9   Thumb Code    34  ht32f5xxxx_rtc.o(i.RTC_DeInit)
+    RTC_LSILoadTrimData                      0x00003215   Thumb Code    52  ht32f5xxxx_rtc.o(i.RTC_LSILoadTrimData)
+    RampAdjustHandler                        0x00003251   Thumb Code   166  modelogic.o(i.RampAdjustHandler)
+    ReverseModeCycleOpHandler                0x0000330d   Thumb Code    84  modelogic.o(i.ReverseModeCycleOpHandler)
+    SVC_Handler                              0x00003375   Thumb Code     2  ht32f5xxxx_01_it.o(i.SVC_Handler)
+    SYSTICK_ClockSourceConfig                0x00003379   Thumb Code    20  ht32_cm0plus_misc.o(i.SYSTICK_ClockSourceConfig)
+    SYSTICK_CounterCmd                       0x00003391   Thumb Code    32  ht32_cm0plus_misc.o(i.SYSTICK_CounterCmd)
+    SYSTICK_IntConfig                        0x000033b5   Thumb Code    20  ht32_cm0plus_misc.o(i.SYSTICK_IntConfig)
+    SetPWMDuty                               0x000033cd   Thumb Code    64  pwmdim.o(i.SetPWMDuty)
+    SideKeyInit                              0x0000341d   Thumb Code   118  sidekey.o(i.SideKeyInit)
+    SideKey_Callback                         0x000034a1   Thumb Code   138  sidekey.o(i.SideKey_Callback)
+    SideKey_LogicHandler                     0x00003545   Thumb Code   136  sidekey.o(i.SideKey_LogicHandler)
+    SideKey_TIM_Callback                     0x000035d9   Thumb Code    64  sidekey.o(i.SideKey_TIM_Callback)
+    SysTick_Handler                          0x0000361d   Thumb Code    14  ht32f5xxxx_01_it.o(i.SysTick_Handler)
+    SystemInit                               0x00003631   Thumb Code   244  system_ht32f5xxxx_01.o(i.SystemInit)
+    TM_ClearFlag                             0x0000373d   Thumb Code    10  ht32f5xxxx_tm.o(i.TM_ClearFlag)
+    TM_Cmd                                   0x00003747   Thumb Code    20  ht32f5xxxx_tm.o(i.TM_Cmd)
+    TM_GetFlagStatus                         0x0000375b   Thumb Code    10  ht32f5xxxx_tm.o(i.TM_GetFlagStatus)
+    TM_IntConfig                             0x00003765   Thumb Code    16  ht32f5xxxx_tm.o(i.TM_IntConfig)
+    TM_OutputInit                            0x00003775   Thumb Code   168  ht32f5xxxx_tm.o(i.TM_OutputInit)
+    TM_SetCounterReload                      0x00003821   Thumb Code     6  ht32f5xxxx_tm.o(i.TM_SetCounterReload)
+    TM_TimeBaseInit                          0x00003829   Thumb Code    60  ht32f5xxxx_tm.o(i.TM_TimeBaseInit)
+    __ARM_fpclassify                         0x00003869   Thumb Code    40  fpclassify.o(i.__ARM_fpclassify)
+    __kernel_poly                            0x00003895   Thumb Code   172  poly.o(i.__kernel_poly)
+    __mathlib_dbl_divzero                    0x00003941   Thumb Code    16  dunder.o(i.__mathlib_dbl_divzero)
+    __mathlib_dbl_infnan                     0x00003955   Thumb Code    10  dunder.o(i.__mathlib_dbl_infnan)
+    __mathlib_dbl_infnan2                    0x0000395f   Thumb Code     8  dunder.o(i.__mathlib_dbl_infnan2)
+    __mathlib_dbl_invalid                    0x00003967   Thumb Code    16  dunder.o(i.__mathlib_dbl_invalid)
+    __mathlib_dbl_overflow                   0x00003979   Thumb Code    16  dunder.o(i.__mathlib_dbl_overflow)
+    __mathlib_dbl_underflow                  0x0000398d   Thumb Code    14  dunder.o(i.__mathlib_dbl_underflow)
+    delay_init                               0x000039a1   Thumb Code    38  delay.o(i.delay_init)
+    delay_ms                                 0x000039cd   Thumb Code    68  delay.o(i.delay_ms)
+    delay_us                                 0x00003a19   Thumb Code    72  delay.o(i.delay_us)
+    fmaxf                                    0x00003a65   Thumb Code    38  fmaxf.o(i.fmaxf)
+    fminf                                    0x00003a8b   Thumb Code    38  fminf.o(i.fminf)
+    getSideKeyClickAndHoldEvent              0x00003ab1   Thumb Code     6  sidekey.o(i.getSideKeyClickAndHoldEvent)
+    getSideKeyDoubleClickAndHoldEvent        0x00003abd   Thumb Code     6  sidekey.o(i.getSideKeyDoubleClickAndHoldEvent)
+    getSideKeyHoldEvent                      0x00003ac9   Thumb Code     6  sidekey.o(i.getSideKeyHoldEvent)
+    getSideKeyLongPressEvent                 0x00003ad5   Thumb Code    20  sidekey.o(i.getSideKeyLongPressEvent)
+    getSideKeyShortPressCount                0x00003aed   Thumb Code    36  sidekey.o(i.getSideKeyShortPressCount)
+    getSideKeyTripleClickAndHoldEvent        0x00003b15   Thumb Code     6  sidekey.o(i.getSideKeyTripleClickAndHoldEvent)
+    iroundf                                  0x00003b21   Thumb Code    40  lineartabop.o(i.iroundf)
+    log                                      0x00003b51   Thumb Code   790  log.o(i.log)
+    main                                     0x00003ea5   Thumb Code   116  main.o(i.main)
+    pow                                      0x00003f21   Thumb Code  2548  pow.o(i.pow)
+    sqrt                                     0x0000491d   Thumb Code    66  sqrt.o(i.sqrt)
+    __aeabi_cdcmpeq                          0x00004965   Thumb Code     0  deqf.o(x$fpl$deqf)
+    _dcmpeq                                  0x00004965   Thumb Code    94  deqf.o(x$fpl$deqf)
+    __aeabi_cdrcmple                         0x000049c9   Thumb Code     0  drlef.o(x$fpl$drleqf)
+    _drcmple                                 0x000049c9   Thumb Code   100  drlef.o(x$fpl$drleqf)
+    __aeabi_fadd                             0x00004a31   Thumb Code     0  faddsub.o(x$fpl$fadd)
+    _fadd                                    0x00004a31   Thumb Code   134  faddsub.o(x$fpl$fadd)
+    __aeabi_fmul                             0x00004abd   Thumb Code     0  fmul.o(x$fpl$fmul)
+    _fmul                                    0x00004abd   Thumb Code   172  fmul.o(x$fpl$fmul)
+    __aeabi_cfrcmple                         0x00004b6d   Thumb Code     0  frlef.o(x$fpl$frleqf)
+    _frcmple                                 0x00004b6d   Thumb Code    84  frlef.o(x$fpl$frleqf)
+    __aeabi_frsub                            0x00004bc5   Thumb Code     0  faddsub.o(x$fpl$frsb)
+    _frsb                                    0x00004bc5   Thumb Code    24  faddsub.o(x$fpl$frsb)
+    __aeabi_fsub                             0x00004bdd   Thumb Code     0  faddsub.o(x$fpl$fsub)
+    _fsub                                    0x00004bdd   Thumb Code   204  faddsub.o(x$fpl$fsub)
+    CycleModeRatio                           0x00004cac   Data          20  modelogic.o(.constdata)
+    __I$use$fp                               0x00004cac   Number         0  usenofp.o(x$fpl$usenofp)
+    __mathlib_zero                           0x00004e40   Data           8  qnan.o(.constdata)
+    Region$$Table$$Base                      0x00004f00   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x00004f20   Number         0  anon$$obj.o(Region$$Table)
     SensorRefreshFlag                        0x20000000   Data           1  main.o(.data)
     EnteredMainApp                           0x20000001   Data           1  main.o(.data)
     DelaySeconds                             0x20000008   Data           1  delay.o(.data)
@@ -1881,9 +1882,9 @@ Memory Map of the image
 
   Image Entry point : 0x0000017d
 
-  Load Region LR_IROM1 (Base: 0x00000000, Size: 0x00004ff4, Max: 0x0001fe00, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x00000000, Size: 0x00005004, Max: 0x0001fe00, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x00004f10, Max: 0x0001fe00, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x00004f20, Max: 0x0001fe00, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -1987,154 +1988,153 @@ Memory Map of the image
     0x00001970   0x00001970   0x0000002c   Code   RO         1324    i.AFIO_EXTISourceConfig  ht32f5xxxx_gpio.o
     0x0000199c   0x0000199c   0x000000e4   Code   RO         1325    i.AFIO_GPxConfig    ht32f5xxxx_gpio.o
     0x00001a80   0x00001a80   0x00000028   Code   RO         3678    i.BatteryAlertResetDetect  battmonitor.o
-    0x00001aa8   0x00001aa8   0x000000e4   Code   RO         3679    i.BatteryMonitorHandler  battmonitor.o
-    0x00001b8c   0x00001b8c   0x00000014   Code   RO          764    i.CKCU_GetClockReadyStatus  ht32f5xxxx_ckcu.o
-    0x00001ba0   0x00001ba0   0x00000018   Code   RO          774    i.CKCU_HSICmd       ht32f5xxxx_ckcu.o
-    0x00001bb8   0x00001bb8   0x00000028   Code   RO          783    i.CKCU_PeripClockConfig  ht32f5xxxx_ckcu.o
-    0x00001be0   0x00001be0   0x0000001c   Code   RO          784    i.CKCU_SetADCnPrescaler  ht32f5xxxx_ckcu.o
-    0x00001bfc   0x00001bfc   0x00000010   Code   RO         1044    i.CRC_DeInit        ht32f5xxxx_crc.o
-    0x00001c0c   0x00001c0c   0x00000198   Code   RO         3709    i.CalculateActualTemp  tempcontrol.o
-    0x00001da4   0x00001da4   0x000000b4   Code   RO         3503    i.CheckForFlashLock  flashprot.o
-    0x00001e58   0x00001e58   0x0000012c   Code   RO         3529    i.ControlMainLEDHandler  modelogic.o
-    0x00001f84   0x00001f84   0x0000001c   Code   RO         3644    i.DeepSleepTimerCallBack  deepsleep.o
-    0x00001fa0   0x00001fa0   0x0000003c   Code   RO          337    i.DisableHBTimer    mcubeattimer.o
-    0x00001fdc   0x00001fdc   0x000000d4   Code   RO         3680    i.DisplayBatteryVoltage  battmonitor.o
-    0x000020b0   0x000020b0   0x000001c4   Code   RO         3710    i.DisplaySystemTemp  tempcontrol.o
-    0x00002274   0x00002274   0x00000058   Code   RO         3711    i.DisplayTemp       tempcontrol.o
-    0x000022cc   0x000022cc   0x00000018   Code   RO          196    i.EXTI4_15_IRQHandler  ht32f5xxxx_01_it.o
-    0x000022e4   0x000022e4   0x00000010   Code   RO         1135    i.EXTI_ClearEdgeFlag  ht32f5xxxx_exti.o
-    0x000022f4   0x000022f4   0x00000018   Code   RO         1138    i.EXTI_GetEdgeFlag  ht32f5xxxx_exti.o
-    0x0000230c   0x0000230c   0x00000020   Code   RO         1142    i.EXTI_Init         ht32f5xxxx_exti.o
-    0x0000232c   0x0000232c   0x0000001c   Code   RO         1143    i.EXTI_IntConfig    ht32f5xxxx_exti.o
-    0x00002348   0x00002348   0x00000064   Code   RO          338    i.EnableHBTimer     mcubeattimer.o
-    0x000023ac   0x000023ac   0x000000c0   Code   RO         3645    i.EnteredLowPowerMode  deepsleep.o
-    0x0000246c   0x0000246c   0x000000e0   Code   RO         3646    i.ExitLowPowerMode  deepsleep.o
-    0x0000254c   0x0000254c   0x0000001c   Code   RO         1229    i.FLASH_EraseOptionByte  ht32f5xxxx_flash.o
-    0x00002568   0x00002568   0x00000014   Code   RO         1230    i.FLASH_ErasePage   ht32f5xxxx_flash.o
-    0x0000257c   0x0000257c   0x00000034   Code   RO         1232    i.FLASH_GetOptionByteStatus  ht32f5xxxx_flash.o
-    0x000025b0   0x000025b0   0x0000006c   Code   RO         1236    i.FLASH_ProgramOptionByte  ht32f5xxxx_flash.o
-    0x0000261c   0x0000261c   0x00000018   Code   RO         1237    i.FLASH_ProgramWordData  ht32f5xxxx_flash.o
-    0x00002634   0x00002634   0x00000058   Code   RO         1240    i.FLASH_WaitForOperationEnd  ht32f5xxxx_flash.o
-    0x0000268c   0x0000268c   0x00000068   Code   RO         3712    i.FillThermalFilterBuf  tempcontrol.o
-    0x000026f4   0x000026f4   0x00000004   Code   RO         1326    i.GPIO_ClearOutBits  ht32f5xxxx_gpio.o
-    0x000026f8   0x000026f8   0x00000010   Code   RO         1328    i.GPIO_DirectionConfig  ht32f5xxxx_gpio.o
-    0x00002708   0x00002708   0x00000038   Code   RO         1329    i.GPIO_DisableDebugPort  ht32f5xxxx_gpio.o
-    0x00002740   0x00002740   0x00000038   Code   RO         1330    i.GPIO_DriveConfig  ht32f5xxxx_gpio.o
-    0x00002778   0x00002778   0x00000010   Code   RO         1332    i.GPIO_InputConfig  ht32f5xxxx_gpio.o
-    0x00002788   0x00002788   0x0000000a   Code   RO         1338    i.GPIO_ReadInBit    ht32f5xxxx_gpio.o
-    0x00002792   0x00002792   0x00000004   Code   RO         1342    i.GPIO_SetOutBits   ht32f5xxxx_gpio.o
-    0x00002796   0x00002796   0x00000002   PAD
-    0x00002798   0x00002798   0x00000048   Code   RO          197    i.GPTM0_IRQHandler  ht32f5xxxx_01_it.o
-    0x000027e0   0x000027e0   0x0000003c   Code   RO          198    i.GPTM1_IRQHandler  ht32f5xxxx_01_it.o
-    0x0000281c   0x0000281c   0x0000004c   Code   RO          199    i.HardFault_Handler  ht32f5xxxx_01_it.o
-    0x00002868   0x00002868   0x000000d0   Code   RO         3310    i.InternalADC_Init  adc.o
-    0x00002938   0x00002938   0x00000138   Code   RO         3351    i.LEDMgmt_CallBack  ledmgmt.o
-    0x00002a70   0x00002a70   0x0000004c   Code   RO         3352    i.LED_AddStrobe     ledmgmt.o
-    0x00002abc   0x00002abc   0x00000068   Code   RO         3353    i.LED_Init          ledmgmt.o
-    0x00002b24   0x00002b24   0x00000024   Code   RO         3354    i.LED_Reset         ledmgmt.o
-    0x00002b48   0x00002b48   0x000000b4   Code   RO         3530    i.LightLogicSetup   modelogic.o
-    0x00002bfc   0x00002bfc   0x00000304   Code   RO         3531    i.LightModeStateMachine  modelogic.o
-    0x00002f00   0x00002f00   0x00000032   Code   RO         1735    i.MCTM_CHBRKCTRConfig  ht32f5xxxx_mctm.o
-    0x00002f32   0x00002f32   0x00000012   Code   RO         1738    i.MCTM_CHMOECmd     ht32f5xxxx_mctm.o
-    0x00002f44   0x00002f44   0x0000007c   Code   RO         3504    i.MainProgramRegionCRC  flashprot.o
-    0x00002fc0   0x00002fc0   0x00000002   Code   RO          200    i.NMI_Handler       ht32f5xxxx_01_it.o
-    0x00002fc2   0x00002fc2   0x00000002   PAD
-    0x00002fc4   0x00002fc4   0x0000012c   Code   RO         3714    i.PIDStepdownCalc   tempcontrol.o
-    0x000030f0   0x000030f0   0x0000009c   Code   RO         3477    i.PWMTimerInit      pwmdim.o
-    0x0000318c   0x0000318c   0x00000020   Code   RO         1885    i.PWRCU_CheckReadyAccessed  ht32f5xxxx_pwrcu.o
-    0x000031ac   0x000031ac   0x00000002   Code   RO          201    i.PendSV_Handler    ht32f5xxxx_01_it.o
-    0x000031ae   0x000031ae   0x00000002   PAD
-    0x000031b0   0x000031b0   0x00000028   Code   RO         2048    i.RSTCU_PeripReset  ht32f5xxxx_rstcu.o
-    0x000031d8   0x000031d8   0x0000002c   Code   RO         2086    i.RTC_DeInit        ht32f5xxxx_rtc.o
-    0x00003204   0x00003204   0x0000003c   Code   RO         2095    i.RTC_LSILoadTrimData  ht32f5xxxx_rtc.o
-    0x00003240   0x00003240   0x000000bc   Code   RO         3532    i.RampAdjustHandler  modelogic.o
-    0x000032fc   0x000032fc   0x00000068   Code   RO         3533    i.ReverseModeCycleOpHandler  modelogic.o
-    0x00003364   0x00003364   0x00000002   Code   RO          202    i.SVC_Handler       ht32f5xxxx_01_it.o
-    0x00003366   0x00003366   0x00000002   PAD
-    0x00003368   0x00003368   0x00000018   Code   RO          482    i.SYSTICK_ClockSourceConfig  ht32_cm0plus_misc.o
-    0x00003380   0x00003380   0x00000024   Code   RO          483    i.SYSTICK_CounterCmd  ht32_cm0plus_misc.o
-    0x000033a4   0x000033a4   0x00000018   Code   RO          484    i.SYSTICK_IntConfig  ht32_cm0plus_misc.o
-    0x000033bc   0x000033bc   0x00000050   Code   RO         3478    i.SetPWMDuty        pwmdim.o
-    0x0000340c   0x0000340c   0x00000084   Code   RO         3400    i.SideKeyInit       sidekey.o
-    0x00003490   0x00003490   0x000000a4   Code   RO         3401    i.SideKey_Callback  sidekey.o
-    0x00003534   0x00003534   0x00000094   Code   RO         3402    i.SideKey_LogicHandler  sidekey.o
-    0x000035c8   0x000035c8   0x00000044   Code   RO         3403    i.SideKey_TIM_Callback  sidekey.o
-    0x0000360c   0x0000360c   0x00000014   Code   RO          203    i.SysTick_Handler   ht32f5xxxx_01_it.o
-    0x00003620   0x00003620   0x0000010c   Code   RO          370    i.SystemInit        system_ht32f5xxxx_01.o
-    0x0000372c   0x0000372c   0x0000000a   Code   RO         2477    i.TM_ClearFlag      ht32f5xxxx_tm.o
-    0x00003736   0x00003736   0x00000014   Code   RO         2480    i.TM_Cmd            ht32f5xxxx_tm.o
-    0x0000374a   0x0000374a   0x0000000a   Code   RO         2488    i.TM_GetFlagStatus  ht32f5xxxx_tm.o
-    0x00003754   0x00003754   0x00000010   Code   RO         2493    i.TM_IntConfig      ht32f5xxxx_tm.o
-    0x00003764   0x00003764   0x000000ac   Code   RO         2497    i.TM_OutputInit     ht32f5xxxx_tm.o
-    0x00003810   0x00003810   0x00000006   Code   RO         2506    i.TM_SetCounterReload  ht32f5xxxx_tm.o
-    0x00003816   0x00003816   0x00000002   PAD
-    0x00003818   0x00003818   0x00000040   Code   RO         2511    i.TM_TimeBaseInit   ht32f5xxxx_tm.o
-    0x00003858   0x00003858   0x0000002c   Code   RO         3862    i.__ARM_fpclassify  m_ps.l(fpclassify.o)
-    0x00003884   0x00003884   0x000000ac   Code   RO         3864    i.__kernel_poly     m_ps.l(poly.o)
-    0x00003930   0x00003930   0x00000014   Code   RO         3848    i.__mathlib_dbl_divzero  m_ps.l(dunder.o)
-    0x00003944   0x00003944   0x0000000a   Code   RO         3849    i.__mathlib_dbl_infnan  m_ps.l(dunder.o)
-    0x0000394e   0x0000394e   0x00000008   Code   RO         3850    i.__mathlib_dbl_infnan2  m_ps.l(dunder.o)
-    0x00003956   0x00003956   0x00000010   Code   RO         3851    i.__mathlib_dbl_invalid  m_ps.l(dunder.o)
-    0x00003966   0x00003966   0x00000002   PAD
-    0x00003968   0x00003968   0x00000014   Code   RO         3852    i.__mathlib_dbl_overflow  m_ps.l(dunder.o)
-    0x0000397c   0x0000397c   0x00000014   Code   RO         3854    i.__mathlib_dbl_underflow  m_ps.l(dunder.o)
-    0x00003990   0x00003990   0x0000002c   Code   RO          266    i.delay_init        delay.o
-    0x000039bc   0x000039bc   0x0000004c   Code   RO          267    i.delay_ms          delay.o
-    0x00003a08   0x00003a08   0x0000004c   Code   RO          268    i.delay_us          delay.o
-    0x00003a54   0x00003a54   0x00000026   Code   RO         3824    i.fmaxf             m_ps.l(fmaxf.o)
-    0x00003a7a   0x00003a7a   0x00000026   Code   RO         3826    i.fminf             m_ps.l(fminf.o)
-    0x00003aa0   0x00003aa0   0x0000000c   Code   RO         3404    i.getSideKeyClickAndHoldEvent  sidekey.o
-    0x00003aac   0x00003aac   0x0000000c   Code   RO         3405    i.getSideKeyDoubleClickAndHoldEvent  sidekey.o
-    0x00003ab8   0x00003ab8   0x0000000c   Code   RO         3406    i.getSideKeyHoldEvent  sidekey.o
-    0x00003ac4   0x00003ac4   0x00000018   Code   RO         3407    i.getSideKeyLongPressEvent  sidekey.o
-    0x00003adc   0x00003adc   0x00000028   Code   RO         3408    i.getSideKeyShortPressCount  sidekey.o
-    0x00003b04   0x00003b04   0x0000000c   Code   RO         3409    i.getSideKeyTripleClickAndHoldEvent  sidekey.o
-    0x00003b10   0x00003b10   0x00000030   Code   RO          306    i.iroundf           lineartabop.o
-    0x00003b40   0x00003b40   0x00000354   Code   RO         3805    i.log               m_ps.l(log.o)
-    0x00003e94   0x00003e94   0x0000007c   Code   RO            3    i.main              main.o
-    0x00003f10   0x00003f10   0x000009fc   Code   RO         3815    i.pow               m_ps.l(pow.o)
-    0x0000490c   0x0000490c   0x00000048   Code   RO         3868    i.sqrt              m_ps.l(sqrt.o)
-    0x00004954   0x00004954   0x00000064   Code   RO         3835    x$fpl$deqf          fz_ps.l(deqf.o)
-    0x000049b8   0x000049b8   0x00000068   Code   RO         3839    x$fpl$drleqf        fz_ps.l(drlef.o)
-    0x00004a20   0x00004a20   0x0000008c   Code   RO         3779    x$fpl$fadd          fz_ps.l(faddsub.o)
-    0x00004aac   0x00004aac   0x00000054   Code   RO         3796    x$fpl$fleqf         fz_ps.l(flef.o)
-    0x00004b00   0x00004b00   0x000000b0   Code   RO         3798    x$fpl$fmul          fz_ps.l(fmul.o)
-    0x00004bb0   0x00004bb0   0x00000018   Code   RO         3780    x$fpl$frsb          fz_ps.l(faddsub.o)
-    0x00004bc8   0x00004bc8   0x000000d0   Code   RO         3781    x$fpl$fsub          fz_ps.l(faddsub.o)
-    0x00004c98   0x00004c98   0x00000000   Code   RO         3847    x$fpl$usenofp       fz_ps.l(usenofp.o)
-    0x00004c98   0x00004c98   0x00000014   Data   RO         3534    .constdata          modelogic.o
-    0x00004cac   0x00004cac   0x00000080   Data   RO         3773    .constdata          fz_ps.l(ddiv.o)
-    0x00004d2c   0x00004d2c   0x00000040   Data   RO         3786    .constdata          fz_ps.l(fdiv.o)
-    0x00004d6c   0x00004d6c   0x00000004   PAD
-    0x00004d70   0x00004d70   0x00000038   Data   RO         3806    .constdata          m_ps.l(log.o)
-    0x00004da8   0x00004da8   0x00000088   Data   RO         3816    .constdata          m_ps.l(pow.o)
-    0x00004e30   0x00004e30   0x00000008   Data   RO         3866    .constdata          m_ps.l(qnan.o)
-    0x00004e38   0x00004e38   0x000000b5   Data   RO         3356    .conststring        ledmgmt.o
-    0x00004eed   0x00004eed   0x00000003   PAD
-    0x00004ef0   0x00004ef0   0x00000020   Data   RO         4054    Region$$Table       anon$$obj.o
+    0x00001aa8   0x00001aa8   0x000000f4   Code   RO         3679    i.BatteryMonitorHandler  battmonitor.o
+    0x00001b9c   0x00001b9c   0x00000014   Code   RO          764    i.CKCU_GetClockReadyStatus  ht32f5xxxx_ckcu.o
+    0x00001bb0   0x00001bb0   0x00000018   Code   RO          774    i.CKCU_HSICmd       ht32f5xxxx_ckcu.o
+    0x00001bc8   0x00001bc8   0x00000028   Code   RO          783    i.CKCU_PeripClockConfig  ht32f5xxxx_ckcu.o
+    0x00001bf0   0x00001bf0   0x0000001c   Code   RO          784    i.CKCU_SetADCnPrescaler  ht32f5xxxx_ckcu.o
+    0x00001c0c   0x00001c0c   0x00000010   Code   RO         1044    i.CRC_DeInit        ht32f5xxxx_crc.o
+    0x00001c1c   0x00001c1c   0x00000198   Code   RO         3709    i.CalculateActualTemp  tempcontrol.o
+    0x00001db4   0x00001db4   0x000000b4   Code   RO         3503    i.CheckForFlashLock  flashprot.o
+    0x00001e68   0x00001e68   0x0000012c   Code   RO         3529    i.ControlMainLEDHandler  modelogic.o
+    0x00001f94   0x00001f94   0x0000001c   Code   RO         3644    i.DeepSleepTimerCallBack  deepsleep.o
+    0x00001fb0   0x00001fb0   0x0000003c   Code   RO          337    i.DisableHBTimer    mcubeattimer.o
+    0x00001fec   0x00001fec   0x000000d4   Code   RO         3680    i.DisplayBatteryVoltage  battmonitor.o
+    0x000020c0   0x000020c0   0x000001c4   Code   RO         3710    i.DisplaySystemTemp  tempcontrol.o
+    0x00002284   0x00002284   0x00000058   Code   RO         3711    i.DisplayTemp       tempcontrol.o
+    0x000022dc   0x000022dc   0x00000018   Code   RO          196    i.EXTI4_15_IRQHandler  ht32f5xxxx_01_it.o
+    0x000022f4   0x000022f4   0x00000010   Code   RO         1135    i.EXTI_ClearEdgeFlag  ht32f5xxxx_exti.o
+    0x00002304   0x00002304   0x00000018   Code   RO         1138    i.EXTI_GetEdgeFlag  ht32f5xxxx_exti.o
+    0x0000231c   0x0000231c   0x00000020   Code   RO         1142    i.EXTI_Init         ht32f5xxxx_exti.o
+    0x0000233c   0x0000233c   0x0000001c   Code   RO         1143    i.EXTI_IntConfig    ht32f5xxxx_exti.o
+    0x00002358   0x00002358   0x00000064   Code   RO          338    i.EnableHBTimer     mcubeattimer.o
+    0x000023bc   0x000023bc   0x000000c0   Code   RO         3645    i.EnteredLowPowerMode  deepsleep.o
+    0x0000247c   0x0000247c   0x000000e0   Code   RO         3646    i.ExitLowPowerMode  deepsleep.o
+    0x0000255c   0x0000255c   0x0000001c   Code   RO         1229    i.FLASH_EraseOptionByte  ht32f5xxxx_flash.o
+    0x00002578   0x00002578   0x00000014   Code   RO         1230    i.FLASH_ErasePage   ht32f5xxxx_flash.o
+    0x0000258c   0x0000258c   0x00000034   Code   RO         1232    i.FLASH_GetOptionByteStatus  ht32f5xxxx_flash.o
+    0x000025c0   0x000025c0   0x0000006c   Code   RO         1236    i.FLASH_ProgramOptionByte  ht32f5xxxx_flash.o
+    0x0000262c   0x0000262c   0x00000018   Code   RO         1237    i.FLASH_ProgramWordData  ht32f5xxxx_flash.o
+    0x00002644   0x00002644   0x00000058   Code   RO         1240    i.FLASH_WaitForOperationEnd  ht32f5xxxx_flash.o
+    0x0000269c   0x0000269c   0x00000068   Code   RO         3712    i.FillThermalFilterBuf  tempcontrol.o
+    0x00002704   0x00002704   0x00000004   Code   RO         1326    i.GPIO_ClearOutBits  ht32f5xxxx_gpio.o
+    0x00002708   0x00002708   0x00000010   Code   RO         1328    i.GPIO_DirectionConfig  ht32f5xxxx_gpio.o
+    0x00002718   0x00002718   0x00000038   Code   RO         1329    i.GPIO_DisableDebugPort  ht32f5xxxx_gpio.o
+    0x00002750   0x00002750   0x00000038   Code   RO         1330    i.GPIO_DriveConfig  ht32f5xxxx_gpio.o
+    0x00002788   0x00002788   0x00000010   Code   RO         1332    i.GPIO_InputConfig  ht32f5xxxx_gpio.o
+    0x00002798   0x00002798   0x0000000a   Code   RO         1338    i.GPIO_ReadInBit    ht32f5xxxx_gpio.o
+    0x000027a2   0x000027a2   0x00000004   Code   RO         1342    i.GPIO_SetOutBits   ht32f5xxxx_gpio.o
+    0x000027a6   0x000027a6   0x00000002   PAD
+    0x000027a8   0x000027a8   0x00000048   Code   RO          197    i.GPTM0_IRQHandler  ht32f5xxxx_01_it.o
+    0x000027f0   0x000027f0   0x0000003c   Code   RO          198    i.GPTM1_IRQHandler  ht32f5xxxx_01_it.o
+    0x0000282c   0x0000282c   0x0000004c   Code   RO          199    i.HardFault_Handler  ht32f5xxxx_01_it.o
+    0x00002878   0x00002878   0x000000d0   Code   RO         3310    i.InternalADC_Init  adc.o
+    0x00002948   0x00002948   0x00000138   Code   RO         3351    i.LEDMgmt_CallBack  ledmgmt.o
+    0x00002a80   0x00002a80   0x0000004c   Code   RO         3352    i.LED_AddStrobe     ledmgmt.o
+    0x00002acc   0x00002acc   0x00000068   Code   RO         3353    i.LED_Init          ledmgmt.o
+    0x00002b34   0x00002b34   0x00000024   Code   RO         3354    i.LED_Reset         ledmgmt.o
+    0x00002b58   0x00002b58   0x000000b4   Code   RO         3530    i.LightLogicSetup   modelogic.o
+    0x00002c0c   0x00002c0c   0x00000304   Code   RO         3531    i.LightModeStateMachine  modelogic.o
+    0x00002f10   0x00002f10   0x00000032   Code   RO         1735    i.MCTM_CHBRKCTRConfig  ht32f5xxxx_mctm.o
+    0x00002f42   0x00002f42   0x00000012   Code   RO         1738    i.MCTM_CHMOECmd     ht32f5xxxx_mctm.o
+    0x00002f54   0x00002f54   0x0000007c   Code   RO         3504    i.MainProgramRegionCRC  flashprot.o
+    0x00002fd0   0x00002fd0   0x00000002   Code   RO          200    i.NMI_Handler       ht32f5xxxx_01_it.o
+    0x00002fd2   0x00002fd2   0x00000002   PAD
+    0x00002fd4   0x00002fd4   0x0000012c   Code   RO         3714    i.PIDStepdownCalc   tempcontrol.o
+    0x00003100   0x00003100   0x0000009c   Code   RO         3477    i.PWMTimerInit      pwmdim.o
+    0x0000319c   0x0000319c   0x00000020   Code   RO         1885    i.PWRCU_CheckReadyAccessed  ht32f5xxxx_pwrcu.o
+    0x000031bc   0x000031bc   0x00000002   Code   RO          201    i.PendSV_Handler    ht32f5xxxx_01_it.o
+    0x000031be   0x000031be   0x00000002   PAD
+    0x000031c0   0x000031c0   0x00000028   Code   RO         2048    i.RSTCU_PeripReset  ht32f5xxxx_rstcu.o
+    0x000031e8   0x000031e8   0x0000002c   Code   RO         2086    i.RTC_DeInit        ht32f5xxxx_rtc.o
+    0x00003214   0x00003214   0x0000003c   Code   RO         2095    i.RTC_LSILoadTrimData  ht32f5xxxx_rtc.o
+    0x00003250   0x00003250   0x000000bc   Code   RO         3532    i.RampAdjustHandler  modelogic.o
+    0x0000330c   0x0000330c   0x00000068   Code   RO         3533    i.ReverseModeCycleOpHandler  modelogic.o
+    0x00003374   0x00003374   0x00000002   Code   RO          202    i.SVC_Handler       ht32f5xxxx_01_it.o
+    0x00003376   0x00003376   0x00000002   PAD
+    0x00003378   0x00003378   0x00000018   Code   RO          482    i.SYSTICK_ClockSourceConfig  ht32_cm0plus_misc.o
+    0x00003390   0x00003390   0x00000024   Code   RO          483    i.SYSTICK_CounterCmd  ht32_cm0plus_misc.o
+    0x000033b4   0x000033b4   0x00000018   Code   RO          484    i.SYSTICK_IntConfig  ht32_cm0plus_misc.o
+    0x000033cc   0x000033cc   0x00000050   Code   RO         3478    i.SetPWMDuty        pwmdim.o
+    0x0000341c   0x0000341c   0x00000084   Code   RO         3400    i.SideKeyInit       sidekey.o
+    0x000034a0   0x000034a0   0x000000a4   Code   RO         3401    i.SideKey_Callback  sidekey.o
+    0x00003544   0x00003544   0x00000094   Code   RO         3402    i.SideKey_LogicHandler  sidekey.o
+    0x000035d8   0x000035d8   0x00000044   Code   RO         3403    i.SideKey_TIM_Callback  sidekey.o
+    0x0000361c   0x0000361c   0x00000014   Code   RO          203    i.SysTick_Handler   ht32f5xxxx_01_it.o
+    0x00003630   0x00003630   0x0000010c   Code   RO          370    i.SystemInit        system_ht32f5xxxx_01.o
+    0x0000373c   0x0000373c   0x0000000a   Code   RO         2477    i.TM_ClearFlag      ht32f5xxxx_tm.o
+    0x00003746   0x00003746   0x00000014   Code   RO         2480    i.TM_Cmd            ht32f5xxxx_tm.o
+    0x0000375a   0x0000375a   0x0000000a   Code   RO         2488    i.TM_GetFlagStatus  ht32f5xxxx_tm.o
+    0x00003764   0x00003764   0x00000010   Code   RO         2493    i.TM_IntConfig      ht32f5xxxx_tm.o
+    0x00003774   0x00003774   0x000000ac   Code   RO         2497    i.TM_OutputInit     ht32f5xxxx_tm.o
+    0x00003820   0x00003820   0x00000006   Code   RO         2506    i.TM_SetCounterReload  ht32f5xxxx_tm.o
+    0x00003826   0x00003826   0x00000002   PAD
+    0x00003828   0x00003828   0x00000040   Code   RO         2511    i.TM_TimeBaseInit   ht32f5xxxx_tm.o
+    0x00003868   0x00003868   0x0000002c   Code   RO         3862    i.__ARM_fpclassify  m_ps.l(fpclassify.o)
+    0x00003894   0x00003894   0x000000ac   Code   RO         3864    i.__kernel_poly     m_ps.l(poly.o)
+    0x00003940   0x00003940   0x00000014   Code   RO         3848    i.__mathlib_dbl_divzero  m_ps.l(dunder.o)
+    0x00003954   0x00003954   0x0000000a   Code   RO         3849    i.__mathlib_dbl_infnan  m_ps.l(dunder.o)
+    0x0000395e   0x0000395e   0x00000008   Code   RO         3850    i.__mathlib_dbl_infnan2  m_ps.l(dunder.o)
+    0x00003966   0x00003966   0x00000010   Code   RO         3851    i.__mathlib_dbl_invalid  m_ps.l(dunder.o)
+    0x00003976   0x00003976   0x00000002   PAD
+    0x00003978   0x00003978   0x00000014   Code   RO         3852    i.__mathlib_dbl_overflow  m_ps.l(dunder.o)
+    0x0000398c   0x0000398c   0x00000014   Code   RO         3854    i.__mathlib_dbl_underflow  m_ps.l(dunder.o)
+    0x000039a0   0x000039a0   0x0000002c   Code   RO          266    i.delay_init        delay.o
+    0x000039cc   0x000039cc   0x0000004c   Code   RO          267    i.delay_ms          delay.o
+    0x00003a18   0x00003a18   0x0000004c   Code   RO          268    i.delay_us          delay.o
+    0x00003a64   0x00003a64   0x00000026   Code   RO         3824    i.fmaxf             m_ps.l(fmaxf.o)
+    0x00003a8a   0x00003a8a   0x00000026   Code   RO         3826    i.fminf             m_ps.l(fminf.o)
+    0x00003ab0   0x00003ab0   0x0000000c   Code   RO         3404    i.getSideKeyClickAndHoldEvent  sidekey.o
+    0x00003abc   0x00003abc   0x0000000c   Code   RO         3405    i.getSideKeyDoubleClickAndHoldEvent  sidekey.o
+    0x00003ac8   0x00003ac8   0x0000000c   Code   RO         3406    i.getSideKeyHoldEvent  sidekey.o
+    0x00003ad4   0x00003ad4   0x00000018   Code   RO         3407    i.getSideKeyLongPressEvent  sidekey.o
+    0x00003aec   0x00003aec   0x00000028   Code   RO         3408    i.getSideKeyShortPressCount  sidekey.o
+    0x00003b14   0x00003b14   0x0000000c   Code   RO         3409    i.getSideKeyTripleClickAndHoldEvent  sidekey.o
+    0x00003b20   0x00003b20   0x00000030   Code   RO          306    i.iroundf           lineartabop.o
+    0x00003b50   0x00003b50   0x00000354   Code   RO         3805    i.log               m_ps.l(log.o)
+    0x00003ea4   0x00003ea4   0x0000007c   Code   RO            3    i.main              main.o
+    0x00003f20   0x00003f20   0x000009fc   Code   RO         3815    i.pow               m_ps.l(pow.o)
+    0x0000491c   0x0000491c   0x00000048   Code   RO         3868    i.sqrt              m_ps.l(sqrt.o)
+    0x00004964   0x00004964   0x00000064   Code   RO         3835    x$fpl$deqf          fz_ps.l(deqf.o)
+    0x000049c8   0x000049c8   0x00000068   Code   RO         3839    x$fpl$drleqf        fz_ps.l(drlef.o)
+    0x00004a30   0x00004a30   0x0000008c   Code   RO         3779    x$fpl$fadd          fz_ps.l(faddsub.o)
+    0x00004abc   0x00004abc   0x000000b0   Code   RO         3798    x$fpl$fmul          fz_ps.l(fmul.o)
+    0x00004b6c   0x00004b6c   0x00000058   Code   RO         3800    x$fpl$frleqf        fz_ps.l(frlef.o)
+    0x00004bc4   0x00004bc4   0x00000018   Code   RO         3780    x$fpl$frsb          fz_ps.l(faddsub.o)
+    0x00004bdc   0x00004bdc   0x000000d0   Code   RO         3781    x$fpl$fsub          fz_ps.l(faddsub.o)
+    0x00004cac   0x00004cac   0x00000000   Code   RO         3847    x$fpl$usenofp       fz_ps.l(usenofp.o)
+    0x00004cac   0x00004cac   0x00000014   Data   RO         3534    .constdata          modelogic.o
+    0x00004cc0   0x00004cc0   0x00000080   Data   RO         3773    .constdata          fz_ps.l(ddiv.o)
+    0x00004d40   0x00004d40   0x00000040   Data   RO         3786    .constdata          fz_ps.l(fdiv.o)
+    0x00004d80   0x00004d80   0x00000038   Data   RO         3806    .constdata          m_ps.l(log.o)
+    0x00004db8   0x00004db8   0x00000088   Data   RO         3816    .constdata          m_ps.l(pow.o)
+    0x00004e40   0x00004e40   0x00000008   Data   RO         3866    .constdata          m_ps.l(qnan.o)
+    0x00004e48   0x00004e48   0x000000b5   Data   RO         3356    .conststring        ledmgmt.o
+    0x00004efd   0x00004efd   0x00000003   PAD
+    0x00004f00   0x00004f00   0x00000020   Data   RO         4054    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x00004f10, Size: 0x00000f68, Max: 0x00004000, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x00004f20, Size: 0x00000f68, Max: 0x00004000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x00004f10   0x00000002   Data   RW            4    .data               main.o
-    0x20000002   0x00004f12   0x00000002   PAD
-    0x20000004   0x00004f14   0x00000004   Data   RW          204    .data               ht32f5xxxx_01_it.o
-    0x20000008   0x00004f18   0x00000001   Data   RW          269    .data               delay.o
-    0x20000009   0x00004f19   0x00000001   Data   RW         3312    .data               adc.o
-    0x2000000a   0x00004f1a   0x00000002   PAD
-    0x2000000c   0x00004f1c   0x00000098   Data   RW         3357    .data               ledmgmt.o
-    0x200000a4   0x00004fb4   0x0000000c   Data   RW         3410    .data               sidekey.o
-    0x200000b0   0x00004fc0   0x00000018   Data   RW         3535    .data               modelogic.o
-    0x200000c8   0x00004fd8   0x00000008   Data   RW         3647    .data               deepsleep.o
-    0x200000d0   0x00004fe0   0x00000001   Data   RW         3681    .data               battmonitor.o
-    0x200000d1   0x00004fe1   0x00000003   PAD
-    0x200000d4   0x00004fe4   0x00000010   Data   RW         3716    .data               tempcontrol.o
+    0x20000000   0x00004f20   0x00000002   Data   RW            4    .data               main.o
+    0x20000002   0x00004f22   0x00000002   PAD
+    0x20000004   0x00004f24   0x00000004   Data   RW          204    .data               ht32f5xxxx_01_it.o
+    0x20000008   0x00004f28   0x00000001   Data   RW          269    .data               delay.o
+    0x20000009   0x00004f29   0x00000001   Data   RW         3312    .data               adc.o
+    0x2000000a   0x00004f2a   0x00000002   PAD
+    0x2000000c   0x00004f2c   0x00000098   Data   RW         3357    .data               ledmgmt.o
+    0x200000a4   0x00004fc4   0x0000000c   Data   RW         3410    .data               sidekey.o
+    0x200000b0   0x00004fd0   0x00000018   Data   RW         3535    .data               modelogic.o
+    0x200000c8   0x00004fe8   0x00000008   Data   RW         3647    .data               deepsleep.o
+    0x200000d0   0x00004ff0   0x00000001   Data   RW         3681    .data               battmonitor.o
+    0x200000d1   0x00004ff1   0x00000003   PAD
+    0x200000d4   0x00004ff4   0x00000010   Data   RW         3716    .data               tempcontrol.o
     0x200000e4        -       0x00000040   Zero   RW         3355    .bss                ledmgmt.o
     0x20000124        -       0x000001e0   Zero   RW         3715    .bss                tempcontrol.o
     0x20000304        -       0x00000060   Zero   RW         3908    .bss                c_p.l(libspace.o)
-    0x20000364   0x00004ff4   0x00000004   PAD
+    0x20000364   0x00005004   0x00000004   PAD
     0x20000368        -       0x00000000   Zero   RW          469    HEAP                startup_ht32f5xxxx_01.o
     0x20000368        -       0x00000c00   Zero   RW          468    STACK               startup_ht32f5xxxx_01.o
 
@@ -2147,7 +2147,7 @@ Image component sizes
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
        836         78          0          1          0      10853   adc.o
-       480        106          0          1          0       2127   battmonitor.o
+       496        108          0          1          0       2127   battmonitor.o
        444         46          0          8          0       2098   deepsleep.o
        196         18          0          1          0       1618   delay.o
        304         32          0          0          0       1815   flashprot.o
@@ -2176,7 +2176,7 @@ Image component sizes
       1352        244          0         16        480       4955   tempcontrol.o
 
     ----------------------------------------------------------------------
-      9590       1372        236        228       3616     205029   Object Totals
+      9606       1374        236        228       3616     205029   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         10          0          3          7          0          0   (incl. Padding)
 
@@ -2229,9 +2229,9 @@ Image component sizes
         76          0          0          0          0         68   ffixi.o
         48          0          0          0          0         60   ffixui.o
         94          0          0          0          0         92   fflti.o
-        84          4          0          0          0         76   flef.o
        176          4          0          0          0         80   fmul.o
         16          6          0          0          0         68   fnan2.o
+        88          4          0          0          0         76   frlef.o
         68          4          0          0          0         68   fscalbn.o
         94          0          0          0          0         68   retnan.o
          0          0          0          0          0          0   usenofp.o
@@ -2246,19 +2246,19 @@ Image component sizes
         72          6          0          0          0         76   sqrt.o
 
     ----------------------------------------------------------------------
-     10018        466        396          0        100       4348   Library Totals
-        14          0          4          0          4          0   (incl. Padding)
+     10022        466        392          0        100       4348   Library Totals
+        14          0          0          0          4          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Library Name
 
        884         20          0          0         96        976   c_p.l
-      5254        164        192          0          0       2232   fz_ps.l
+      5258        164        192          0          0       2232   fz_ps.l
       3866        282        200          0          0       1140   m_ps.l
 
     ----------------------------------------------------------------------
-     10018        466        396          0        100       4348   Library Totals
+     10022        466        392          0        100       4348   Library Totals
 
     ----------------------------------------------------------------------
 
@@ -2267,15 +2267,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     19608       1838        632        228       3716     202833   Grand Totals
-     19608       1838        632        228       3716     202833   ELF Image Totals
-     19608       1838        632        228          0          0   ROM Totals
+     19628       1840        628        228       3716     202833   Grand Totals
+     19628       1840        628        228       3716     202833   ELF Image Totals
+     19628       1840        628        228          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                20240 (  19.77kB)
+    Total RO  Size (Code + RO Data)                20256 (  19.78kB)
     Total RW  Size (RW Data + ZI Data)              3944 (   3.85kB)
-    Total ROM Size (Code + RO Data + RW Data)      20468 (  19.99kB)
+    Total ROM Size (Code + RO Data + RW Data)      20484 (  20.00kB)
 
 ==============================================================================
 

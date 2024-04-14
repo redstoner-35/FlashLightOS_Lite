@@ -27,7 +27,20 @@ Project File Date:  04/14/2024
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'FlashLightOS-Lite'
-".\Objects\FlashLightOS-Lite.axf" - 0 Error(s), 0 Warning(s).
+compiling BattMonitor.c...
+compiling TempControl.c...
+compiling SideKey.c...
+compiling main.c...
+User\main.c(62): warning:  #111-D: statement is unreachable
+   return 0;
+User\main.c: 1 warning, 0 errors
+compiling DeepSleep.c...
+compiling ADC.c...
+compiling ModeLogic.c...
+linking...
+Program Size: Code=19608 RO-data=632 RW-data=228 ZI-data=3716  
+FromELF: creating hex file...
+".\Objects\FlashLightOS-Lite.axf" - 0 Error(s), 1 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -41,7 +54,7 @@ Package Vendor: Holtek
   C:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.44\ARM\INC\Holtek\HT32F5xxxx
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:00
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

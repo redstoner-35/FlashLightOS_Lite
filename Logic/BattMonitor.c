@@ -42,8 +42,13 @@ void BatteryMonitorHandler(void)
   ADCO.BatteryVoltage=0;
   ADC_GetResult(&ADCO);
   //判断状态
+  #ifndef UsingLiFePO4Batt
 	if(ADCO.BatteryVoltage<=(2.7*BatteryCellCount))BattStatus=Batt_LVFault;
-	else if(ADCO.BatteryVoltage<=(3.01*BatteryCellCount))BattStatus=Batt_LVAlert;
+	else if(ADCO.BatteryVoltage<=(3.01*BatteryCellCount))BattStatus=Batt_LVAlert;					
+	#else	
+	if(ADCO.BatteryVoltage<=(2.15*BatteryCellCount))BattStatus=Batt_LVFault;
+	else if(ADCO.BatteryVoltage<=(2.6*BatteryCellCount))BattStatus=Batt_LVAlert;	
+	#endif		
 	//控制侧按LED的电量显示
 	if(LightMode.LightGroup==Mode_Turbo||LightMode.LightGroup==Mode_Strobe)
 	   {

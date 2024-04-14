@@ -74,7 +74,7 @@ void SideKey_Callback(void)
   unsigned char time;
 	//处理深度休眠唤醒和定时器数值重置的部分
 	if(LightMode.LightGroup==Mode_Sleep)ExitLowPowerMode(); //睡眠模式
-	DeepSleepTimer=100;//复位定时器
+	DeepSleepTimer=DeepSleepTimeOut*8;//复位定时器
 	//给内部处理变量赋值
 	delay_ms(13); //软件消抖
 	#ifdef SideKeyPolar_positive	

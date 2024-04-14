@@ -8,7 +8,7 @@
 extern volatile LightStateDef LightMode; //状态机状态
 
 //低功耗睡眠计时器
-int DeepSleepTimer=100; //深度睡眠定时器
+int DeepSleepTimer=DeepSleepTimeOut*8; //深度睡眠定时器
 bool DeepSleepTimerFlag=false;
 
 void DeepSleepTimerCallBack(void)

@@ -50,7 +50,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599EDB3E)
 I (.\User\inc\LEDMgmt.h)(0x6581303B)
 I (.\User\inc\PWMDIM.h)(0x6581A892)
 I (.\User\inc\ADC.h)(0x661B9CBE)
-I (.\Config\FirmwarePref.h)(0x661BBDC9)
+I (.\Config\FirmwarePref.h)(0x661BC93E)
 I (.\User\inc\ModeLogic.h)(0x661B9FE7)
 I (.\User\inc\TempControl.h)(0x661BBBCB)
 F (.\User\ht32f5xxxx_01_it.c)(0x661BA530)(-c --cpu Cortex-M0+ -g -O3 -Otime --apcs=interwork --split_sections -I .\User\inc -I .\Config -I .\MDK-ARM -I .\CMSIS\Core\Include -I .\CMSIS\Include -I .\Library\inc-I.\RTE\_FlashLightOS-Lite-IC:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.44\ARM\INC\Holtek\HT32F5xxxx-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DUSE_HT32F52342_52 -DUSE_HT32_DRIVER -DUSE_HT32F52352_SK -DUSE_HT32F52342_52 -DUSE_MEM_HT32F52352-o .\objects\ht32f5xxxx_01_it.o --omf_browse .\objects\ht32f5xxxx_01_it.crf --depend .\objects\ht32f5xxxx_01_it.d)
@@ -203,6 +203,7 @@ F (.\Config\ht32f5xxxx_02_usbdconf.h)(0x633D2D9C)()
 F (.\Config\ht32f5xxxx_conf.h)(0x63AC0EA0)()
 F (.\Config\HT32F5xxxx_01_DebugSupport.ini)(0x6361FE4D)()
 F (.\Config\Pindefs.h)(0x658128D8)()
+F (.\Config\FirmwarePref.h)(0x661BC93E)()
 F (.\CMSIS\system_ht32f5xxxx_01.c)(0x63AAD4A0)(-c --cpu Cortex-M0+ -g -O3 -Otime --apcs=interwork --split_sections -I .\User\inc -I .\Config -I .\MDK-ARM -I .\CMSIS\Core\Include -I .\CMSIS\Include -I .\Library\inc-I.\RTE\_FlashLightOS-Lite-IC:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.44\ARM\INC\Holtek\HT32F5xxxx-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DUSE_HT32F52342_52 -DUSE_HT32_DRIVER -DUSE_HT32F52352_SK -DUSE_HT32F52342_52 -DUSE_MEM_HT32F52352-o .\objects\system_ht32f5xxxx_01.o --omf_browse .\objects\system_ht32f5xxxx_01.crf --depend .\objects\system_ht32f5xxxx_01.d)
 I (CMSIS\ht32f5xxxx_01.h)(0x63C55DAC)
 I (.\Library\inc\ht32_config.h)(0x63906E62)
@@ -1313,7 +1314,7 @@ I (.\Library\inc\ht32_rand.h)(0x57B1BC8E)
 I (.\User\inc\ADC.h)(0x661B9CBE)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599EDB3E)
 I (.\Config\Pindefs.h)(0x658128D8)
-I (.\Config\FirmwarePref.h)(0x661BBDC9)
+I (.\Config\FirmwarePref.h)(0x661BC93E)
 I (.\User\inc\LEDMgmt.h)(0x6581303B)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x599EDB3E)
 I (.\User\inc\TempControl.h)(0x661BBBCB)
@@ -1366,7 +1367,7 @@ I (.\User\inc\LEDMgmt.h)(0x6581303B)
 I (.\Config\Pindefs.h)(0x658128D8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599EDB3E)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599EDB3C)
-F (.\ExtPeriphal\SideKey.c)(0x661B9996)(-c --cpu Cortex-M0+ -g -O3 -Otime --apcs=interwork --split_sections -I .\User\inc -I .\Config -I .\MDK-ARM -I .\CMSIS\Core\Include -I .\CMSIS\Include -I .\Library\inc-I.\RTE\_FlashLightOS-Lite-IC:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.44\ARM\INC\Holtek\HT32F5xxxx-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DUSE_HT32F52342_52 -DUSE_HT32_DRIVER -DUSE_HT32F52352_SK -DUSE_HT32F52342_52 -DUSE_MEM_HT32F52352-o .\objects\sidekey.o --omf_browse .\objects\sidekey.crf --depend .\objects\sidekey.d)
+F (.\ExtPeriphal\SideKey.c)(0x661BC78D)(-c --cpu Cortex-M0+ -g -O3 -Otime --apcs=interwork --split_sections -I .\User\inc -I .\Config -I .\MDK-ARM -I .\CMSIS\Core\Include -I .\CMSIS\Include -I .\Library\inc-I.\RTE\_FlashLightOS-Lite-IC:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.44\ARM\INC\Holtek\HT32F5xxxx-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DUSE_HT32F52342_52 -DUSE_HT32_DRIVER -DUSE_HT32F52352_SK -DUSE_HT32F52342_52 -DUSE_MEM_HT32F52352-o .\objects\sidekey.o --omf_browse .\objects\sidekey.crf --depend .\objects\sidekey.d)
 I (.\User\inc\delay.h)(0x6542184A)
 I (.\Library\inc\ht32.h)(0x59959B2B)
 I (C:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.44\ARM\INC\Holtek\HT32F5xxxx\ht32f5xxxx_01.h)(0x635B7220)
@@ -1415,7 +1416,7 @@ I (.\User\inc\SideKey.h)(0x65563BB9)
 I (.\Config\Pindefs.h)(0x658128D8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599EDB3E)
 I (.\User\inc\ModeLogic.h)(0x661B9FE7)
-I (.\Config\FirmwarePref.h)(0x661BBDC9)
+I (.\Config\FirmwarePref.h)(0x661BC93E)
 F (.\ExtPeriphal\PWMDIM.c)(0x661B73AA)(-c --cpu Cortex-M0+ -g -O3 -Otime --apcs=interwork --split_sections -I .\User\inc -I .\Config -I .\MDK-ARM -I .\CMSIS\Core\Include -I .\CMSIS\Include -I .\Library\inc-I.\RTE\_FlashLightOS-Lite-IC:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.44\ARM\INC\Holtek\HT32F5xxxx-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DUSE_HT32F52342_52 -DUSE_HT32_DRIVER -DUSE_HT32F52352_SK -DUSE_HT32F52342_52 -DUSE_MEM_HT32F52352-o .\objects\pwmdim.o --omf_browse .\objects\pwmdim.crf --depend .\objects\pwmdim.d)
 I (.\User\inc\delay.h)(0x6542184A)
 I (.\Library\inc\ht32.h)(0x59959B2B)
@@ -1561,10 +1562,10 @@ I (.\User\inc\SideKey.h)(0x65563BB9)
 I (.\User\inc\LEDMgmt.h)(0x6581303B)
 I (.\User\inc\TempControl.h)(0x661BBBCB)
 I (.\User\inc\ADC.h)(0x661B9CBE)
-I (.\Config\FirmwarePref.h)(0x661BBDC9)
+I (.\Config\FirmwarePref.h)(0x661BC93E)
 I (.\User\inc\delay.h)(0x6542184A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x599EDB3E)
-F (.\Logic\DeepSleep.c)(0x661B9B99)(-c --cpu Cortex-M0+ -g -O3 -Otime --apcs=interwork --split_sections -I .\User\inc -I .\Config -I .\MDK-ARM -I .\CMSIS\Core\Include -I .\CMSIS\Include -I .\Library\inc-I.\RTE\_FlashLightOS-Lite-IC:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.44\ARM\INC\Holtek\HT32F5xxxx-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DUSE_HT32F52342_52 -DUSE_HT32_DRIVER -DUSE_HT32F52352_SK -DUSE_HT32F52342_52 -DUSE_MEM_HT32F52352-o .\objects\deepsleep.o --omf_browse .\objects\deepsleep.crf --depend .\objects\deepsleep.d)
+F (.\Logic\DeepSleep.c)(0x661BC777)(-c --cpu Cortex-M0+ -g -O3 -Otime --apcs=interwork --split_sections -I .\User\inc -I .\Config -I .\MDK-ARM -I .\CMSIS\Core\Include -I .\CMSIS\Include -I .\Library\inc-I.\RTE\_FlashLightOS-Lite-IC:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.44\ARM\INC\Holtek\HT32F5xxxx-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DUSE_HT32F52342_52 -DUSE_HT32_DRIVER -DUSE_HT32F52352_SK -DUSE_HT32F52342_52 -DUSE_MEM_HT32F52352-o .\objects\deepsleep.o --omf_browse .\objects\deepsleep.crf --depend .\objects\deepsleep.d)
 I (.\User\inc\delay.h)(0x6542184A)
 I (.\Library\inc\ht32.h)(0x59959B2B)
 I (C:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.44\ARM\INC\Holtek\HT32F5xxxx\ht32f5xxxx_01.h)(0x635B7220)
@@ -1613,13 +1614,13 @@ I (.\User\inc\LEDMgmt.h)(0x6581303B)
 I (.\Config\Pindefs.h)(0x658128D8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599EDB3E)
 I (.\User\inc\ADC.h)(0x661B9CBE)
-I (.\Config\FirmwarePref.h)(0x661BBDC9)
+I (.\Config\FirmwarePref.h)(0x661BC93E)
 I (.\User\inc\ModeLogic.h)(0x661B9FE7)
-F (.\Logic\BattMonitor.c)(0x661B9DF6)(-c --cpu Cortex-M0+ -g -O3 -Otime --apcs=interwork --split_sections -I .\User\inc -I .\Config -I .\MDK-ARM -I .\CMSIS\Core\Include -I .\CMSIS\Include -I .\Library\inc-I.\RTE\_FlashLightOS-Lite-IC:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.44\ARM\INC\Holtek\HT32F5xxxx-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DUSE_HT32F52342_52 -DUSE_HT32_DRIVER -DUSE_HT32F52352_SK -DUSE_HT32F52342_52 -DUSE_MEM_HT32F52352-o .\objects\battmonitor.o --omf_browse .\objects\battmonitor.crf --depend .\objects\battmonitor.d)
+F (.\Logic\BattMonitor.c)(0x661BC91A)(-c --cpu Cortex-M0+ -g -O3 -Otime --apcs=interwork --split_sections -I .\User\inc -I .\Config -I .\MDK-ARM -I .\CMSIS\Core\Include -I .\CMSIS\Include -I .\Library\inc-I.\RTE\_FlashLightOS-Lite-IC:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.44\ARM\INC\Holtek\HT32F5xxxx-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DUSE_HT32F52342_52 -DUSE_HT32_DRIVER -DUSE_HT32F52352_SK -DUSE_HT32F52342_52 -DUSE_MEM_HT32F52352-o .\objects\battmonitor.o --omf_browse .\objects\battmonitor.crf --depend .\objects\battmonitor.d)
 I (.\User\inc\ADC.h)(0x661B9CBE)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599EDB3E)
 I (.\Config\Pindefs.h)(0x658128D8)
-I (.\Config\FirmwarePref.h)(0x661BBDC9)
+I (.\Config\FirmwarePref.h)(0x661BC93E)
 I (.\User\inc\ModeLogic.h)(0x661B9FE7)
 I (.\User\inc\LEDMgmt.h)(0x6581303B)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599EDB3C)
@@ -1629,7 +1630,7 @@ I (.\User\inc\ModeLogic.h)(0x661B9FE7)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599EDB3E)
 I (.\User\inc\ADC.h)(0x661B9CBE)
 I (.\Config\Pindefs.h)(0x658128D8)
-I (.\Config\FirmwarePref.h)(0x661BBDC9)
+I (.\Config\FirmwarePref.h)(0x661BC93E)
 I (.\User\inc\TempControl.h)(0x661BBBCB)
 I (.\User\inc\LEDMgmt.h)(0x6581303B)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599EDB3C)

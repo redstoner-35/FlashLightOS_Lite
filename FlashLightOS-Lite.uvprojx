@@ -447,6 +447,11 @@
               <FileType>5</FileType>
               <FilePath>.\Config\Pindefs.h</FilePath>
             </File>
+            <File>
+              <FileName>FirmwarePref.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Config\FirmwarePref.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

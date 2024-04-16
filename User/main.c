@@ -57,6 +57,7 @@ int main(void)
 	 CalculateActualTemp();//计算温度数值
 	 LEDMgmt_CallBack();//处理电量指示灯的逻辑
 	 ReverseModeCycleOpHandler();//处理用户单击+长按令循环档反向换挡的逻辑
+	 LowVoltageAlertHandler();//主LED闪烁低压警报处理
 	 SensorRefreshFlag=false;
 	 }
  return 0;

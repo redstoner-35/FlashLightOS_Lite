@@ -170,6 +170,15 @@ int getSideKeyShortPressCount(bool IsRemoveResult)
 		}
   return buf;		
 	}
+//获取任意的长按操作
+bool getSideKeyAnyHoldEvent(void)
+  {
+	if(Keyevent.LongPressDetected)return true;
+  if(Keyevent.PressAndHoldEvent)return true;
+	if(Keyevent.DoubleClickAndHoldEvent)return true;
+	if(Keyevent.TripleClickAndHold)return true;
+	return false;
+	}
 //获取侧按按键长按2秒事件的函数
 bool getSideKeyLongPressEvent(void)
   {

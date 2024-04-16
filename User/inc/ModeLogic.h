@@ -48,5 +48,6 @@ void LightModeStateMachine(void);//换挡和手电开关状态机
 void ControlMainLEDHandler(void);//处理主LED控制的函数
 void BatteryMonitorHandler(void);//电池监控函数 
 void BatteryAlertResetDetect(void);//检测并复位电池低压告警 
+void LowVoltageAlertHandler(void);//低电压告警闪烁主LED的操作 
  
 #endif

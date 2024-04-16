@@ -16,6 +16,8 @@ extern SystempStateDef TempState; //驱动的温度状态
 static float DimmingRatio=0.00; //调光数值 
 static bool IsKeyStillPressed=false; //标志位，按键是否依然按下
 static bool AdjustDir=false; //调节方向，false=低到高，true=高到低
+static bool TacticalMode=false; //战术模式
+static char LVAlertTimer=0; //低电压警报定时器
 
 //常数
 const float CycleModeRatio[5]={CycleMode1Duty,CycleMode2Duty,CycleMode3Duty,CycleMode4Duty,CycleMode5Duty}; //5个循环挡位的占空比设置(百分比)
@@ -55,6 +57,18 @@ void LightLogicSetup(void)
  getSideKeyShortPressCount(true);  //清除按键操作
  }
 
+//低电压警报闪烁
+void LowVoltageAlertHandler(void)
+ {
+ if(BattStatus!=Batt_LVAlert||LightMode.LightGroup==Mode_Strobe) //告警未发生或者位于爆闪
+    {
+    LVAlertTimer=0;
+    return;
+    }
+ if(LVAlertTimer>0)LVAlertTimer--;
+ else LVAlertTimer=64; //开始计时
+ }
+ 
 //处理循环档单击+长按的反向换挡按键操作的逻辑
 void ReverseModeCycleOpHandler(void)
  {
@@ -84,10 +98,11 @@ void LightModeStateMachine(void)
 	 /* 锁定模式 */
 	 case Mode_Locked:
 		  if(DeepSleepTimer<=0)LightMode.LightGroup=Mode_Sleep; //闲置一定时间，进入睡眠阶段
-		  else if(Click==4)
+		  else if(Click==5)
 			   {
-			   LightMode.LightGroup=Mode_Off; //四击解锁
+			   LightMode.LightGroup=Mode_Off; //五击解锁
 				 LightMode.IsLocked=false;
+				 TacticalMode=false; //默认返回到非战术模式
 				 CurrentLEDIndex=10;  //提示用户解锁
 				 }
 	    else if(Click>0||getSideKeyHoldEvent()||getSideKeyClickAndHoldEvent())
@@ -97,22 +112,38 @@ void LightModeStateMachine(void)
 	 /* 关机模式 */
 	 case Mode_Off:
 		  if(DeepSleepTimer<=0)LightMode.LightGroup=Mode_Sleep; //闲置一定时间，进入睡眠阶段
-	    if(getSideKeyDoubleClickAndHoldEvent())DisplayBatteryVoltage();//显示电池电压
-	    if(getSideKeyTripleClickAndHoldEvent())DisplaySystemTemp();//显示系统温度
-	    if(BattStatus==Batt_LVFault||TempState!=SysTemp_OK)//电池低压锁定触发或者高温警报，禁止开机
+	    else if(getSideKeyDoubleClickAndHoldEvent())DisplayBatteryVoltage();//显示电池电压
+	    else if(getSideKeyTripleClickAndHoldEvent())DisplaySystemTemp();//显示系统温度
+			else if(Click==4) //关机状态下四击切换战术模式
 			  {
+				TacticalMode=TacticalMode?false:true;
+				CurrentLEDIndex=TacticalMode?17:18;	
+				break;
+				}
+			else if(Click==5) //五击解锁
+			  {
+				LightMode.IsLocked=true;
+				TacticalMode=false; //锁定后自动取消战术模式
+			  CurrentLEDIndex=11; //提示用户锁定
+				LightMode.LightGroup=Mode_Locked;
+				}
+	    else if(BattStatus==Batt_LVFault||TempState!=SysTemp_OK)//电池低压锁定触发或者高温警报，禁止开机
+			  {
+				if((Click>0||getSideKeyAnyHoldEvent())&&CurrentLEDIndex==0)CurrentLEDIndex=BattStatus==Batt_LVFault?19:7; //显示导致无法开机的问题
 				BatteryAlertResetDetect(); //检测电池电压，如果电池电压大于警告门限则允许开机
 			  break;
 				}			
-      #ifdef EnableInstantStrobe				
-	    if(Click==3)LightMode.LightGroup=Mode_Strobe; //三击开机进入爆闪
-			#endif
+			else if(TacticalMode)//战术模式
+			  { 
+				if(BattStatus!=Batt_LVAlert&&getSideKeyLongPressEvent())LightMode.LightGroup=Mode_Turbo; //单击开机			
+				else DeepSleepTimerCallBack();//执行倒计时
+				}
 			//正常开机
 			if(IsKeyStillPressed) //按键依然按下，不执行本次判断直接退出
 				{
 				if(!getSideKeyLongPressEvent()&&Click==0)IsKeyStillPressed=false;
 				break;
-				} 				
+				}
 			if(getSideKeyLongPressEvent())//长按开机直接进入无极调光
 			  {
 				IsKeyStillPressed=true;
@@ -124,16 +155,13 @@ void LightModeStateMachine(void)
 			  {
 			  LightMode.LightGroup=Mode_Cycle; //单击开机进入循环档
 				if(BattStatus==Batt_LVAlert)LightMode.CycleModeCount=0; //电池低压警报触发，开机锁定0档
-				}
-		  #ifdef EnableInstantTurbo
+				}		  
+			#ifdef EnableInstantTurbo
 	    else if(Click==2&&BattStatus!=Batt_LVAlert)LightMode.LightGroup=Mode_Turbo; //在电池电量充足的情况下双击开机直接一键极亮
 			#endif
-	    else if(Click==4)
-			  {
-				LightMode.IsLocked=true;
-			  CurrentLEDIndex=11; //提示用户锁定
-				LightMode.LightGroup=Mode_Locked;
-				}
+      #ifdef EnableInstantStrobe				
+	    else if(Click==3)LightMode.LightGroup=Mode_Strobe; //三击开机进入爆闪
+			#endif
 			else DeepSleepTimerCallBack();//执行倒计时
 	    break;
 	 /* 开机,处于循环挡位模式 */
@@ -171,6 +199,13 @@ void LightModeStateMachine(void)
 				 LightMode.LightGroup=Mode_Off;
 				 CurrentLEDIndex=TempState==Systemp_DriverHigh?7:8;//驱动过热
 				 BattStatus=Batt_OK; //电池电压检测重置
+				 }
+			if(TacticalMode&&(!getSideKeyHoldEvent()||BattStatus==Batt_LVFault)) //战术模式下按键松开或者低电压报警之后执行关机
+			   {
+				 CurrentLEDIndex=0; //关闭指示灯						
+				 LightMode.LightGroup=Mode_Off;
+				 BattStatus=Batt_OK; //电池电压检测重置				 
+				 break;
 				 }
    		if(getSideKeyLongPressEvent()||BattStatus==Batt_LVFault) //长按或者触发低压fault，关机
 				{		
@@ -275,6 +310,7 @@ void RampAdjustHandler(void)
 void ControlMainLEDHandler(void)
  {
  float Duty;
+ 
  //设置DCDC-EN
  if(!LightMode.IsMainLEDOn)GPIO_ClearOutBits(AUXV33_IOG,AUXV33_IOP); //主LED关闭输出，禁用DCDC
  else switch(LightMode.LightGroup)
@@ -294,7 +330,10 @@ void ControlMainLEDHandler(void)
  switch(LightMode.LightGroup)
    {
 	 case Mode_Cycle:Duty=CycleModeRatio[LightMode.CycleModeCount];break; //循环档，从模式组里面取占空比
-	 case Mode_Turbo:Duty=TurboDuty;break;//极亮占按照目标值设置占空比
+	 case Mode_Turbo:
+		       if(!TacticalMode)Duty=TurboDuty;//极亮占按照目标值设置占空比
+	         else Duty=BattStatus==Batt_LVAlert?30:TurboDuty; //战术模式按照电池状态设置占空比
+	         break;
 	 case Mode_Ramp:Duty=RampMinDuty+((RampMaxDuty-RampMinDuty)*pow(DimmingRatio,GammaCorrectionValue));break; //无极调光模式，按照目标值设置占空比
 	 case Mode_Strobe:Duty=BattStatus==Batt_LVAlert?30:TurboDuty;break;//爆闪，如果电池没有低压警告则按照极亮功率，否则锁30%
 	 default:Duty=0; //其余状态占空比等于0
@@ -302,5 +341,6 @@ void ControlMainLEDHandler(void)
  if(Duty>100)Duty=100;
  if(Duty<0)Duty=0; //限制占空比范围为0-100%
  if(!LightMode.IsMainLEDOn)Duty=0; //禁用LED，占空比设置为0
+ if(LVAlertTimer>62||(LVAlertTimer>57&&LVAlertTimer<59))Duty=0; //低压警报发生，熄灭LED
  SetPWMDuty(Duty*=(LightMode.MainLEDThrottleRatio/(float)100)); //写PWM寄存器设置占空比(和温度控制调节值加权之后的结果)
  }

@@ -33,7 +33,9 @@ const char *LEDPattern[LEDPatternSize]=
 	 "303010E",//橙色两次+绿色一次，进入战术模式 17
 	 "30301010E",//橙色两次+绿色一次，退出战术模式 18
 	 "2020202020E", //红色快速闪烁5次表示没电禁止开机 19
+	 #ifndef NTCStrictMode
 	 "2020D1010010DD", //红色闪2次停留1秒绿色闪3次(指示驱动的所有温度检测电阻均已损坏) 20
+	 #endif
 	 NULL//结束符
  };
 //变量
@@ -54,6 +56,7 @@ void LED_ShowLoopOperationOnce(int index)
 	while(ConstReadPtr==0)delay_ms(1); //等待系统开始显示
 	delay_ms(10);
 	while(ConstReadPtr>0)delay_ms(1); //等待显示结束
+  CurrentLEDIndex=0;//立即使LED熄灭
 	}
 
 //往自定义LED缓存里面加上闪烁字符

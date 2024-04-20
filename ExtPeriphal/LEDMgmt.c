@@ -16,11 +16,11 @@ const char *LEDPattern[LEDPatternSize]=
 	 "333",//黄灯常亮 2
    "222", //红灯常亮 3
 	 //Error标识符
-	 "20D10DDD", //红色闪1次停留1秒绿色闪1次 4
-	 "20D1010DDD", //红色闪1次停留1秒绿色闪2次 5
-   "20D1010010DDD", //红色闪1次停留1秒绿色闪3次 6
-	 "2020D10DDD", //红色闪2次停留1秒绿色闪1次 7
-	 "2020D1010DDD", //红色闪2次停留1秒绿色闪2次 8
+	 "20D10DD", //红色闪1次停留1秒绿色闪1次 4
+	 "20D1010DD", //红色闪1次停留1秒绿色闪2次 5
+   "20D1010010DD", //红色闪1次停留1秒绿色闪3次 6
+	 "2020D10DD", //红色闪2次停留1秒绿色闪1次 7
+	 "2020D1010DD", //红色闪2次停留1秒绿色闪2次 8
 	 //提示符
 	 "202020DE", //红色闪三次提示用户当前处于锁定状态 9
 	 "2221110E", //红色切换到绿色提示用户解锁 10
@@ -33,6 +33,7 @@ const char *LEDPattern[LEDPatternSize]=
 	 "303010E",//橙色两次+绿色一次，进入战术模式 17
 	 "30301010E",//橙色两次+绿色一次，退出战术模式 18
 	 "2020202020E", //红色快速闪烁5次表示没电禁止开机 19
+	 "2020D1010010DD", //红色闪2次停留1秒绿色闪3次(指示驱动的所有温度检测电阻均已损坏) 20
 	 NULL//结束符
  };
 //变量
@@ -44,7 +45,17 @@ volatile int CurrentLEDIndex;
 volatile static short LEDDelayTimer=0;
 char *ExtLEDIndex = NULL; //用于传入的外部序列
 static char *LastExtLEDIdx = NULL;
- 
+
+//仅一次显示循环的LED内容 
+void LED_ShowLoopOperationOnce(int index) 
+  {
+	LED_Reset();//复位LED状态机
+	CurrentLEDIndex=index;//开始显示
+	while(ConstReadPtr==0)delay_ms(1); //等待系统开始显示
+	delay_ms(10);
+	while(ConstReadPtr>0)delay_ms(1); //等待显示结束
+	}
+
 //往自定义LED缓存里面加上闪烁字符
 void LED_AddStrobe(int count,const char *ColorStr) 
   {

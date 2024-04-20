@@ -46,6 +46,10 @@
 #define MOSThermalTrip 105 //驱动自身的过热关机保护温度
 #define LEDThermalTrip 80 //LED过热关机保护温度
 
+#define EnableDriverNTC //使能驱动的热敏电阻检测
+#define EnableLEDNTC //使能LED的热敏电阻检测
+//#define NTCStrictMode //严格NTC自检模式，在此模式下任意NTC自检失败都会导致驱动无法开机
+
 /***************** 固件电池测量模块配置 ******************
 这部分的宏定义负责配置固件的电池测量系统以及电池低压警报所
 适用的电芯节数，以及电池电压测量通道的检测电阻阻值。默认该

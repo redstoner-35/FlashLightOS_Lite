@@ -21,6 +21,23 @@ static bool CalculatePIDRequest = false; //PID计算请求
 float ThermalLowPassFilter[8*ThermalLPFTimeConstant]={0}; //低通滤波器
 float PIDInputTemp=0.0; //PID输入温度
 
+//关于温度控制模块的自动定义(严禁修改！)
+#ifdef NTCStrictMode
+  //禁用任意电阻出错
+  #ifndef EnableDriverNTC
+  #error "Strict NTC Selftest mode conflict with driver NTC detection disabled!"
+  #endif
+
+  #ifndef EnableLEDNTC
+  #error "Strict NTC Selftest mode conflict with LED NTC detection disabled!"
+  #endif
+#endif
+#ifndef EnableDriverNTC
+  #ifndef EnableLEDNTC
+  #error "You can't disable both NTC resistor of the driver!"
+  #endif
+#endif
+
 //温度检测的简易数字滤波器（低通）
 float LEDFilter(float DIN,float *BufIN,int bufsize)
 {
@@ -146,9 +163,26 @@ void DisplaySystemTemp(void)
 	strncat(LEDModeStr,"D",sizeof(LEDModeStr)-1); //显示十位
 	LED_AddStrobe((iroundf(LEDTemp)%100)%10,"10");
 	strncat(LEDModeStr,"D",sizeof(LEDModeStr)-1);//显示个位
-	//降档提示，当温度超过降档温度时显示信息	 
-	if(ADCO.LEDNTCState==NTC_OK)DisplayTemp(ADCO.LEDTemp);	
-	if(ADCO.MOSNTCState==NTC_OK)DisplayTemp(ADCO.MOSFETTemp);  //显示降档情况	
+	//LED降档提示
+	#ifdef EnableLEDNTC
+	if(ADCO.LEDNTCState==NTC_OK)
+	  DisplayTemp(ADCO.LEDTemp); //显示降档情况
+  else //LED NTC故障，显示错误
+    {
+		LED_AddStrobe(2,"20");
+		strncat(LEDModeStr,"00",sizeof(LEDModeStr)-1);	
+		}		
+	#endif
+  //驱动降档提示
+	#ifdef EnableDriverNTC
+	if(ADCO.MOSNTCState==NTC_OK)
+		DisplayTemp(ADCO.MOSFETTemp);  //显示降档情况	
+	else //LED NTC故障，显示错误
+    {
+		LED_AddStrobe(2,"20");
+		strncat(LEDModeStr,"00",sizeof(LEDModeStr)-1);	
+		}		
+	#endif
 	//结束显示，传指针过去
 	strncat(LEDModeStr,IsPowerON?"DE":"E",sizeof(LEDModeStr)-1); //添加结束符
 	ExtLEDIndex=&LEDModeStr[0];//传指针过去

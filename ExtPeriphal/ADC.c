@@ -113,18 +113,40 @@ void InternalADC_Init(void)
 	 ADC_Cmd(HT_ADC0, ENABLE);
 	 //触发ADC转换检查转换是否成功
 	 for(i=0;i<3;i++)if(!ADC_GetResult(&ADCO))OnChipADC_FaultHandler();//出现异常
-	 //检查NTC状态
+	 //检查LED NTC状态
+	 #ifdef EnableLEDNTC
 	 if(ADCO.LEDNTCState!=NTC_OK)
 	  {
+		#ifdef NTCStrictMode	
 	  CurrentLEDIndex=4;//指示LED NTC故障
     while(1);
+		#else
+		if(ADCO.MOSNTCState!=NTC_OK)	
+		  {
+			CurrentLEDIndex=20;//指示所有NTC均已损坏
+			while(1);
+			}
+		else LED_ShowLoopOperationOnce(4); //显示LED NTC故障后继续	
+	  #endif
 	  }
-	 if(ADCO.MOSNTCState!=NTC_OK)
+	#endif
+	//检查驱动NTC状态
+  #ifdef EnableDriverNTC		
+	if(ADCO.MOSNTCState!=NTC_OK)
 	  {
+		#ifdef NTCStrictMode
 	  CurrentLEDIndex=5;//指示驱动自身 NTC故障
     while(1);
+		#else
+		if(ADCO.LEDNTCState!=NTC_OK)	
+	    {
+			CurrentLEDIndex=20;//指示所有NTC均已损坏
+			while(1);
+			}
+		else LED_ShowLoopOperationOnce(5); //显示驱动NTC故障后继续			
+	  #endif
 	  }	
-	 //填充温度数据
-	 FillThermalFilterBuf(&ADCO);
-		
+	#endif
+	//填充温度数据
+	FillThermalFilterBuf(&ADCO);	
 	}

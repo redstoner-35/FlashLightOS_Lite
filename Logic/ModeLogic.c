@@ -85,6 +85,16 @@ void ReverseModeCycleOpHandler(void)
 	 }
  else ReverseSwitchDelay=0; //用户松开按键，计时器复位
  }
+ 
+//手电正常和异常关机处理函数
+static void PowerOffProcess(void)
+ {
+ if(TempState!=SysTemp_OK)CurrentLEDIndex=TempState==Systemp_DriverHigh?7:8;//过热告警触发，显示原因
+ else  CurrentLEDIndex=0; //关闭指示灯						
+ LightMode.LightGroup=Mode_Off;
+ BattStatus=Batt_OK; //电池电压检测重置				 
+ }
+ 
 //换挡和手电开关状态机
 void LightModeStateMachine(void)
  {
@@ -127,7 +137,7 @@ void LightModeStateMachine(void)
 			  CurrentLEDIndex=11; //提示用户锁定
 				LightMode.LightGroup=Mode_Locked;
 				}
-	    else if(BattStatus==Batt_LVFault||TempState!=SysTemp_OK)//电池低压锁定触发或者高温警报，禁止开机
+	    else if(DriverErrorOccurred())//电池低压锁定触发或者高温警报，禁止开机
 			  {
 				if((Click>0||getSideKeyAnyHoldEvent())&&CurrentLEDIndex==0)CurrentLEDIndex=BattStatus==Batt_LVFault?19:7; //显示导致无法开机的问题
 				BatteryAlertResetDetect(); //检测电池电压，如果电池电压大于警告门限则允许开机
@@ -168,18 +178,8 @@ void LightModeStateMachine(void)
 	 case Mode_Cycle:
 	    if(getSideKeyDoubleClickAndHoldEvent())DisplayBatteryVoltage();//显示电池电压
 	    if(getSideKeyTripleClickAndHoldEvent())DisplaySystemTemp();//显示系统温度
-	    if(TempState!=SysTemp_OK) //发生过热
-			    {
-					LightMode.LightGroup=Mode_Off;
-					CurrentLEDIndex=TempState==Systemp_DriverHigh?7:8;//驱动过热
-					BattStatus=Batt_OK; //电池电压检测重置
-					}
-			if(getSideKeyLongPressEvent()||BattStatus==Batt_LVFault)//长按或者触发低压fault，关机
-			    {		 
-					CurrentLEDIndex=0; //关闭指示灯						
-				  LightMode.LightGroup=Mode_Off;
-		      BattStatus=Batt_OK; //电池电压检测重置
-					}			
+			if(getSideKeyLongPressEvent()||DriverErrorOccurred())//长按或者驱动出错之后，关机
+          PowerOffProcess(); 
 	    else if(Click==3)LightMode.LightGroup=Mode_Strobe; //三击爆闪
 	    else if(BattStatus==Batt_LVAlert)LightMode.CycleModeCount=0;//低压警报触发，强制锁一档
 			else if(Click==1)do
@@ -194,25 +194,13 @@ void LightModeStateMachine(void)
 	 case Mode_Turbo:
 	    if(getSideKeyDoubleClickAndHoldEvent())DisplayBatteryVoltage();//显示电池电压
 	    if(getSideKeyTripleClickAndHoldEvent())DisplaySystemTemp();//显示系统温度
-	    if(TempState!=SysTemp_OK) //发生过热
+			if(TacticalMode&&(!getSideKeyHoldEvent()||DriverErrorOccurred())) //战术模式下按键松开或者驱动出错之后执行关机
 			   {
-				 LightMode.LightGroup=Mode_Off;
-				 CurrentLEDIndex=TempState==Systemp_DriverHigh?7:8;//驱动过热
-				 BattStatus=Batt_OK; //电池电压检测重置
-				 }
-			if(TacticalMode&&(!getSideKeyHoldEvent()||BattStatus==Batt_LVFault)) //战术模式下按键松开或者低电压报警之后执行关机
-			   {
-				 CurrentLEDIndex=0; //关闭指示灯						
-				 LightMode.LightGroup=Mode_Off;
-				 BattStatus=Batt_OK; //电池电压检测重置				 
+         PowerOffProcess();  
 				 break;
 				 }
-   		if(getSideKeyLongPressEvent()||BattStatus==Batt_LVFault) //长按或者触发低压fault，关机
-				{		
-        CurrentLEDIndex=0; //关闭指示灯						
-				LightMode.LightGroup=Mode_Off;
-		    BattStatus=Batt_OK; //电池电压检测重置
-				}		
+   		if(getSideKeyLongPressEvent()||DriverErrorOccurred())//长按或者驱动出错之后，关机
+				PowerOffProcess(); 
 	    else if(BattStatus==Batt_LVAlert)//电池低压警报触发，强制锁定到1档
 			  {
 				LightMode.LightGroup=Mode_Cycle;
@@ -225,18 +213,8 @@ void LightModeStateMachine(void)
 	 case Mode_Strobe:
 	    if(getSideKeyDoubleClickAndHoldEvent())DisplayBatteryVoltage();//显示电池电压
 	    if(getSideKeyTripleClickAndHoldEvent())DisplaySystemTemp();//显示系统温度
-	    if(TempState!=SysTemp_OK) //发生过热
-			   {
-				 LightMode.LightGroup=Mode_Off;
-				 CurrentLEDIndex=TempState==Systemp_DriverHigh?7:8;//驱动过热
-				 BattStatus=Batt_OK; //电池电压检测重置
-				 }
-		  if(getSideKeyLongPressEvent()||BattStatus==Batt_LVFault)//长按或者触发低压fault，关机
-				{		 
-        CurrentLEDIndex=0; //关闭指示灯						
-				LightMode.LightGroup=Mode_Off;
-		    BattStatus=Batt_OK; //电池电压检测重置
-				}		
+   		if(getSideKeyLongPressEvent()||DriverErrorOccurred())//长按或者驱动出错之后，关机
+				PowerOffProcess(); 
 	    else if(Click==1)LightMode.LightGroup=Mode_Cycle;//单击回到循环档
 	    else if(Click==2)LightMode.LightGroup=Mode_Turbo; //双击极亮
 	    break;
@@ -245,17 +223,9 @@ void LightModeStateMachine(void)
 		 if(getSideKeyDoubleClickAndHoldEvent())DisplayBatteryVoltage();//显示电池电压
 	   if(getSideKeyTripleClickAndHoldEvent())DisplaySystemTemp();//显示系统温度
 		 if(IsKeyStillPressed&&!getSideKeyHoldEvent())IsKeyStillPressed=false; //按键已经松开，可以继续响应  
-	    if(TempState!=SysTemp_OK) //发生过热
-			  {
-				LightMode.LightGroup=Mode_Off;
-				CurrentLEDIndex=TempState==Systemp_DriverHigh?7:8;//驱动过热
-				BattStatus=Batt_OK; //电池电压检测重置
-				}
-	   if(Click>0||BattStatus==Batt_LVFault) //任意操作或者触发低压fault，关机
+	   if(Click>0||DriverErrorOccurred()) //任意操作或者错误，关机
 				{		
-        CurrentLEDIndex=0; //关闭指示灯						
-				LightMode.LightGroup=Mode_Off;
-		    BattStatus=Batt_OK; //电池电压检测重置
+        PowerOffProcess(); 
 				IsKeyStillPressed=true; //等待计时
 			  while(getSideKeyHoldEvent())SideKey_LogicHandler();//等待按键松开
 				}				

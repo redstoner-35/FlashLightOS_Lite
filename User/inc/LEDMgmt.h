@@ -18,6 +18,7 @@ void LED_Init(void);
 void LEDMgmt_CallBack(void);
 void LED_Reset(void);
 void LED_AddStrobe(int count,const char *ColorStr);//在自定义闪缓存加上strobe
+void LED_ShowLoopOperationOnce(int index); //仅一次显示循环的LED内容 
 
 //外部变量
 extern volatile int CurrentLEDIndex;//给外部函数设置LED状态

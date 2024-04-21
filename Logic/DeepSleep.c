@@ -36,7 +36,6 @@ void EnteredLowPowerMode(void)
   CLKConfig.Bit.MCTM0 = 1;
   CLKConfig.Bit.ADC0 = 1;
 	CLKConfig.Bit.GPTM1=1;
-	CLKConfig.Bit.BKP = 1;
   CKCU_PeripClockConfig(CLKConfig,DISABLE);
 	//切换到32KHz时钟
 	while(retry<500)//反复循环等待LSI稳定

@@ -3,6 +3,9 @@
 #include "ModeLogic.h"
 #include "FirmwarePref.h"
 
+//函数声明
+void RestartRTCTimer(void); //RTC重启
+
 //全局变量
 static bool IsKeyPressed = false; //按键是否按下
 static unsigned char KeyTimer[2];//计时器0用于按键按下计时，计时器1用于连按检测计时
@@ -76,7 +79,7 @@ void SideKey_Callback(void)
 	if(LightMode.LightGroup==Mode_Sleep)ExitLowPowerMode(); //睡眠模式
 	DeepSleepTimer=DeepSleepTimeOut*8;//复位定时器
 	//给内部处理变量赋值
-	delay_ms(13); //软件消抖
+	RestartRTCTimer();//每次检测到按键操作都重置RTC定时器(顺便附加去抖)
 	#ifdef SideKeyPolar_positive	
 	if(GPIO_ReadInBit(ExtKey_IOG,ExtKey_IOP))
 	#else	

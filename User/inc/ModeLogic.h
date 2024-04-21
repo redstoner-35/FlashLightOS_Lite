@@ -44,6 +44,7 @@ typedef enum
 #define AUXV33_IOP STRCAT2(GPIO_PIN_,AUXV33_IOPinNum)
  
 //函数 
+void SetupRTCForCounter(bool IsRTCStartCount);//设置RTC时钟
 void DisplayBatteryVoltage(void);//显示电池电压
 void CellCountDetectHandler(void);//检测电池节数
 void LightLogicSetup(void);//上电期间初始化灯具模式

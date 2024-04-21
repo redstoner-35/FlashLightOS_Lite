@@ -88,7 +88,8 @@ static void PowerOffProcess(void)
  if(TempState!=SysTemp_OK)CurrentLEDIndex=TempState==Systemp_DriverHigh?7:8;//过热告警触发，显示原因
  else  CurrentLEDIndex=0; //关闭指示灯						
  LightMode.LightGroup=Mode_Off;
- BattStatus=Batt_OK; //电池电压检测重置				 
+ BattStatus=Batt_OK; //电池电压检测重置				
+ SetupRTCForCounter(true);	//使能自动锁定检测
  }
  
 //换挡和手电开关状态机
@@ -141,7 +142,11 @@ void LightModeStateMachine(void)
 				}			
 			else if(TacticalMode)//战术模式
 			  { 
-				if(BattStatus!=Batt_LVAlert&&getSideKeyLongPressEvent())LightMode.LightGroup=Mode_Turbo; //单击开机			
+				if(BattStatus!=Batt_LVAlert&&getSideKeyLongPressEvent())
+				   {
+				   SetupRTCForCounter(false);	//开机，禁止自动锁定检测
+					 LightMode.LightGroup=Mode_Turbo; //单击开机		
+			     }				
 				else DeepSleepTimerCallBack();//执行倒计时
 				}
 			//正常开机
@@ -156,17 +161,27 @@ void LightModeStateMachine(void)
 			  DimmingRatio=0.01;
 				LightMode.LightGroup=Mode_Ramp;
 				AdjustDir=false; //复位方向
+				SetupRTCForCounter(false);	//开机，禁止自动锁定检测
 				}
 	    else if(Click==1)
 			  {
 			  LightMode.LightGroup=Mode_Cycle; //单击开机进入循环档
+				SetupRTCForCounter(false);	//开机，禁止自动锁定检测
 				if(BattStatus==Batt_LVAlert)LightMode.CycleModeCount=0; //电池低压警报触发，开机锁定0档
 				}		  
 			#ifdef EnableInstantTurbo
-	    else if(Click==2&&BattStatus!=Batt_LVAlert)LightMode.LightGroup=Mode_Turbo; //在电池电量充足的情况下双击开机直接一键极亮
+	    else if(Click==2&&BattStatus!=Batt_LVAlert)//在电池电量充足的情况下双击开机直接一键极亮
+			  {
+				LightMode.LightGroup=Mode_Turbo; 
+			  SetupRTCForCounter(false);	//开机，禁止自动锁定检测
+				}
 			#endif
       #ifdef EnableInstantStrobe				
-	    else if(Click==3)LightMode.LightGroup=Mode_Strobe; //三击开机进入爆闪
+	    else if(Click==3) //三击开机进入爆闪
+			  {
+			  SetupRTCForCounter(false);	//开机，禁止自动锁定检测
+			  LightMode.LightGroup=Mode_Strobe; 
+				}
 			#endif
 			else DeepSleepTimerCallBack();//执行倒计时
 	    break;

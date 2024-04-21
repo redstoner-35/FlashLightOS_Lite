@@ -179,3 +179,16 @@ void GPTM1_IRQHandler(void)
 		RampAdjustHandler();//处理无极调光的操作
 		}
  }	
+ /*********************************************************************************************************//**
+ * @brief   This function handles RTC interrupt.
+ * @retval  None
+ * @details 跳转到中断处理函数将设置为锁定
+ ************************************************************************************************************/
+void RTCCMIntHandler(void); 
+ 
+void RTC_IRQHandler(void)
+{
+  u8 bFlags=RTC_GetFlagStatus();
+  if(bFlags&RTC_FLAG_CSEC)RTCCMIntHandler(); //比较中断的下一个秒中断，执行比较处理		
+	else if(bFlags&RTC_FLAG_CM)HT_RTC->IWEN=0x01; //比较中断发生，关闭比较中断然后开启秒中断等待下一个周期
+}

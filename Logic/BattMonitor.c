@@ -75,7 +75,7 @@ void CellCountDetectHandler(void)
 			LED_AddStrobe(CellCount,"10");  //显示识别到的电池节数
 			strncat(LEDModeStr,"DDDE",sizeof(LEDModeStr)-1);//结束闪烁	
 			ExtLEDIndex=&LEDModeStr[0];//传指针过去	
-			while(ExtLEDIndex!=NULL)//等待显示节数
+			while(ExtLEDIndex!=NULL&&!IsCorrectBattCount)//等待显示节数
 				{
 				SideKey_LogicHandler();
 				if(getSideKeyShortPressCount(true)==2)IsCorrectBattCount=true; //用户双击要求修正电池节数设置
@@ -83,7 +83,8 @@ void CellCountDetectHandler(void)
 			//用户请求修正电池节数
 			if(IsCorrectBattCount)
 			  {
-				delay_Second(1);
+				ExtLEDIndex=NULL; //立即中断显示
+				delay_ms(300);	
 				CurrentLEDIndex=21; //延时1秒后指示用户输入修正值
 				while(CurrentLEDIndex==21);//等待用户输入修正值
 				for(Targetbattcount=0;Targetbattcount==0;Targetbattcount=getSideKeyShortPressCount(true))SideKey_LogicHandler(); //等待用户按下按键

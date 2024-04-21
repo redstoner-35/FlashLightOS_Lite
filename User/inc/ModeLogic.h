@@ -45,6 +45,7 @@ typedef enum
  
 //函数 
 void DisplayBatteryVoltage(void);//显示电池电压
+void CellCountDetectHandler(void);//检测电池节数
 void LightLogicSetup(void);//上电期间初始化灯具模式
 void ReverseModeCycleOpHandler(void);//处理循环档单击+长按的反向换挡按键操作的逻辑
 void LightModeStateMachine(void);//换挡和手电开关状态机

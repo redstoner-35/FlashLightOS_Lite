@@ -2,10 +2,13 @@
 #include "ModeLogic.h"
 #include "LEDMgmt.h"
 #include <string.h>
+#include "SideKey.h"
+#include "delay.h"
 #include "FirmwarePref.h"
 
 //全局变量
 BatteryAlertDef BattStatus;
+float CellCount;
 extern volatile LightStateDef LightMode;
 
 //自己实现的四舍五入函数声明
@@ -33,6 +36,77 @@ void DisplayBatteryVoltage(void)
   ExtLEDIndex=&LEDModeStr[0];//传指针过去	
   }
 
+//自动检测电池电压的处理函数
+void CellCountDetectHandler(void)
+  {
+	#ifndef NoAutoBatteryDetect		
+		#ifdef UsingLiFePO4Batt
+		CellCount=BatteryCellCount; //此时固件不进行检测，按照指定的节数执行检测
+		//显示自检结束
+    CurrentLEDIndex=13;//LED自检结束
+    while(CurrentLEDIndex==13)delay_ms(1);//等待
+    getSideKeyShortPressCount(true);  //清除按键操作
+		#else 
+		ADCOutTypeDef ADCO;	
+		bool IsCorrectBattCount=false;
+		int Targetbattcount;
+		//初始化变量并转换
+		ADCO.BatteryVoltage=0;
+		ADC_GetResult(&ADCO);	
+		//判断电压
+		if(ADCO.BatteryVoltage==0)CellCount=BatteryCellCount; //ADC无法获知电池电压
+		else //检测电池电压
+			{
+		  if(ADCO.BatteryVoltage>=12.7)CellCount=4;  //电压大于12.7，有4节电池
+			else if(ADCO.BatteryVoltage>=8.5)CellCount=3; //电压在8.5-12.6之间，有3节电池
+			else if(ADCO.BatteryVoltage>=4.5)CellCount=2; //电压在4.5-8.5之间，有2节电池
+			else CellCount=1; //电压小于4.5只有一节电池
+			//显示自检结束
+      CurrentLEDIndex=13;//LED自检结束
+      while(CurrentLEDIndex==13)//等待
+				{
+				SideKey_LogicHandler();
+				if(getSideKeyShortPressCount(true)==2)IsCorrectBattCount=true; //用户双击要求修正电池节数设置
+				}
+			//显示识别到的电池节数
+			LED_Reset();//复位LED管理器
+			memset(LEDModeStr,0,sizeof(LEDModeStr));//清空内存
+			strncat(LEDModeStr,"D",sizeof(LEDModeStr)-1);
+			LED_AddStrobe(CellCount,"10");  //显示识别到的电池节数
+			strncat(LEDModeStr,"DDDE",sizeof(LEDModeStr)-1);//结束闪烁	
+			ExtLEDIndex=&LEDModeStr[0];//传指针过去	
+			while(ExtLEDIndex!=NULL)//等待显示节数
+				{
+				SideKey_LogicHandler();
+				if(getSideKeyShortPressCount(true)==2)IsCorrectBattCount=true; //用户双击要求修正电池节数设置
+				}
+			//用户请求修正电池节数
+			if(IsCorrectBattCount)
+			  {
+				delay_Second(1);
+				CurrentLEDIndex=21; //延时1秒后指示用户输入修正值
+				while(CurrentLEDIndex==21);//等待用户输入修正值
+				for(Targetbattcount=0;Targetbattcount==0;Targetbattcount=getSideKeyShortPressCount(true))SideKey_LogicHandler(); //等待用户按下按键
+				CellCount=Targetbattcount;//存储输入的电池节数
+				LED_Reset();//复位LED管理器
+		  	memset(LEDModeStr,0,sizeof(LEDModeStr));//清空内存
+			  strncat(LEDModeStr,"D",sizeof(LEDModeStr)-1);
+			  LED_AddStrobe(CellCount,"30");  //显示用户输入的电池节数
+			  strncat(LEDModeStr,"E",sizeof(LEDModeStr)-1);//结束闪烁	
+			  ExtLEDIndex=&LEDModeStr[0];//传指针过去	
+				}
+			getSideKeyShortPressCount(true);  //清除按键操作
+			}			
+		#endif
+	#else
+	CellCount=BatteryCellCount; //用户在配置中禁用检测，按照指定的节数执行欠压检测	
+	//显示自检结束
+  CurrentLEDIndex=13;//LED自检结束
+  while(CurrentLEDIndex==13)delay_ms(1);//等待
+  getSideKeyShortPressCount(true);  //清除按键操作			
+	#endif
+	}	
+	
 //低压告警处理函数
 void BatteryMonitorHandler(void)
   {
@@ -43,8 +117,8 @@ void BatteryMonitorHandler(void)
   ADC_GetResult(&ADCO);
   //判断状态
   #ifndef UsingLiFePO4Batt
-	if(ADCO.BatteryVoltage<=(2.7*BatteryCellCount))BattStatus=Batt_LVFault;
-	else if(ADCO.BatteryVoltage<=(3.01*BatteryCellCount))BattStatus=Batt_LVAlert;					
+	if(ADCO.BatteryVoltage<=(2.7*CellCount))BattStatus=Batt_LVFault;
+	else if(ADCO.BatteryVoltage<=(3.01*CellCount))BattStatus=Batt_LVAlert;					
 	#else	
 	if(ADCO.BatteryVoltage<=(2.15*BatteryCellCount))BattStatus=Batt_LVFault;
 	else if(ADCO.BatteryVoltage<=(2.6*BatteryCellCount))BattStatus=Batt_LVAlert;	
@@ -62,8 +136,8 @@ void BatteryMonitorHandler(void)
 		case Mode_Sleep:CurrentLEDIndex=0;break; //手电处于关机状态，关闭指示灯
 		default:
 			 if(BattStatus==Batt_LVFault||BattStatus==Batt_LVAlert)CurrentLEDIndex=12; //警告置起，电量严重不足
-		   else if(ADCO.BatteryVoltage<=(BattLowThr*BatteryCellCount))CurrentLEDIndex=3; //电量不足，红灯
-		   else if(ADCO.BatteryVoltage<=(BattMidThr*BatteryCellCount))CurrentLEDIndex=2; //电量较充足，黄灯
+		   else if(ADCO.BatteryVoltage<=(BattLowThr*CellCount))CurrentLEDIndex=3; //电量不足，红灯
+		   else if(ADCO.BatteryVoltage<=(BattMidThr*CellCount))CurrentLEDIndex=2; //电量较充足，黄灯
 		   else CurrentLEDIndex=1; //电量充足，绿灯
 		}
 	//如果温控降档发生则指示灯index +13使得侧按开始频闪指示降档

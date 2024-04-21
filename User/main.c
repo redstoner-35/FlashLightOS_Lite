@@ -42,6 +42,7 @@ int main(void)
  SideKeyInit();//初始化侧按按钮
  PWMTimerInit();//初始化PWM输出
  LightLogicSetup();//初始化灯具逻辑模块
+ CellCountDetectHandler();//检测接入的电池节数
  EnteredMainApp=true; //已进入主APP
  //主循环
  while(1)

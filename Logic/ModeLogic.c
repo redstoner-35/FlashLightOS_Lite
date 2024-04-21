@@ -51,10 +51,6 @@ void LightLogicSetup(void)
  AFIO_GPxConfig(AUXV33_IOB,AUXV33_IOP, AFIO_FUN_GPIO);//配置为GPIO
  GPIO_DirectionConfig(AUXV33_IOG,AUXV33_IOP,GPIO_DIR_OUT);//输出
  GPIO_ClearOutBits(AUXV33_IOG,AUXV33_IOP);//DCDC-EN 默认输出0		
- //显示自检结束
- CurrentLEDIndex=13;//LED自检结束
- while(CurrentLEDIndex==13)delay_ms(1);//等待
- getSideKeyShortPressCount(true);  //清除按键操作
  }
 
 //低电压警报闪烁

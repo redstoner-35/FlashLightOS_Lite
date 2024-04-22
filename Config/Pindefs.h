@@ -31,9 +31,9 @@ PA14：预留给MCTM的PWM output channel
 #define ExtKey_IOBank A
 #define ExtKey_IOPN 9  //外部侧按按钮（PA9）
 
-//3.3V辅助电源和LT3741芯片的使能
-#define AUXPWR_EN_IOBank B
-#define AUXPWR_EN_IOPinNum 2 //AUXPWR Pin=PB2
+//DC-DC使能输出
+#define AUXV33_IOBank B
+#define AUXV33_IOPinNum 2  //DCDCEN Pin=PB2
 
 //负责测量LED温度和SPS温度的ADC输入引脚
 #define LED_NTC_Ch 0 //LED电压测量（PA0）

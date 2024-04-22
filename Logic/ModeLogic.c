@@ -291,7 +291,6 @@ void RampAdjustHandler(void)
 void ControlMainLEDHandler(void)
  {
  float Duty;
- 
  //设置DCDC-EN
  if(!LightMode.IsMainLEDOn)GPIO_ClearOutBits(AUXV33_IOG,AUXV33_IOP); //主LED关闭输出，禁用DCDC
  else switch(LightMode.LightGroup)

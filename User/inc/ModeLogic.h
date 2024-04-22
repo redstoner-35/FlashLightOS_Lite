@@ -2,10 +2,8 @@
 #define _ModeLogic_
 
 #include <stdbool.h>
+#include "Pindefs.h"
 
-//引脚定义
-#define AUXV33_IOBank B
-#define AUXV33_IOPinNum 4  //DCDCEN Pin=PB4
 
 //定义
 #define DriverErrorOccurred() TempState!=SysTemp_OK||BattStatus==Batt_LVFault

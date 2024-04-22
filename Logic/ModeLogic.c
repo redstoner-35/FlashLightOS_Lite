@@ -51,6 +51,10 @@ void LightLogicSetup(void)
  AFIO_GPxConfig(AUXV33_IOB,AUXV33_IOP, AFIO_FUN_GPIO);//配置为GPIO
  GPIO_DirectionConfig(AUXV33_IOG,AUXV33_IOP,GPIO_DIR_OUT);//输出
  GPIO_ClearOutBits(AUXV33_IOG,AUXV33_IOP);//DCDC-EN 默认输出0		
+ //初始化极亮电荷泵的IO
+ AFIO_GPxConfig(VgsBoot_IOB,VgsBoot_IOP, AFIO_FUN_GPIO);//配置为GPIO
+ GPIO_DirectionConfig(VgsBoot_IOG,VgsBoot_IOP,GPIO_DIR_OUT);//输出
+ GPIO_ClearOutBits(VgsBoot_IOG,VgsBoot_IOP);//电荷泵IO 默认输出0		
  }
 
 //低电压警报闪烁
@@ -291,17 +295,47 @@ void RampAdjustHandler(void)
 void ControlMainLEDHandler(void)
  {
  float Duty;
+ bool IsDCDCEnable,IschargepumpEnabled;	 
+ #ifdef DCDCEN_Remap_FUN_TurboSel
+ bool IsTurbomode;
+ #endif
  //设置DCDC-EN
- if(!LightMode.IsMainLEDOn)GPIO_ClearOutBits(AUXV33_IOG,AUXV33_IOP); //主LED关闭输出，禁用DCDC
- else switch(LightMode.LightGroup)
+ switch(LightMode.LightGroup)
    {
 	 case Mode_Cycle:
 	 case Mode_Turbo:
 	 case Mode_Ramp:
-	 case Mode_Strobe:GPIO_SetOutBits(AUXV33_IOG,AUXV33_IOP);break;//灯具启动，使能DCDC
-	 default:GPIO_ClearOutBits(AUXV33_IOG,AUXV33_IOP);//其余状态DCDC-EN 默认输出0
+	 case Mode_Strobe:IsDCDCEnable=true;break;//灯具启动，使能DCDC
+	 default:IsDCDCEnable=false;//其余状态DCDC-EN 默认输出0
 	 }
- delay_ms(1); //这个延时确保EN先输出再给整定
+ //电荷泵控制
+ IschargepumpEnabled=GPIO_ReadOutBit(VgsBoot_IOG,VgsBoot_IOP)==SET?true:false; //检测电荷泵是否使能
+ if(IsDCDCEnable!=IschargepumpEnabled)//电荷泵IO发生变化
+   {
+	 if(IsDCDCEnable) //电荷泵从关机到开机，先打开电荷泵确保Vgs建立后再送占空比数据
+	   {
+		 GPIO_SetOutBits(VgsBoot_IOG,VgsBoot_IOP);
+		 delay_ms(10);
+		 }
+	 else //电荷泵从开机到关机，先禁用PWM输出，然后等待10mS后再关闭电荷泵
+	   {
+		 SetPWMDuty(0);
+		 delay_ms(10);
+		 GPIO_ClearOutBits(VgsBoot_IOG,VgsBoot_IOP);
+		 }	 
+	 }
+ #ifndef DCDCEN_Remap_FUN_TurboSel
+ //DCDC-EN控制
+ if(!IsDCDCEnable||!LightMode.IsMainLEDOn)GPIO_ClearOutBits(AUXV33_IOG,AUXV33_IOP); //主LED关闭输出或者灯具在非开机状态，禁用DCDC
+ else GPIO_SetOutBits(AUXV33_IOG,AUXV33_IOP); //启用DCDC 
+ #else
+ //极亮直驱和恒流输出选择
+ if(LightMode.LightGroup==Mode_Turbo||LightMode.LightGroup==Mode_Strobe)IsTurbomode=true;
+ else IsTurbomode=true; //极亮是否启用
+ if(!IsDCDCEnable||IsTurbomode)GPIO_ClearOutBits(AUXV33_IOG,AUXV33_IOP); //处于关机状态或者位于极亮直驱，输出低电平启用驱动器
+ else GPIO_SetOutBits(AUXV33_IOG,AUXV33_IOP); //启用恒流BUCK
+ #endif	 
+ delay_us(200); //这个延时确保EN先输出再给整定
  //设置爆闪定时器
  TM_SetCounterReload(HT_GPTM1,(int)(LightMode.LightGroup==Mode_Strobe?10000/(StrobeFreq*2)-1:199)); //根据是否无极调光模式设置定时器 
  TM_Cmd(HT_GPTM1,(LightMode.LightGroup==Mode_Strobe||LightMode.LightGroup==Mode_Ramp)?ENABLE:DISABLE);

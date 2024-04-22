@@ -33,7 +33,13 @@ PA14：预留给MCTM的PWM output channel
 
 //DC-DC使能输出
 #define AUXV33_IOBank B
-#define AUXV33_IOPinNum 2  //DCDCEN Pin=PB2
+#define AUXV33_IOPinNum 2  //使用全程恒流DCDC模式下的EN Pin(或者降压恒流+极亮直驱的选择PIN)=PB2
+
+#define VgsBoot_IOBank B
+#define VgsBoot_IOPinNum 4  //极亮直驱模式下控制电荷泵抬高Vgs的EN Pin=PB4
+
+//#define DCDCEN_Remap_FUN_TurboSel //保留此宏将会把DCDC-EN引脚重映射为降压恒流+极亮直驱的驱动器选择PIN（极亮时输出低电平，恒流时输出高电平）
+
 
 //负责测量LED温度和SPS温度的ADC输入引脚
 #define LED_NTC_Ch 0 //LED电压测量（PA0）

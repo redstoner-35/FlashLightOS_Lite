@@ -41,6 +41,10 @@ typedef enum
 #define AUXV33_IOG STRCAT2(HT_GPIO,AUXV33_IOBank)
 #define AUXV33_IOP STRCAT2(GPIO_PIN_,AUXV33_IOPinNum)
  
+#define VgsBoot_IOB STRCAT2(GPIO_P,VgsBoot_IOBank)
+#define VgsBoot_IOG STRCAT2(HT_GPIO,VgsBoot_IOBank)
+#define VgsBoot_IOP STRCAT2(GPIO_PIN_,VgsBoot_IOPinNum)
+ 
 //函数 
 void SetupRTCForCounter(bool IsRTCStartCount);//设置RTC时钟
 void DisplayBatteryVoltage(void);//显示电池电压

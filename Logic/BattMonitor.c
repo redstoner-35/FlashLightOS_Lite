@@ -116,17 +116,7 @@ void BatteryMonitorHandler(void)
 	//初始化变量并转换
   ADCO.BatteryVoltage=0;
   ADC_GetResult(&ADCO);
-  //当手电处于运行状态时，判断电池电压是否低于警告门限
-	if(LightMode.LightGroup!=Mode_Locked&&LightMode.LightGroup!=Mode_Off&&LightMode.LightGroup!=Mode_Sleep)
-	  {
-		#ifndef UsingLiFePO4Batt
-		if(ADCO.BatteryVoltage<=(2.7*CellCount))BattStatus=Batt_LVFault;
-		else if(ADCO.BatteryVoltage<=(3.01*CellCount))BattStatus=Batt_LVAlert;					
-		#else	
-		if(ADCO.BatteryVoltage<=(2.15*BatteryCellCount))BattStatus=Batt_LVFault;
-		else if(ADCO.BatteryVoltage<=(2.6*BatteryCellCount))BattStatus=Batt_LVAlert;	
-		#endif
-		}			
+  //当手电处于运行状态时，判断电池电压是否低于警告门限	
 	//控制侧按LED的电量显示
 	if(LightMode.LightGroup==Mode_Turbo||LightMode.LightGroup==Mode_Strobe)
 	   {
@@ -139,7 +129,18 @@ void BatteryMonitorHandler(void)
 		case Mode_Off:break;
 		case Mode_Sleep:CurrentLEDIndex=0;break; //手电处于关机状态，关闭指示灯
 		default:
-			 if(BattStatus==Batt_LVFault||BattStatus==Batt_LVAlert)CurrentLEDIndex=12; //警告置起，电量严重不足
+			 //处理电量报警
+		   #ifndef UsingLiFePO4Batt
+		   if(ADCO.BatteryVoltage<=(2.7*CellCount))BattStatus=Batt_LVFault;
+		   else if(ADCO.BatteryVoltage<=(3.01*CellCount))BattStatus=Batt_LVAlert;		
+       else if(ADCO.BatteryVoltage>(3.2*CellCount))BattStatus=Batt_OK; //电池电压大于3.2，解除警报		
+		   #else	
+		   if(ADCO.BatteryVoltage<=(2.15*BatteryCellCount))BattStatus=Batt_LVFault;
+		   else if(ADCO.BatteryVoltage<=(2.6*BatteryCellCount))BattStatus=Batt_LVAlert;	
+	      else if(ADCO.BatteryVoltage>(2.8*CellCount))BattStatus=Batt_OK; //电池电压大于3.2，解除警报		
+		   #endif
+		   //显示电量	
+		   if(BattStatus==Batt_LVFault||BattStatus==Batt_LVAlert)CurrentLEDIndex=12; //警告置起，电量严重不足
 		   else if(ADCO.BatteryVoltage<=(BattLowThr*CellCount))CurrentLEDIndex=3; //电量不足，红灯
 		   else if(ADCO.BatteryVoltage<=(BattMidThr*CellCount))CurrentLEDIndex=2; //电量较充足，黄灯
 		   else CurrentLEDIndex=1; //电量充足，绿灯

@@ -7,12 +7,13 @@
 外设的输出引脚。
 ******* 目前已使用引脚  *******
 PA：0 1 2 9 12 13 14
-PB：0 1
+PB：0 1 2 3 4 8
 
 ******* 不可修改的引脚 *******
 PA9：按键所在引脚，同时触发boot下载模式方便固件更新
 PA12-13：预留给SWDIO debug port
-PA14：预留给MCTM的PWM output channel
+PA14：预留给MCTM的PWM output channel#0
+PB8：预留给MCTM的PWM output channel#3
 ***************************************************/
 
 //侧按按键LED
@@ -23,7 +24,7 @@ PA14：预留给MCTM的PWM output channel
 #define LED_Red_IOPinNum 0 //红色LED引脚定义（PB0）
 
 
-//基于定时器的PWM输出引脚(用于月光档PWM调光)
+//基于定时器的PWM输出引脚(用于PWM调光)
 #define PWMO_IOBank A
 #define PWMO_IOPinNum 14 //PWM Pin=PA14（MT-CH0）
 
@@ -40,6 +41,13 @@ PA14：预留给MCTM的PWM output channel
 
 //#define DCDCEN_Remap_FUN_TurboSel //保留此宏将会把DCDC-EN引脚重映射为降压恒流+极亮直驱的驱动器选择PIN（极亮时输出低电平，恒流时输出高电平）
 
+
+//风扇控制输出
+#define FanPWREN_IOBank B
+#define FanPWREN_IOPinNum 3 //风扇电源控制输出（PB3）
+
+#define FanPWMO_IOBank B
+#define FanPWMO_IOPinNum 8 //PWM Pin=PB8（MT-CH3）
 
 //负责测量LED温度和SPS温度的ADC输入引脚
 #define LED_NTC_Ch 0 //LED电压测量（PA0）

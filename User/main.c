@@ -6,6 +6,7 @@
 #include "ADC.h"
 #include "ModeLogic.h"
 #include "TempControl.h"
+#include "Fan.h"
 
 //函数声明
 void CheckForFlashLock(void);
@@ -41,6 +42,7 @@ int main(void)
  InternalADC_Init();//初始化内部ADC
  SideKeyInit();//初始化侧按按钮
  PWMTimerInit();//初始化PWM输出
+ FanOutputInit();//启动风扇
  LightLogicSetup();//初始化灯具逻辑模块
  CellCountDetectHandler();//检测接入的电池节数
  EnteredMainApp=true; //已进入主APP
@@ -53,6 +55,7 @@ int main(void)
 	 LightModeStateMachine();//处理灯具开关机和挡位逻辑
 	 PIDStepdownCalc();//PID降档计算
 	 ControlMainLEDHandler();//控制灯具的主LED
+	 FanSpeedControlHandler();//控制风扇速度
 	 //0.125S软件定时处理
 	 if(!SensorRefreshFlag)continue;
 	 CalculateActualTemp();//计算温度数值

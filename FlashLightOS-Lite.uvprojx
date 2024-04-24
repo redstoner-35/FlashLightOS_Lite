@@ -627,6 +627,11 @@
               <FileType>1</FileType>
               <FilePath>.\ExtPeriphal\AutoLockRTC.c</FilePath>
             </File>
+            <File>
+              <FileName>Fan.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ExtPeriphal\Fan.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

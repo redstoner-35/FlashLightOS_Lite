@@ -35,6 +35,7 @@ powered by 35's Embedded Systems Inc. A next generation Flashlight firmware solu
 
 + 固件类型名称 ：FlashLightOS Lite  |  FlashLightOS Full 
 + 运行和故障日志系统 ：不支持 | 支持
++ 主动散热风扇控制：支持温控 | 因固件容量限制暂不支持
 + 基于Console的用户配置系统：不支持 | 支持
 + 全挡位任意编程功能： 不支持 | 支持
 + 调光信号输出：单路 PWM输出 | 双路 DAC模拟输出
@@ -75,6 +76,7 @@ powered by 35's Embedded Systems Inc. A next generation Flashlight firmware solu
  - 红色快速闪烁2次：该部件的NTC热敏电阻已损坏，驱动无法获知其温度信息。
 + 四击：进入退出战术模式。
 + 五击：锁定/解锁手电。
++ 六击：强制使能/禁用风扇。（在手电极亮结束主动关机后，风扇仍会继续运转给手电散热，直到手电温度降低到指定阈值。此时用户可以通过6击暂时性的强制关闭风扇。关闭风扇后如果再次6击则开启风扇）
 
 ### 自检通过提示和电池节数识别
 

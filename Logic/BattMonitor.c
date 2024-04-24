@@ -5,6 +5,7 @@
 #include "SideKey.h"
 #include "delay.h"
 #include "FirmwarePref.h"
+#include "Fan.h"
 
 //全局变量
 BatteryAlertDef BattStatus;
@@ -45,6 +46,7 @@ void CellCountDetectHandler(void)
 		//显示自检结束
     CurrentLEDIndex=13;//LED自检结束
     while(CurrentLEDIndex==13)delay_ms(1);//等待
+		ForceDisableFan();//自检已通过，关闭风扇
     getSideKeyShortPressCount(true);  //清除按键操作
 		#else 
 		ADCOutTypeDef ADCO;	
@@ -68,6 +70,7 @@ void CellCountDetectHandler(void)
 				SideKey_LogicHandler();
 				if(getSideKeyShortPressCount(true)==2)IsCorrectBattCount=true; //用户双击要求修正电池节数设置
 				}
+			ForceDisableFan();//自检已通过，关闭风扇
 			//显示识别到的电池节数
 			LED_Reset();//复位LED管理器
 			memset(LEDModeStr,0,sizeof(LEDModeStr));//清空内存
@@ -104,6 +107,7 @@ void CellCountDetectHandler(void)
 	//显示自检结束
   CurrentLEDIndex=13;//LED自检结束
   while(CurrentLEDIndex==13)delay_ms(1);//等待
+	ForceDisableFan();//自检已通过，关闭风扇
   getSideKeyShortPressCount(true);  //清除按键操作			
 	#endif
 	}	

@@ -3,20 +3,24 @@
 #include "ModeLogic.h"
 #include "FirmwarePref.h"
 
+#ifdef EnableFanControl
 //外部和全局变量声明
 extern float PIDInputTemp; //PID输入温度（作为风扇的控制温度）
 extern volatile LightStateDef LightMode; //全局变量
 extern BatteryAlertDef BattStatus;//电池状态
 bool IsFanNeedtoSpin=false; //全局变量，风扇是否旋转
+#endif
 
 //初始化风扇控制
 void FanOutputInit(void)
  {
+ #ifdef EnableFanControl
  TM_OutputInitTypeDef MCTM_OutputInitStructure;
  //配置GPIO
  AFIO_GPxConfig(FanPWMO_IOB,FanPWMO_IOP, AFIO_FUN_MCTM_GPTM);//配置为MCTM0 CH3复用GPIO
  GPIO_DirectionConfig(FanPWMO_IOG,FanPWMO_IOP,GPIO_DIR_OUT);//输出	
- 
+ GPIO_ClearOutBits(FanPWMO_IOG,FanPWMO_IOP);//将对应IO的输出ODR设置为0
+	 
  AFIO_GPxConfig(FanPWREN_IOB,FanPWREN_IOP, AFIO_FUN_GPIO);
  GPIO_DirectionConfig(FanPWREN_IOG,FanPWREN_IOP,GPIO_DIR_OUT);//配置为输出
  GPIO_ClearOutBits(FanPWREN_IOG,FanPWREN_IOP);//输出设置为0
@@ -34,18 +38,23 @@ void FanOutputInit(void)
  TM_OutputInit(HT_MCTM0, &MCTM_OutputInitStructure); //配置输出比较
  //配置完毕，使能风扇让风扇开始旋转
  GPIO_SetOutBits(FanPWREN_IOG,FanPWREN_IOP);  //启用输出比较，电源使能=1
+ #endif
  }
 
 //强制关闭风扇
 void ForceDisableFan(void)
  {
+ #ifdef EnableFanControl
  GPIO_ClearOutBits(FanPWREN_IOG,FanPWREN_IOP); //设置风扇电源为0
- HT_MCTM0->CH3CCR=(unsigned int)0;  //输出0% 
+ AFIO_GPxConfig(FanPWMO_IOB,FanPWMO_IOP,AFIO_FUN_GPIO);
+ HT_MCTM0->CH3CCR=(unsigned int)0;  //直接把复用IO设置为GPIO，输出0% 
+ #endif
  }	
  
 //风扇速度控制函数
 void FanSpeedControlHandler(void)
  {
+ #ifdef EnableFanControl
  float PWMVal,delta;
  //计算风扇是否需要旋转
  if(LightMode.LightGroup==Mode_Turbo)IsFanNeedtoSpin=true; //极亮开启，风扇强制开始旋转
@@ -67,7 +76,9 @@ void FanSpeedControlHandler(void)
  else GPIO_ClearOutBits(FanPWREN_IOG,FanPWREN_IOP); //设置风扇电源
  if(PWMVal<0||!IsFanNeedtoSpin)PWMVal=0; //如果PWM值超出范围或者风扇被禁用，停止输出
  else if(PWMVal>100)PWMVal=100; //超过100则限制为100
+ AFIO_GPxConfig(FanPWMO_IOB,FanPWMO_IOP, PWMVal>0?AFIO_FUN_MCTM_GPTM:AFIO_FUN_GPIO);//如果占空比为0则将输出配置为普通GPIO直接输出0，否则输出PWM
  PWMVal*=(float)(SYSHCLKFreq / PWMFreq); //乘以100%占空比的重装值
  PWMVal/=100; //除以100得到实际重装值	 
- HT_MCTM0->CH3CCR=(unsigned int)PWMVal;  //设置通道3CCR寄存器
+ HT_MCTM0->CH3CCR=(unsigned int)PWMVal;  //设置通道3CCR寄存器 
+ #endif
  }

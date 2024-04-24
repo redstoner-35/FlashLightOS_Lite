@@ -6,7 +6,6 @@
 
 //外部变量
 extern volatile LightStateDef LightMode; //状态机状态
-extern bool IsFanNeedtoSpin; //风扇是否在旋转
 
 //低功耗睡眠计时器
 int DeepSleepTimer=DeepSleepTimeOut*8; //深度睡眠定时器
@@ -14,7 +13,12 @@ bool DeepSleepTimerFlag=false;
 
 void DeepSleepTimerCallBack(void)
   {
-	if(IsFanNeedtoSpin)return; //风扇在旋转期间不允许计时
+	//风扇在旋转期间不允许计时
+	#ifdef EnableFanControl
+  extern bool IsFanNeedtoSpin; //风扇是否在旋转
+	if(IsFanNeedtoSpin)return; 
+	#endif
+	//正常倒计时
 	if(DeepSleepTimer>0&&DeepSleepTimerFlag)
 	    {
 		  DeepSleepTimerFlag=false;

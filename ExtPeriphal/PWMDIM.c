@@ -15,9 +15,9 @@ void SetPWMDuty(float Duty)
    buf/=(float)100;//计算reload值
 	 }
  else buf=0;
- //写通道0比较寄存器后启用定时器
- HT_MCTM0->CH0CCR=(unsigned int)buf; 
- MCTM_CHMOECmd(HT_MCTM0,Duty>0?ENABLE:DISABLE);//根据占空比配置决定是否禁止定时器输出
+ //写通道0比较寄存器以及GPIO配置寄存器
+ AFIO_GPxConfig(PWMO_IOB,PWMO_IOP, Duty>0?AFIO_FUN_MCTM_GPTM:AFIO_FUN_GPIO);//如果占空比为0则将输出配置为普通GPIO直接输出0，否则输出PWM
+ HT_MCTM0->CH0CCR=(unsigned int)buf; //设置CCR寄存器
  }
 
 //初始化定时器 
@@ -58,6 +58,7 @@ void PWMTimerInit(void)
  //配置PWM输出引脚
  AFIO_GPxConfig(PWMO_IOB,PWMO_IOP, AFIO_FUN_MCTM_GPTM);//配置为MCTM0复用GPIO
  GPIO_DirectionConfig(PWMO_IOG,PWMO_IOP,GPIO_DIR_OUT);//输出	
+ GPIO_ClearOutBits(PWMO_IOG,PWMO_IOP);//将对应IO的输出ODR设置为0
  //启动定时器TBU和比较通道1的输出功能
  TM_Cmd(HT_MCTM0, ENABLE); 
  MCTM_CHMOECmd(HT_MCTM0, ENABLE);

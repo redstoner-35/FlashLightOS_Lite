@@ -8,7 +8,6 @@
 #include <math.h>
 
 //全局变量
-extern bool IsFanNeedtoSpin;
 extern BatteryAlertDef BattStatus;//电池状态
 extern int DeepSleepTimer; //深度睡眠计时器
 volatile LightStateDef LightMode; //全局变量
@@ -101,6 +100,9 @@ static void PowerOffProcess(void)
 void LightModeStateMachine(void)
  {
  int Click=getSideKeyShortPressCount(true);
+ #ifdef EnableFanControl	
+ extern bool IsFanNeedtoSpin; //风扇是否在旋转的标志位
+ #endif
  switch(LightMode.LightGroup)
    {
 	 /* 睡眠模式 */
@@ -132,7 +134,9 @@ void LightModeStateMachine(void)
 				CurrentLEDIndex=TacticalMode?17:18;	
 				break;
 				}
-				else if(Click==6)IsFanNeedtoSpin=IsFanNeedtoSpin?false:true; //关机状态6击强制启动和关闭风扇
+		  #ifdef EnableFanControl
+		  else if(Click==6)IsFanNeedtoSpin=IsFanNeedtoSpin?false:true; //关机状态6击强制启动和关闭风扇
+		  #endif
 			else if(Click==5) //五击解锁
 			  {
 				LightMode.IsLocked=true;

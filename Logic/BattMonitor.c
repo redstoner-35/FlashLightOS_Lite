@@ -15,27 +15,42 @@ extern volatile LightStateDef LightMode;
 //自己实现的四舍五入函数声明
 int iroundf(float IN);
 
+#ifdef EnableVoltageQuery
 //显示电池电压
 void DisplayBatteryVoltage(void)
   {
 	ADCOutTypeDef ADCO;
 	//初始化显示，获取电压
-	if(ExtLEDIndex!=NULL)return; //当前还未完成显示，不进行操作
+	if(ExtLEDIndex!=NULL)return; //当前还未完成显示，不进行操作 
+	ADC_GetResult(&ADCO);
+	#ifndef BatteryQueryDivision_10V
+	if(ADCO.BatteryVoltage>=10.00)return; 	//高精度电压显示模式，如果测量到的电压大于10V，则不执行显示	
+  #endif
 	LED_Reset();//复位LED管理器
   memset(LEDModeStr,0,sizeof(LEDModeStr));//清空内存
-  ADC_GetResult(&ADCO);
   //显示电池电压	 
   strncat(LEDModeStr,"12030D",sizeof(LEDModeStr)-1);  //红切换到绿色，熄灭然后马上黄色闪一下，延迟1秒 
+  #ifdef BatteryQueryDivision_10V
   LED_AddStrobe((int)(ADCO.BatteryVoltage)/10,"20");//红色显示十位
   strncat(LEDModeStr,"D",sizeof(LEDModeStr)-1);
   LED_AddStrobe((int)(ADCO.BatteryVoltage)%10,"30"); //使用黄色显示个位数
   strncat(LEDModeStr,"D",sizeof(LEDModeStr)-1);
   LED_AddStrobe(iroundf(ADCO.BatteryVoltage*(float)10)%10,"10");//绿色显示小数点后1位
+	#else
+  LED_AddStrobe((int)(ADCO.BatteryVoltage)%10,"20");//红色显示十位
+  strncat(LEDModeStr,"D",sizeof(LEDModeStr)-1);
+  LED_AddStrobe((int)(ADCO.BatteryVoltage*(float)100)/10,"30"); //使用黄色显示个位数
+  strncat(LEDModeStr,"D",sizeof(LEDModeStr)-1);
+  LED_AddStrobe(iroundf(ADCO.BatteryVoltage*(float)100)%10,"10");//绿色显示小数点后1位		
+		
+		
+	#endif
   if(LightMode.LightGroup!=Mode_Off&&LightMode.LightGroup!=Mode_Sleep) //如果手电筒点亮状态则延迟一下再恢复正常显示
 	strncat(LEDModeStr,"D",sizeof(LEDModeStr)-1);
   strncat(LEDModeStr,"E",sizeof(LEDModeStr)-1);//结束闪烁
   ExtLEDIndex=&LEDModeStr[0];//传指针过去	
   }
+#endif
 
 //自动检测电池电压的处理函数
 void CellCountDetectHandler(void)

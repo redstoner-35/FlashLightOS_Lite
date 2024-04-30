@@ -126,8 +126,12 @@ void LightModeStateMachine(void)
 	 /* 关机模式 */
 	 case Mode_Off:
 		  if(DeepSleepTimer<=0)LightMode.LightGroup=Mode_Sleep; //闲置一定时间，进入睡眠阶段
+	    #ifdef EnableVoltageQuery
 	    else if(getSideKeyDoubleClickAndHoldEvent())DisplayBatteryVoltage();//显示电池电压
+	    #endif
+	    #ifdef EnableTempQuery
 	    else if(getSideKeyTripleClickAndHoldEvent())DisplaySystemTemp();//显示系统温度
+	    #endif
 			else if(Click==4) //关机状态下四击切换战术模式
 			  {
 				TacticalMode=TacticalMode?false:true;
@@ -197,8 +201,12 @@ void LightModeStateMachine(void)
 	    break;
 	 /* 开机,处于循环挡位模式 */
 	 case Mode_Cycle:
+	    #ifdef EnableVoltageQuery
 	    if(getSideKeyDoubleClickAndHoldEvent())DisplayBatteryVoltage();//显示电池电压
+	    #endif
+	    #ifdef EnableTempQuery
 	    if(getSideKeyTripleClickAndHoldEvent())DisplaySystemTemp();//显示系统温度
+	    #endif
 			if(getSideKeyLongPressEvent()||DriverErrorOccurred())//长按或者驱动出错之后，关机
           PowerOffProcess(); 
 	    else if(Click==3)LightMode.LightGroup=Mode_Strobe; //三击爆闪
@@ -213,8 +221,12 @@ void LightModeStateMachine(void)
 		  break;		
 	 /* 开机 处于极亮模式*/
 	 case Mode_Turbo:
+	    #ifdef EnableVoltageQuery
 	    if(getSideKeyDoubleClickAndHoldEvent())DisplayBatteryVoltage();//显示电池电压
+	    #endif
+	    #ifdef EnableTempQuery
 	    if(getSideKeyTripleClickAndHoldEvent())DisplaySystemTemp();//显示系统温度
+	    #endif
 			if(TacticalMode&&(!getSideKeyHoldEvent()||DriverErrorOccurred())) //战术模式下按键松开或者驱动出错之后执行关机
 			   {
          PowerOffProcess();  
@@ -232,8 +244,12 @@ void LightModeStateMachine(void)
 	    break;
 	 /* 开机 处于爆闪模式*/
 	 case Mode_Strobe:
+	    #ifdef EnableVoltageQuery
 	    if(getSideKeyDoubleClickAndHoldEvent())DisplayBatteryVoltage();//显示电池电压
+	    #endif
+	    #ifdef EnableTempQuery
 	    if(getSideKeyTripleClickAndHoldEvent())DisplaySystemTemp();//显示系统温度
+	    #endif
    		if(getSideKeyLongPressEvent()||DriverErrorOccurred())//长按或者驱动出错之后，关机
 				PowerOffProcess(); 
 	    else if(Click==1)LightMode.LightGroup=Mode_Cycle;//单击回到循环档
@@ -241,8 +257,12 @@ void LightModeStateMachine(void)
 	    break;
 	 /* 开机 处于无极调光模式*/
 	 case Mode_Ramp:				
-		 if(getSideKeyDoubleClickAndHoldEvent())DisplayBatteryVoltage();//显示电池电压
-	   if(getSideKeyTripleClickAndHoldEvent())DisplaySystemTemp();//显示系统温度
+	    #ifdef EnableVoltageQuery
+	    if(getSideKeyDoubleClickAndHoldEvent())DisplayBatteryVoltage();//显示电池电压
+	    #endif
+	    #ifdef EnableTempQuery
+	    if(getSideKeyTripleClickAndHoldEvent())DisplaySystemTemp();//显示系统温度
+	    #endif
 		 if(IsKeyStillPressed&&!getSideKeyHoldEvent())IsKeyStillPressed=false; //按键已经松开，可以继续响应  
 	   if(Click>0||DriverErrorOccurred()) //任意操作或者错误，关机
 				{		

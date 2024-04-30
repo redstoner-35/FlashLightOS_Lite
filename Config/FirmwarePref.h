@@ -23,6 +23,9 @@
 #define EnableInstantTurbo //启用一键极亮功能(关机状态下双击直接极亮)
 #define EnableInstantStrobe //启用一键爆闪功能(关机状态下三击直接爆闪)
 
+#define EnableTempQuery //启用三击+长按触发温度查询的功能
+#define EnableVoltageQuery //启用双击+长按查看电压的功能
+
 #define DeepSleepTimeOut 10 //设定驱动在无操作后进入深度睡眠前的延时(s)
 #define AutoLockTimeOut 5 //设定驱动在无操作后自动锁定的延时(分钟)
 
@@ -62,6 +65,8 @@
 
 #define VbattUpResK 100 //电池检测分压电阻上端阻值(KΩ)
 #define VbattDownResK 10 //电池检测分压电阻下端阻值(KΩ)
+
+#define BatteryQueryDivision_10V //设置双击+长按查看电池电压功能的精度，如果去除该注释则电压显示范围为0.01-9.99V,保留则为0.1-99.9V
 
 /***************** 固件风扇温控模块配置 ******************
 这部分的宏定义负责配置固件的风扇控制系统的控制模式。默认

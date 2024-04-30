@@ -121,7 +121,7 @@ void CalculateActualTemp(void)
  PIDInputTemp=LEDFilter(ActualTemp,ThermalLowPassFilter,8*ThermalLPFTimeConstant); //开始载入结果
  CalculatePIDRequest = true; //请求PID计算
  }
-
+#ifdef EnableTempQuery
 //显示降档情况
 void DisplayTemp(float TempIN)
   {
@@ -187,6 +187,7 @@ void DisplaySystemTemp(void)
 	strncat(LEDModeStr,IsPowerON?"DE":"E",sizeof(LEDModeStr)-1); //添加结束符
 	ExtLEDIndex=&LEDModeStr[0];//传指针过去
  }
+#endif
  
 //PID温控处理
 void PIDStepdownCalc(void)

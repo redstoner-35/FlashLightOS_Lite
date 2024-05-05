@@ -1,5 +1,30 @@
 #include "delay.h"
+#include "ModeLogic.h"
 #include "PWMDIM.h"
+
+
+//在车灯模式下生成闪烁提示用户故障发生
+void GenerateMainLEDStrobe(int count)
+ {
+ #ifndef DCDCEN_Remap_FUN_TurboSel
+ GPIO_SetOutBits(VgsBoot_IOG,VgsBoot_IOP); //启用EN
+ GPIO_SetOutBits(AUXV33_IOG,AUXV33_IOP); //启用DCDC 
+ #else //极亮直驱 先启用电荷泵然后启用驱动器
+ GPIO_SetOutBits(VgsBoot_IOG,VgsBoot_IOP);
+ delay_ms(10);
+ GPIO_ClearOutBits(AUXV33_IOG,AUXV33_IOP); 
+ #endif
+ while(count>0) //开始循环制造闪烁	 
+   {
+   SetPWMDuty(10.0);
+	 delay_ms(200);
+	 SetPWMDuty(0.0); //制造闪烁
+	 delay_ms(200);
+	 count--;
+	 }
+ GPIO_ClearOutBits(AUXV33_IOG,AUXV33_IOP); //禁用DCDC
+ GPIO_ClearOutBits(VgsBoot_IOG,VgsBoot_IOP); //禁用电荷泵
+ }
 
 //设置占空比
 void SetPWMDuty(float Duty)
@@ -62,4 +87,12 @@ void PWMTimerInit(void)
  //启动定时器TBU和比较通道1的输出功能
  TM_Cmd(HT_MCTM0, ENABLE); 
  MCTM_CHMOECmd(HT_MCTM0, ENABLE);
+ //初始化DCDC EN的GPIO 
+ AFIO_GPxConfig(AUXV33_IOB,AUXV33_IOP, AFIO_FUN_GPIO);//配置为GPIO
+ GPIO_DirectionConfig(AUXV33_IOG,AUXV33_IOP,GPIO_DIR_OUT);//输出
+ GPIO_ClearOutBits(AUXV33_IOG,AUXV33_IOP);//DCDC-EN 默认输出0		
+ //初始化极亮电荷泵的IO
+ AFIO_GPxConfig(VgsBoot_IOB,VgsBoot_IOP, AFIO_FUN_GPIO);//配置为GPIO
+ GPIO_DirectionConfig(VgsBoot_IOG,VgsBoot_IOP,GPIO_DIR_OUT);//输出
+ GPIO_ClearOutBits(VgsBoot_IOG,VgsBoot_IOP);//电荷泵IO 默认输出0	
  }

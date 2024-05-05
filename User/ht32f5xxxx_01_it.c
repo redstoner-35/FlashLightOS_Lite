@@ -30,6 +30,7 @@
 #include "LEDMgmt.h"
 #include "SideKey.h"
 #include "ModeLogic.h"
+#include "FirmwarePref.h"
 
 /** @addtogroup HT32_Series_Peripheral_Examples HT32 Peripheral Examples
   * @{
@@ -118,6 +119,7 @@ void SysTick_Handler(void)
 	//秒数倒计时
   if(DelaySeconds)DelaySeconds--;
 }
+#ifndef CarLampMode
 /*********************************************************************************************************//**
  * @brief   This function handles EXTI 4~15 interrupt.
  * @retval  None
@@ -126,11 +128,11 @@ void EXTI4_15_IRQHandler(void)
 {
   if (EXTI_GetEdgeFlag(ExtKey_EXTI_CHANNEL))
   {
-    EXTI_ClearEdgeFlag(ExtKey_EXTI_CHANNEL);
+    EXTI_ClearEdgeFlag(ExtKey_EXTI_CHANNEL);		
     SideKey_Callback();//进入回调处理
   }
 }
-
+#endif
 /*********************************************************************************************************//**
  * @brief   This function handles ADC interrupt.
  * @retval  None
@@ -160,7 +162,9 @@ void GPTM0_IRQHandler(void)
 		SensorRefreshFlag=true;//请求传感器刷新
 		DeepSleepTimerFlag=true;//处理深度睡眠定时器
 		//定时器
+		#ifndef CarLampMode
 	  SideKey_TIM_Callback();//侧按按键计时器
+		#endif
 		}
  }
  /*********************************************************************************************************//**

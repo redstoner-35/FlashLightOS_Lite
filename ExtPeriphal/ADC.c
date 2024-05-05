@@ -2,6 +2,7 @@
 #include "ADC.h"
 #include "LEDMgmt.h"
 #include <math.h>
+#include "PWMDIM.h"
 #include "TempControl.h"
 
 volatile static bool ADCEOCFlag=false;
@@ -118,15 +119,28 @@ void InternalADC_Init(void)
 	 if(ADCO.LEDNTCState!=NTC_OK)
 	  {
 		#ifdef NTCStrictMode	
-	  CurrentLEDIndex=4;//指示LED NTC故障
+		  #ifdef CarLampMode
+	    GenerateMainLEDStrobe(3); //LED NTC故障，车灯模式，主灯闪烁3次提示用户
+      #else			
+	    CurrentLEDIndex=4;//指示LED NTC故障
+	    #endif
     while(1);
 		#else
 		if(ADCO.MOSNTCState!=NTC_OK)	
 		  {
+			#ifdef CarLampMode	
+      GenerateMainLEDStrobe(5); //所有NTC故障，车灯模式，主灯闪烁5次提示用户
+			#else
 			CurrentLEDIndex=20;//指示所有NTC均已损坏
+		  #endif
 			while(1);
 			}
-		else LED_ShowLoopOperationOnce(4); //显示LED NTC故障后继续	
+		else 
+			#ifdef CarLampMode
+	    GenerateMainLEDStrobe(3); //LED NTC故障，车灯模式，主灯闪烁3次提示用户
+      #else		
+		  LED_ShowLoopOperationOnce(4); //显示LED NTC故障后继续	
+		  #endif
 	  #endif
 	  }
 	#endif
@@ -135,15 +149,28 @@ void InternalADC_Init(void)
 	if(ADCO.MOSNTCState!=NTC_OK)
 	  {
 		#ifdef NTCStrictMode
-	  CurrentLEDIndex=5;//指示驱动自身 NTC故障
+		  #ifdef CarLampMode
+			GenerateMainLEDStrobe(4); //驱动NTC故障，车灯模式，主灯闪烁4次提示用户
+	    #else
+			CurrentLEDIndex=5;//指示驱动自身 NTC故障
+			#endif
     while(1);
 		#else
 		if(ADCO.LEDNTCState!=NTC_OK)	
 	    {
+      #ifdef CarLampMode	
+      GenerateMainLEDStrobe(5); //所有NTC故障，车灯模式，主灯闪烁5次提示用户
+			#else
 			CurrentLEDIndex=20;//指示所有NTC均已损坏
+		  #endif
 			while(1);
 			}
-		else LED_ShowLoopOperationOnce(5); //显示驱动NTC故障后继续			
+		else 
+			#ifdef CarLampMode
+		  GenerateMainLEDStrobe(4); //驱动NTC故障，车灯模式，主灯闪烁4次提示用户
+		  #else		
+		  LED_ShowLoopOperationOnce(5); //显示驱动NTC故障后继续		
+      #endif		
 	  #endif
 	  }	
 	#endif

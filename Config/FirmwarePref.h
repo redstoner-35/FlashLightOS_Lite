@@ -20,6 +20,7 @@
 #define TurboDuty 100 //极亮和爆闪模式的占空比(单位%)
 #define StrobeFreq 5 //爆闪挡位频率(Hz)
 
+//#define CarLampMode //启用车灯模式(禁用所有按键和指示灯功能,按键线作为ACC，上电之后按键线对地短路则以极亮运行,按键线悬空则熄灭)
 #define EnableInstantTurbo //启用一键极亮功能(关机状态下双击直接极亮)
 #define EnableInstantStrobe //启用一键爆闪功能(关机状态下三击直接爆闪)
 
@@ -60,7 +61,7 @@
 固件的配置为单节三元锂离子电池(满电4.2V，通常电压3.7)
 *********************************************************/
 #define BatteryCellCount 1 //该固件所适用的锂电的节数
-//#define NoAutoBatteryDetect //禁用固件的自动电池节数检测功能
+#define NoAutoBatteryDetect //禁用固件的自动电池节数检测功能
 //#define UsingLiFePO4Batt //如果固件需要使用磷酸铁锂电池，则请去除此宏的注释（警告！磷酸铁锂下电池最少需要2节）
 
 #define VbattUpResK 100 //电池检测分压电阻上端阻值(KΩ)

@@ -37,6 +37,10 @@ void LightLogicSetup(void)
  LightMode.LightGroup=Mode_Off;
  LightMode.IsLocked=false;
  BattStatus=Batt_OK;//上电之后触发警报
+ #ifdef CarLampMode
+ SetupRTCForCounter(false);	//车灯模式，禁止自动锁定检测
+ TacticalMode=true;//车灯模式，直接配置为战术模式 
+ #endif
  //初始化负责爆闪的GPTM1
  TimeBaseInit.Prescaler = 4799;                      // 48MHz->10KHz
  TimeBaseInit.CounterReload = (int)(10000/(StrobeFreq*2))-1;                  // 10KHz->指定爆闪频率*2
@@ -46,15 +50,7 @@ void LightLogicSetup(void)
  TM_TimeBaseInit(HT_GPTM1, &TimeBaseInit);
  TM_ClearFlag(HT_GPTM1, TM_FLAG_UEV);
  NVIC_EnableIRQ(GPTM1_IRQn);
- TM_IntConfig(HT_GPTM1,TM_INT_UEV,ENABLE);//配置好中断
- //初始化DCDC EN的GPIO 
- AFIO_GPxConfig(AUXV33_IOB,AUXV33_IOP, AFIO_FUN_GPIO);//配置为GPIO
- GPIO_DirectionConfig(AUXV33_IOG,AUXV33_IOP,GPIO_DIR_OUT);//输出
- GPIO_ClearOutBits(AUXV33_IOG,AUXV33_IOP);//DCDC-EN 默认输出0		
- //初始化极亮电荷泵的IO
- AFIO_GPxConfig(VgsBoot_IOB,VgsBoot_IOP, AFIO_FUN_GPIO);//配置为GPIO
- GPIO_DirectionConfig(VgsBoot_IOG,VgsBoot_IOP,GPIO_DIR_OUT);//输出
- GPIO_ClearOutBits(VgsBoot_IOG,VgsBoot_IOP);//电荷泵IO 默认输出0		
+ TM_IntConfig(HT_GPTM1,TM_INT_UEV,ENABLE);//配置好中断	
  }
 
 //低电压警报闪烁
@@ -68,7 +64,8 @@ void LowVoltageAlertHandler(void)
  if(LVAlertTimer>0)LVAlertTimer--;
  else LVAlertTimer=64; //开始计时
  }
- 
+
+#ifndef CarLampMode
 //处理循环档单击+长按的反向换挡按键操作的逻辑
 void ReverseModeCycleOpHandler(void)
  {
@@ -85,21 +82,28 @@ void ReverseModeCycleOpHandler(void)
 	 }
  else ReverseSwitchDelay=0; //用户松开按键，计时器复位
  }
- 
+#endif
+
 //手电正常和异常关机处理函数
 static void PowerOffProcess(void)
  {
  if(TempState!=SysTemp_OK)CurrentLEDIndex=TempState==Systemp_DriverHigh?7:8;//过热告警触发，显示原因
  else  CurrentLEDIndex=0; //关闭指示灯						
  LightMode.LightGroup=Mode_Off;
- BattStatus=Batt_OK; //电池电压检测重置				
+ BattStatus=Batt_OK; //电池电压检测重置		
+ #ifndef CarLampMode	 
  SetupRTCForCounter(true);	//使能自动锁定检测
+ #endif
  }
  
 //换挡和手电开关状态机
 void LightModeStateMachine(void)
  {
+ #ifndef CarLampMode
  int Click=getSideKeyShortPressCount(true);
+ #else
+ int Click=0;
+ #endif
  #ifdef EnableFanControl	
  extern bool IsFanNeedtoSpin; //风扇是否在旋转的标志位
  #endif
@@ -107,10 +111,15 @@ void LightModeStateMachine(void)
    {
 	 /* 睡眠模式 */
 	 case Mode_Sleep:
+		  #ifndef CarLampMode
 		  EnteredLowPowerMode();//令主控睡眠
+	    #else
+	    LightMode.LightGroup=Mode_Off; //车灯模式，禁止睡眠
+	    #endif
 	    break;
 	 /* 锁定模式 */
 	 case Mode_Locked:
+		  #ifndef CarLampMode
 		  if(DeepSleepTimer<=0)LightMode.LightGroup=Mode_Sleep; //闲置一定时间，进入睡眠阶段
 		  else if(Click==5)
 			   {
@@ -122,9 +131,13 @@ void LightModeStateMachine(void)
 	    else if(Click>0||getSideKeyHoldEvent()||getSideKeyClickAndHoldEvent())
 		    CurrentLEDIndex=(CurrentLEDIndex==0)?9:CurrentLEDIndex; //其余任何操作显示非法
 			else DeepSleepTimerCallBack();//执行倒计时
+	    #else
+	    LightMode.LightGroup=Mode_Off; //车灯模式，禁止睡眠
+	    #endif
 	    break;
 	 /* 关机模式 */
 	 case Mode_Off:
+		 #ifndef CarLampMode
 		  if(DeepSleepTimer<=0)LightMode.LightGroup=Mode_Sleep; //闲置一定时间，进入睡眠阶段
 	    #ifdef EnableVoltageQuery
 	    else if(getSideKeyDoubleClickAndHoldEvent())DisplayBatteryVoltage();//显示电池电压
@@ -141,13 +154,13 @@ void LightModeStateMachine(void)
 		  #ifdef EnableFanControl
 		  else if(Click==6)IsFanNeedtoSpin=IsFanNeedtoSpin?false:true; //关机状态6击强制启动和关闭风扇
 		  #endif
-			else if(Click==5) //五击解锁
+			else if(Click==5) //五击锁定
 			  {
 				LightMode.IsLocked=true;
 				TacticalMode=false; //锁定后自动取消战术模式
 			  CurrentLEDIndex=11; //提示用户锁定
 				LightMode.LightGroup=Mode_Locked;
-				}
+				}			
 	    else if(DriverErrorOccurred())//电池低压锁定触发或者高温警报，禁止开机
 			  {
 				if((Click>0||getSideKeyAnyHoldEvent())&&CurrentLEDIndex==0)CurrentLEDIndex=BattStatus==Batt_LVFault?19:7; //显示导致无法开机的问题
@@ -198,9 +211,14 @@ void LightModeStateMachine(void)
 				}
 			#endif
 			else DeepSleepTimerCallBack();//执行倒计时
+	  #else	
+	    if(DriverErrorOccurred())LightMode.LightGroup=Mode_Off; //出现错误，禁止开机
+			else if(!GPIO_ReadInBit(ExtKey_IOG,ExtKey_IOP))LightMode.LightGroup=Mode_Turbo; //按键按下，开机
+	  #endif
 	    break;
 	 /* 开机,处于循环挡位模式 */
 	 case Mode_Cycle:
+		#ifndef CarLampMode
 	    #ifdef EnableVoltageQuery
 	    if(getSideKeyDoubleClickAndHoldEvent())DisplayBatteryVoltage();//显示电池电压
 	    #endif
@@ -217,10 +235,13 @@ void LightModeStateMachine(void)
 					}
 			while(CycleModeRatio[LightMode.CycleModeCount]==-1); //持续循环换挡直到挡位配置不为-1
 			else if(Click==2)LightMode.LightGroup=Mode_Turbo; //在电池没有低压警告的时候双击极亮
-	    else 
+		 #else		
+	   LightMode.LightGroup=Mode_Turbo; //车灯单档模式，强制跳转至极亮		
+		 #endif			
 		  break;		
 	 /* 开机 处于极亮模式*/
 	 case Mode_Turbo:
+		#ifndef CarLampMode
 	    #ifdef EnableVoltageQuery
 	    if(getSideKeyDoubleClickAndHoldEvent())DisplayBatteryVoltage();//显示电池电压
 	    #endif
@@ -241,9 +262,13 @@ void LightModeStateMachine(void)
 				}
 	    else if(Click==1)LightMode.LightGroup=Mode_Cycle;//单击回到循环档
 	    else if(Click==3)LightMode.LightGroup=Mode_Strobe; //三击爆闪
+		#else
+		  if(GPIO_ReadInBit(ExtKey_IOG,ExtKey_IOP)||DriverErrorOccurred())PowerOffProcess();//按键按下或者发生错误关机
+		#endif
 	    break;
 	 /* 开机 处于爆闪模式*/
 	 case Mode_Strobe:
+		#ifndef CarLampMode
 	    #ifdef EnableVoltageQuery
 	    if(getSideKeyDoubleClickAndHoldEvent())DisplayBatteryVoltage();//显示电池电压
 	    #endif
@@ -254,9 +279,13 @@ void LightModeStateMachine(void)
 				PowerOffProcess(); 
 	    else if(Click==1)LightMode.LightGroup=Mode_Cycle;//单击回到循环档
 	    else if(Click==2)LightMode.LightGroup=Mode_Turbo; //双击极亮
+	  #else
+	  LightMode.LightGroup=Mode_Turbo; //车灯单档模式，强制跳转至极亮		
+	  #endif
 	    break;
 	 /* 开机 处于无极调光模式*/
-	 case Mode_Ramp:				
+	 case Mode_Ramp:	
+    #ifndef CarLampMode	 
 	    #ifdef EnableVoltageQuery
 	    if(getSideKeyDoubleClickAndHoldEvent())DisplayBatteryVoltage();//显示电池电压
 	    #endif
@@ -269,7 +298,10 @@ void LightModeStateMachine(void)
         PowerOffProcess(); 
 				IsKeyStillPressed=true; //等待计时
 			  while(getSideKeyHoldEvent())SideKey_LogicHandler();//等待按键松开
-				}				
+				}			
+    #else
+    LightMode.LightGroup=Mode_Turbo; //车灯单档模式，强制跳转至极亮		
+    #endif	 
 		 break;
 	 }	 
  }
@@ -280,6 +312,7 @@ static bool IsEnabledLimitTimer=false;
  
 void RampAdjustHandler(void)
  {
+ #ifndef CarLampMode	 
  float incValue;
  bool Keybuf;
  //判断操作	 
@@ -316,6 +349,7 @@ void RampAdjustHandler(void)
   if(BattStatus==Batt_LVAlert)DimmingRatio=0.01;//电量警报，调低亮度到最低
 	if(MinMaxBrightNessStrobeTimer>0)MinMaxBrightNessStrobeTimer--;
   else LightMode.IsMainLEDOn=true; //重新打开LED
+ #endif
  }
 //处理主LED控制的函数
 void ControlMainLEDHandler(void)

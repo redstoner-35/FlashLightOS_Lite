@@ -12,6 +12,42 @@ static unsigned char KeyTimer[2];//计时器0用于按键按下计时，计时�
 static KeyEventStrDef Keyevent;
 extern volatile LightStateDef LightMode; //状态机处理
 
+//初始化侧按键
+void SideKeyInit(void)
+  {
+	CKCU_PeripClockConfig_TypeDef CLKConfig={{0}};
+	#ifndef CarLampMode
+  EXTI_InitTypeDef EXTI_InitStruct;
+	#endif
+  //配置时钟打开GPIOC AFIO和EXTI系统
+	CLKConfig.Bit.PC=1;
+  CLKConfig.Bit.AFIO=1;
+  CLKConfig.Bit.EXTI=1;
+  CKCU_PeripClockConfig(CLKConfig,ENABLE);
+	//配置GPIO
+  AFIO_GPxConfig(ExtKey_IOB,ExtKey_IOP, AFIO_FUN_GPIO);//GPIO功能
+  GPIO_DirectionConfig(ExtKey_IOG,ExtKey_IOP,GPIO_DIR_IN);//配置为输入
+	GPIO_InputConfig(ExtKey_IOG,ExtKey_IOP,ENABLE);//启用IDR
+  #ifndef CarLampMode
+	//配置GPIO中断
+	AFIO_EXTISourceConfig(ExtKey_IOPN,ExtKey_IOB); //配置中断源
+	EXTI_InitStruct.EXTI_Channel = ExtKey_EXTI_CHANNEL; //配置选择好的通道
+  EXTI_InitStruct.EXTI_Debounce = EXTI_DEBOUNCE_ENABLE; 
+  EXTI_InitStruct.EXTI_DebounceCnt = 5;  //启用去抖
+  EXTI_InitStruct.EXTI_IntType = EXTI_BOTH_EDGE; //双边沿触发
+  EXTI_Init(&EXTI_InitStruct);  
+  EXTI_IntConfig(ExtKey_EXTI_CHANNEL, ENABLE); //启用对应的按键中断
+  NVIC_EnableIRQ(ExtKey_EXTI_IRQn); //启用IRQ
+	#endif
+	//初始化内容
+	Keyevent.LongPressEvent=false;
+	Keyevent.ShortPressCount=0;
+	Keyevent.ShortPressEvent=false;
+	Keyevent.PressAndHoldEvent=false;
+	Keyevent.DoubleClickAndHoldEvent=false;
+	Keyevent.TripleClickAndHold=false;
+	}
+#ifndef CarLampMode
 //侧按按键计时模块
 void SideKey_TIM_Callback(void)
   {
@@ -34,38 +70,6 @@ void SideKey_TIM_Callback(void)
 		KeyTimer[1]|=buf; //将数值取出来，加1再写回去
 		}
 	else KeyTimer[1]=0; //定时器关闭
-	}
-
-//初始化侧按键
-void SideKeyInit(void)
-  {
-	CKCU_PeripClockConfig_TypeDef CLKConfig={{0}};
-  EXTI_InitTypeDef EXTI_InitStruct;
-  //配置时钟打开GPIOC AFIO和EXTI系统
-	CLKConfig.Bit.PC=1;
-  CLKConfig.Bit.AFIO=1;
-  CLKConfig.Bit.EXTI=1;
-  CKCU_PeripClockConfig(CLKConfig,ENABLE);
-	//配置GPIO
-  AFIO_GPxConfig(ExtKey_IOB,ExtKey_IOP, AFIO_FUN_GPIO);//GPIO功能
-  GPIO_DirectionConfig(ExtKey_IOG,ExtKey_IOP,GPIO_DIR_IN);//配置为输入
-	GPIO_InputConfig(ExtKey_IOG,ExtKey_IOP,ENABLE);//启用IDR
-	//配置GPIO中断
-	AFIO_EXTISourceConfig(ExtKey_IOPN,ExtKey_IOB); //配置中断源
-	EXTI_InitStruct.EXTI_Channel = ExtKey_EXTI_CHANNEL; //配置选择好的通道
-  EXTI_InitStruct.EXTI_Debounce = EXTI_DEBOUNCE_ENABLE; 
-  EXTI_InitStruct.EXTI_DebounceCnt = 5;  //启用去抖
-  EXTI_InitStruct.EXTI_IntType = EXTI_BOTH_EDGE; //双边沿触发
-  EXTI_Init(&EXTI_InitStruct);  
-  EXTI_IntConfig(ExtKey_EXTI_CHANNEL, ENABLE); //启用对应的按键中断
-  NVIC_EnableIRQ(ExtKey_EXTI_IRQn); //启用IRQ
-	//初始化内容
-	Keyevent.LongPressEvent=false;
-	Keyevent.ShortPressCount=0;
-	Keyevent.ShortPressEvent=false;
-	Keyevent.PressAndHoldEvent=false;
-	Keyevent.DoubleClickAndHoldEvent=false;
-	Keyevent.TripleClickAndHold=false;
 	}
 
 //侧按键回调处理函数
@@ -209,3 +213,4 @@ bool getSideKeyTripleClickAndHoldEvent(void)
   {
 	return Keyevent.TripleClickAndHold;
 	}
+#endif

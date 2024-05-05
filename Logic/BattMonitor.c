@@ -15,6 +15,15 @@ extern volatile LightStateDef LightMode;
 //自己实现的四舍五入函数声明
 int iroundf(float IN);
 
+
+//固件模式配置警告
+#ifdef CarLampMode	 
+  //启用了自动识别，报错
+  #ifndef NoAutoBatteryDetect
+	#error "Automatic Battery count Detection is not supported for Car-Lamp mode!"
+	#endif
+#endif
+
 #ifdef EnableVoltageQuery
 //显示电池电压
 void DisplayBatteryVoltage(void)
@@ -41,9 +50,7 @@ void DisplayBatteryVoltage(void)
   strncat(LEDModeStr,"D",sizeof(LEDModeStr)-1);
   LED_AddStrobe((int)(ADCO.BatteryVoltage*(float)100)/10,"30"); //使用黄色显示个位数
   strncat(LEDModeStr,"D",sizeof(LEDModeStr)-1);
-  LED_AddStrobe(iroundf(ADCO.BatteryVoltage*(float)100)%10,"10");//绿色显示小数点后1位		
-		
-		
+  LED_AddStrobe(iroundf(ADCO.BatteryVoltage*(float)100)%10,"10");//绿色显示小数点后1位			
 	#endif
   if(LightMode.LightGroup!=Mode_Off&&LightMode.LightGroup!=Mode_Sleep) //如果手电筒点亮状态则延迟一下再恢复正常显示
 	strncat(LEDModeStr,"D",sizeof(LEDModeStr)-1);
@@ -59,10 +66,12 @@ void CellCountDetectHandler(void)
 		#ifdef UsingLiFePO4Batt
 		CellCount=BatteryCellCount; //此时固件不进行检测，按照指定的节数执行检测
 		//显示自检结束
-    CurrentLEDIndex=13;//LED自检结束
+    #ifndef CarLampMode
+	  CurrentLEDIndex=13;//LED自检结束
     while(CurrentLEDIndex==13)delay_ms(1);//等待
+    getSideKeyShortPressCount(true);  //清除按键操作	
+	  #endif
 		ForceDisableFan();//自检已通过，关闭风扇
-    getSideKeyShortPressCount(true);  //清除按键操作
 		#else 
 		ADCOutTypeDef ADCO;	
 		bool IsCorrectBattCount=false;
@@ -120,10 +129,12 @@ void CellCountDetectHandler(void)
 	#else
 	CellCount=BatteryCellCount; //用户在配置中禁用检测，按照指定的节数执行欠压检测	
 	//显示自检结束
-  CurrentLEDIndex=13;//LED自检结束
+  #ifndef CarLampMode
+	CurrentLEDIndex=13;//LED自检结束
   while(CurrentLEDIndex==13)delay_ms(1);//等待
-	ForceDisableFan();//自检已通过，关闭风扇
-  getSideKeyShortPressCount(true);  //清除按键操作			
+  getSideKeyShortPressCount(true);  //清除按键操作	
+	#endif
+	ForceDisableFan();//自检已通过，关闭风扇  		
 	#endif
 	}	
 	
@@ -159,13 +170,17 @@ void BatteryMonitorHandler(void)
 	      else if(ADCO.BatteryVoltage>(2.8*CellCount))BattStatus=Batt_OK; //电池电压大于3.2，解除警报		
 		   #endif
 		   //显示电量	
+		   #ifndef CarLampMode	
 		   if(BattStatus==Batt_LVFault||BattStatus==Batt_LVAlert)CurrentLEDIndex=12; //警告置起，电量严重不足
 		   else if(ADCO.BatteryVoltage<=(BattLowThr*CellCount))CurrentLEDIndex=3; //电量不足，红灯
 		   else if(ADCO.BatteryVoltage<=(BattMidThr*CellCount))CurrentLEDIndex=2; //电量较充足，黄灯
 		   else CurrentLEDIndex=1; //电量充足，绿灯
+		   #endif
 		}
+	#ifndef CarLampMode	
 	//如果温控降档发生则指示灯index +13使得侧按开始频闪指示降档
   if(LightMode.MainLEDThrottleRatio<100&&CurrentLEDIndex>0&&CurrentLEDIndex<4)CurrentLEDIndex+=13;
+	#endif
 	}
 //检测电池电压并复位警报的函数
 void BatteryAlertResetDetect(void)

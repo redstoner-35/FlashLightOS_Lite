@@ -88,7 +88,7 @@ void ReverseModeCycleOpHandler(void)
 static void PowerOffProcess(void)
  {
  if(TempState!=SysTemp_OK)CurrentLEDIndex=TempState==Systemp_DriverHigh?7:8;//过热告警触发，显示原因
- else  CurrentLEDIndex=0; //关闭指示灯						
+ else CurrentLEDIndex=(BattStatus==Batt_OK)?0:12; //如果电池电量正常，则关闭指示灯，否则提示电量严重不足						
  LightMode.LightGroup=Mode_Off;
  BattStatus=Batt_OK; //电池电压检测重置		
  #ifndef CarLampMode	 
@@ -120,7 +120,11 @@ void LightModeStateMachine(void)
 	 /* 锁定模式 */
 	 case Mode_Locked:
 		  #ifndef CarLampMode
-		  if(DeepSleepTimer<=0)LightMode.LightGroup=Mode_Sleep; //闲置一定时间，进入睡眠阶段
+		  if(DeepSleepTimer<=0) //深度睡眠定时器倒计时结束
+				 {
+				 LightMode.LightGroup=Mode_Sleep; //闲置一定时间，进入睡眠阶段
+				 CurrentLEDIndex=0; //关闭指示灯
+				 }
 		  else if(Click==5)
 			   {
 			   LightMode.LightGroup=Mode_Off; //五击解锁
@@ -138,7 +142,11 @@ void LightModeStateMachine(void)
 	 /* 关机模式 */
 	 case Mode_Off:
 		 #ifndef CarLampMode
-		  if(DeepSleepTimer<=0)LightMode.LightGroup=Mode_Sleep; //闲置一定时间，进入睡眠阶段
+		  if(DeepSleepTimer<=0) //深度睡眠定时器倒计时结束
+			    {
+				  LightMode.LightGroup=Mode_Sleep; //闲置一定时间，进入睡眠阶段
+					CurrentLEDIndex=0; //关闭指示灯
+					}
 	    #ifdef EnableVoltageQuery
 	    else if(getSideKeyDoubleClickAndHoldEvent())DisplayBatteryVoltage();//显示电池电压
 	    #endif

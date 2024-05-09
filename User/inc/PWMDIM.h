@@ -10,6 +10,10 @@
 #define PWMO_IOB STRCAT2(GPIO_P,PWMO_IOBank)
 #define PWMO_IOP STRCAT2(GPIO_PIN_,PWMO_IOPinNum)
 
+#define HybridPWMO_IOG STRCAT2(HT_GPIO,HybridPWMO_IOBank)
+#define HybridPWMO_IOB STRCAT2(GPIO_P,HybridPWMO_IOBank)
+#define HybridPWMO_IOP STRCAT2(GPIO_PIN_,HybridPWMO_IOPinNum)
+
 //定义
 #define SYSHCLKFreq 48000000  //系统AHB频率48MHz
 #define PWMFreq 20000 //PWM频率20Khz
@@ -24,5 +28,5 @@ float OC5021B_ICCMax(void);//计算OC5021B线性调光的最大可达电流
 float OC5021B_CalcPWMDACDuty(float Current);//计算OC5021B在某个对应电流时PWMDAC的占空比
 float CalcDirectDriveDuty(float Current);//极亮直驱的PID平均电流恒流运算
 void ResetDirectDriveCCPID(void);//对直驱的PID恒流模块进行reset
-
+void OC5021B_SetHybridDuty(float Duty);	//设置OC5021B混合调光的占空比
 #endif

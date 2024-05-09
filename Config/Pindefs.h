@@ -23,9 +23,12 @@ PA14：预留给MCTM的PWM output channel
 #define LED_Red_IOPinNum 0 //红色LED引脚定义（PB0）
 
 
-//基于定时器的PWM输出引脚(用于月光档PWM调光)
+//基于定时器的PWM输出引脚(用于极亮直驱PWM调光和混合调光)
 #define PWMO_IOBank A
-#define PWMO_IOPinNum 14 //PWM Pin=PA14（MT-CH0）
+#define PWMO_IOPinNum 14 //直驱PWM Pin=PA14（MT-CH0）
+
+#define HybridPWMO_IOBank B
+#define HybridPWMO_IOPinNum 8 //OC5021B 混合PWM Pin=PB8（MT-CH3）
 
 //按键
 #define ExtKey_IOBank A

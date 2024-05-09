@@ -26,6 +26,7 @@
 #define DeepSleepTimeOut 10 //设定驱动在无操作后进入深度睡眠前的延时(s)
 #define AutoLockTimeOut 5 //设定驱动在无操作后自动锁定的延时(分钟)
 
+#define OC5021B_MinimumIsetRatio 10 //设置负责恒流调光的OC5021B所能达到的最小额定输出电流百分比(%)
 #define OC5021B_ShuntmOhm 30 //设置负责恒流调光的OC5021B的检流电阻阻值(单位mR)
 /***************** 固件温度控制模块配置 ******************
 这部分的宏定义负责配置固件的温度测量系统和PID温度控制器的

@@ -49,8 +49,4 @@ void OnChipADC_FaultHandler(void);//ADC异常处理
 void ADC_EOC_interrupt_Callback(void);//ADC结束转换处理
 void InternalADC_QuickInit(void);//内部ADC快速初始化
 
-//外部ref
-extern const char *NTCStateString[3];
-extern const char *SPSTMONString[3];
-
 #endif

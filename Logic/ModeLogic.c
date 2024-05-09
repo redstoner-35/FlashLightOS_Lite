@@ -319,6 +319,7 @@ void ControlMainLEDHandler(void)
 	 else //电荷泵从开机到关机，先禁用PWM输出，然后等待10mS后再关闭电荷泵
 	   {
 		 SetPWMDuty(0);
+		 OC5021B_SetHybridDuty(0);
 		 delay_ms(10);
 		 GPIO_ClearOutBits(VgsBoot_IOG,VgsBoot_IOP);
 		 }	 

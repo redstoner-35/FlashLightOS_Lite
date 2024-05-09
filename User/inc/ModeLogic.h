@@ -46,6 +46,7 @@ typedef enum
 #define VgsBoot_IOP STRCAT2(GPIO_PIN_,VgsBoot_IOPinNum)
  
 //函数 
+void DisplayMainLEDCurrent(void);//显示直驱输出电流
 void SetupRTCForCounter(bool IsRTCStartCount);//设置RTC时钟
 void DisplayBatteryVoltage(void);//显示电池电压
 void CellCountDetectHandler(void);//检测电池节数

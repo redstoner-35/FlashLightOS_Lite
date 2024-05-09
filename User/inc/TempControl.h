@@ -6,7 +6,7 @@
 
 //定义
 #define ThermalLPFTimeConstant 15 //定义温度低通滤波器的时间常数（单位秒）
-#define LEDThermalWeight 90 //LED侧的权重值
+#define LEDThermalWeight 95 //LED侧的权重值
 
 typedef enum
  {

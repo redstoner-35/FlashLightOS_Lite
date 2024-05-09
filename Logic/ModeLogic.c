@@ -210,6 +210,7 @@ void LightModeStateMachine(void)
 	 case Mode_Turbo:
 	    if(getSideKeyDoubleClickAndHoldEvent())DisplayBatteryVoltage();//显示电池电压
 	    if(getSideKeyTripleClickAndHoldEvent())DisplaySystemTemp();//显示系统温度
+	    if(Click==4)DisplayMainLEDCurrent();//四击，显示LED电流
 			if(TacticalMode&&(!getSideKeyHoldEvent()||DriverErrorOccurred())) //战术模式下按键松开或者驱动出错之后执行关机
 			   {
          PowerOffProcess();  
@@ -339,11 +340,16 @@ void ControlMainLEDHandler(void)
 	 case Mode_Ramp:Current=BattStatus==Batt_OK?RampMinCurrent+(DimmingRatio*(RampMaxCurrent-RampMinCurrent)):CycleMode1Current;break; //无极调光挡位，如果电池正常则取调光电流，否则取
 	 default:Current=0; //默认电流为0
 	 }
+ if(Current<0)Current=0; //去除任何小于0的非法电流值
  Current*=LightMode.MainLEDThrottleRatio/100; //应用降档系数
  if(Current>0&&Current<CycleMode1Current)Current=CycleMode1Current;
  if(Current>TurboCurrent)Current=TurboCurrent; //将应用了降档系数的电流进行限幅	  
  //设置占空比
- if(Current==0)Duty=0; //LED关闭，电流为0
+ if(Current==0)//LED关闭，电流为0
+   {
+	 OC5021B_SetHybridDuty(0);
+	 Duty=0; //此时令输出占空比全部为0
+	 }
  else if(!IsTurbomode)
    {
 	 ResetDirectDriveCCPID();//非直驱模式复位极亮直驱的PID

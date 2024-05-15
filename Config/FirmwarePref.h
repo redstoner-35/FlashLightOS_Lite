@@ -20,6 +20,7 @@
 #define TurboCurrent 68 //极亮和爆闪模式的目标电流(单位A)
 #define StrobeFreq 5 //爆闪挡位频率(Hz)
 
+//#define EnhancedLEDDriveStrength //LED指示灯输出是否需要加强驱动能力
 #define EnableInstantTurbo //启用一键极亮功能(关机状态下双击直接极亮)
 #define EnableInstantStrobe //启用一键爆闪功能(关机状态下三击直接爆闪)
 

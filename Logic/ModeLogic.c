@@ -51,10 +51,12 @@ void LightLogicSetup(void)
  AFIO_GPxConfig(TurboSel_IOB,TurboSel_IOP, AFIO_FUN_GPIO);//配置为GPIO
  GPIO_DirectionConfig(TurboSel_IOG,TurboSel_IOP,GPIO_DIR_OUT);//输出
  GPIO_ClearOutBits(TurboSel_IOG,TurboSel_IOP);//DCDC-EN 默认输出0		
+ GPIO_DriveConfig(TurboSel_IOG,TurboSel_IOP,GPIO_DV_16MA);	//设置为16mA最大输出
  //初始化极亮电荷泵的IO
  AFIO_GPxConfig(VgsBoot_IOB,VgsBoot_IOP, AFIO_FUN_GPIO);//配置为GPIO
  GPIO_DirectionConfig(VgsBoot_IOG,VgsBoot_IOP,GPIO_DIR_OUT);//输出
  GPIO_ClearOutBits(VgsBoot_IOG,VgsBoot_IOP);//电荷泵IO 默认输出0		
+ GPIO_DriveConfig(VgsBoot_IOG,VgsBoot_IOP,GPIO_DV_16MA);	//设置为16mA最大输出
  }
 
 //低电压警报闪烁

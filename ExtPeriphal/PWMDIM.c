@@ -8,9 +8,16 @@ static float Current_integral=0;
 static float Current_Lasterror=0;
 static float PIDDutyOut=10; //调节的占空比输出
 
+//debug用的define
+//#define DDContstantDutyEnable //特殊调试模式，此时禁止PID运算，返回恒定占空比用于测量比例系数
+#define DDConstDutyVal 50 //禁止PID运算，返回占空比时的固定值
+
 //极亮直驱的PID平均电流恒流运算
 float CalcDirectDriveDuty(float Current)
   {
+	#ifdef DDContstantDutyEnable
+  #return DDConstDutyVal
+	#else
 	ADCOutTypeDef ADCO;
 	float error,buf;
 	//进行转换并计算误差
@@ -29,6 +36,7 @@ float CalcDirectDriveDuty(float Current)
 	if(PIDDutyOut>100)PIDDutyOut=100;
 	if(PIDDutyOut<2)PIDDutyOut=2; //PWM调整值的最大和最小限幅
 	return buf+PIDDutyOut; //返回计算的占空比结果
+	#endif
 	}
 //对直驱的PID恒流模块进行reset
 void ResetDirectDriveCCPID(void)
@@ -153,10 +161,12 @@ void PWMTimerInit(void)
  AFIO_GPxConfig(PWMO_IOB,PWMO_IOP, AFIO_FUN_MCTM_GPTM);//DC调光和极亮直驱PWM引脚配置为MCTM0复用GPIO
  GPIO_DirectionConfig(PWMO_IOG,PWMO_IOP,GPIO_DIR_OUT);	
  GPIO_ClearOutBits(PWMO_IOG,PWMO_IOP);//设置为输出,ODR=0
+ GPIO_DriveConfig(PWMO_IOG,PWMO_IOP,GPIO_DV_16MA);	//设置为16mA最大输出
  //配置OC5021B 混合调光引脚
  AFIO_GPxConfig(HybridPWMO_IOB,HybridPWMO_IOP, AFIO_FUN_MCTM_GPTM);//DC调光和极亮直驱PWM引脚配置为MCTM0复用GPIO
  GPIO_DirectionConfig(HybridPWMO_IOG,HybridPWMO_IOP,GPIO_DIR_OUT);	
  GPIO_ClearOutBits(HybridPWMO_IOG,HybridPWMO_IOP);//设置为输出,ODR=0 
+ GPIO_DriveConfig(PWMO_IOG,PWMO_IOP,GPIO_DV_16MA);	//设置为16mA最大输出
  //启动定时器TBU和比较通道1的输出功能
  TM_Cmd(HT_MCTM0, ENABLE); 
  MCTM_CHMOECmd(HT_MCTM0, ENABLE);

@@ -10,11 +10,13 @@
 //全局变量
 BatteryAlertDef BattStatus;
 float CellCount;
+static float VbattFilter[32];
+static float BatteryVolt;
 extern volatile LightStateDef LightMode;
 
-//自己实现的四舍五入函数声明
+//自己实现的四舍五入以及LPF函数声明
 int iroundf(float IN);
-
+float LEDFilter(float DIN,float *BufIN,int bufsize);
 
 //固件模式配置警告
 #ifdef CarLampMode	 
@@ -24,6 +26,17 @@ int iroundf(float IN);
 	#endif
 #endif
 
+//初始化电池电压检测缓存	
+static void InitBatteryDetectBuf(void)
+  {
+	int i;
+	ADCOutTypeDef ADCO;
+	//获取结果
+	ADC_GetResult(&ADCO);	
+	//填充
+	for(i=0;i<32;i++)VbattFilter[i]=ADCO.BatteryVoltage;
+	BatteryVolt=ADCO.BatteryVoltage;
+	}
 #ifdef EnableVoltageQuery
 //显示电池电压
 void DisplayBatteryVoltage(void)
@@ -136,45 +149,58 @@ void CellCountDetectHandler(void)
 	#endif
 	ForceDisableFan();//自检已通过，关闭风扇  		
 	#endif
+	//电池串数设定结束，使用当前电池电压填充测试缓存
+	InitBatteryDetectBuf();
 	}	
-	
-//低压告警处理函数
-void BatteryMonitorHandler(void)
+//电池电压LPF函数	
+void BatteryLPFHandler(void)
   {
 	ADCOutTypeDef ADCO;
-  float BattLowThr=3.3,BattMidThr=3.7;
 	//初始化变量并转换
   ADCO.BatteryVoltage=0;
   ADC_GetResult(&ADCO);
-  //当手电处于运行状态时，判断电池电压是否低于警告门限	
-	//控制侧按LED的电量显示
+	//填写数值
+	BatteryVolt=LEDFilter(ADCO.BatteryVoltage,VbattFilter,32);
+	}	
+//低压告警处理函数
+void BatteryMonitorHandler(void)
+  {
+	float BattLowThr=3.3,BattMidThr=3.7;
+  //在极亮和爆闪模式下自动下调检测阈值避免错误黄灯
 	if(LightMode.LightGroup==Mode_Turbo||LightMode.LightGroup==Mode_Strobe)
 	   {
 		 BattMidThr-=0.2;
-	   BattLowThr-=0.2; //在极亮和爆闪模式下自动下调检测阈值避免错误黄灯
+	   BattLowThr-=0.2; 
 		 }
-  switch(LightMode.LightGroup) //根据模式控制LED
+	//根据当前模式控制侧按LED指示电量
+  switch(LightMode.LightGroup) 
     {
 	  case Mode_Locked:break;
 		case Mode_Off:break;
 		case Mode_Sleep:CurrentLEDIndex=0;break; //手电处于关机状态，关闭指示灯
 		default:
+			 #ifdef Debug_NoBatteryProt
+		   //特殊调试模式，禁止电量检测
+		   CurrentLEDIndex=1; //电量充足，绿灯
+		   BattStatus=Batt_OK; //电池电压始终OK，不做检测
+		   #else
 			 //处理电量报警
 		   #ifndef UsingLiFePO4Batt
-		   if(ADCO.BatteryVoltage<=(2.7*CellCount))BattStatus=Batt_LVFault;
-		   else if(ADCO.BatteryVoltage<=(3.01*CellCount))BattStatus=Batt_LVAlert;		
-       else if(ADCO.BatteryVoltage>(3.2*CellCount))BattStatus=Batt_OK; //电池电压大于3.2，解除警报		
+		   if(BatteryVolt<=(2.7*CellCount))BattStatus=Batt_LVFault;
+		   else if(BatteryVolt<=(3.01*CellCount))BattStatus=Batt_LVAlert;		
+       else if(BatteryVolt>(3.2*CellCount))BattStatus=Batt_OK; //电池电压大于3.2，解除警报		
 		   #else	
-		   if(ADCO.BatteryVoltage<=(2.15*BatteryCellCount))BattStatus=Batt_LVFault;
-		   else if(ADCO.BatteryVoltage<=(2.6*BatteryCellCount))BattStatus=Batt_LVAlert;	
-	      else if(ADCO.BatteryVoltage>(2.8*CellCount))BattStatus=Batt_OK; //电池电压大于3.2，解除警报		
+		   if(BatteryVolt<=(2.15*BatteryCellCount))BattStatus=Batt_LVFault;
+		   else if(BatteryVolt<=(2.6*BatteryCellCount))BattStatus=Batt_LVAlert;	
+	      else if(BatteryVolt>(2.8*CellCount))BattStatus=Batt_OK; //电池电压大于3.2，解除警报		
 		   #endif
-		   //显示电量	
 		   #ifndef CarLampMode	
+		   //显示电量	
 		   if(BattStatus==Batt_LVFault||BattStatus==Batt_LVAlert)CurrentLEDIndex=12; //警告置起，电量严重不足
-		   else if(ADCO.BatteryVoltage<=(BattLowThr*CellCount))CurrentLEDIndex=3; //电量不足，红灯
-		   else if(ADCO.BatteryVoltage<=(BattMidThr*CellCount))CurrentLEDIndex=2; //电量较充足，黄灯
+		   else if(BatteryVolt<=(BattLowThr*CellCount))CurrentLEDIndex=3; //电量不足，红灯
+		   else if(BatteryVolt<=(BattMidThr*CellCount))CurrentLEDIndex=2; //电量较充足，黄灯
 		   else CurrentLEDIndex=1; //电量充足，绿灯
+			 #endif
 		   #endif
 		}
 	#ifndef CarLampMode	

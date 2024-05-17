@@ -60,6 +60,7 @@ int main(void)
 	 FanSpeedControlHandler();//控制风扇速度
 	 //0.125S软件定时处理
 	 if(!SensorRefreshFlag)continue;
+	 BatteryLPFHandler();//低通滤波
 	 CalculateActualTemp();//计算温度数值
 	 LEDMgmt_CallBack();//处理电量指示灯的逻辑
 	 #ifndef CarLampMode

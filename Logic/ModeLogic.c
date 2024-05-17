@@ -399,7 +399,7 @@ void ControlMainLEDHandler(void)
  #else
  //极亮直驱和恒流输出选择
  if(LightMode.LightGroup==Mode_Turbo||LightMode.LightGroup==Mode_Strobe)IsTurbomode=true;
- else IsTurbomode=true; //极亮是否启用
+ else IsTurbomode=false; //极亮是否启用
  if(!IsDCDCEnable||IsTurbomode)GPIO_ClearOutBits(AUXV33_IOG,AUXV33_IOP); //处于关机状态或者位于极亮直驱，输出低电平启用驱动器
  else GPIO_SetOutBits(AUXV33_IOG,AUXV33_IOP); //启用恒流BUCK
  #endif	 

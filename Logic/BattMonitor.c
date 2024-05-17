@@ -9,11 +9,13 @@
 //全局变量
 BatteryAlertDef BattStatus;
 float CellCount;
+static float VbattFilter[32];
+static float BatteryVolt;
 extern volatile LightStateDef LightMode;
 
-//自己实现的四舍五入函数声明
+//自己实现的四舍五入以及LPF函数声明
 int iroundf(float IN);
-
+float LEDFilter(float DIN,float *BufIN,int bufsize);
 
 //显示直驱输出电流
 void DisplayMainLEDCurrent(void)
@@ -21,28 +23,39 @@ void DisplayMainLEDCurrent(void)
 	ADCOutTypeDef ADCO;
 	//初始化显示，获取输出电流
 	if(ExtLEDIndex!=NULL||GPIO_ReadOutBit(TurboSel_IOG,TurboSel_IOP)==SET)return; //当前还未完成显示或者当前非极亮直驱模式，不进行操作
-	if(HT_MCTM0->CH0CCR==0)return; //当前PWWM通道处于关闭状态，不允许读数
+	if(HT_MCTM0->CH0CCR==0)return; //当前PWM通道处于关闭状态，不允许读数
 	LED_Reset();//复位LED管理器
   memset(LEDModeStr,0,sizeof(LEDModeStr));//清空内存
   ADC_GetResult(&ADCO);
   //显示输出电流	 
-  if(ADCO.BatteryVoltage<100)
+  if(ADCO.DDLEDCurrent<100)
 	  {
-		ADCO.BatteryVoltage*=10;//放大10倍使用99.9量程
-		strncat(LEDModeStr,"310020D",sizeof(LEDModeStr)-1);  //黄切换到红色，熄灭然后马上绿色闪一下，延迟1秒(表示电流读数为99.9方式)
+		ADCO.DDLEDCurrent*=10;//放大10倍使用99.9量程
+		strncat(LEDModeStr,"310020D",sizeof(LEDModeStr)-1);  //黄切换到红色，熄灭然后马上红色闪一下，延迟1秒(表示电流读数为99.9方式)
 		}	
 	else strncat(LEDModeStr,"310030D",sizeof(LEDModeStr)-1);  //黄切换到红色，熄灭然后马上黄色闪一下，延迟1秒(表示电压读数为999方式) 	
-	LED_AddStrobe((int)(ADCO.BatteryVoltage)/100,"20");//红色显示百位
+	LED_AddStrobe((int)(ADCO.DDLEDCurrent)/100,"20");//红色显示百位
   strncat(LEDModeStr,"D",sizeof(LEDModeStr)-1);
-  LED_AddStrobe(((int)(ADCO.BatteryVoltage)%100)/10,"30"); //使用黄色显示十位
+  LED_AddStrobe(((int)(ADCO.DDLEDCurrent)%100)/10,"30"); //使用黄色显示十位
   strncat(LEDModeStr,"D",sizeof(LEDModeStr)-1);
-  LED_AddStrobe(iroundf(ADCO.BatteryVoltage)%10,"10");//绿色显示个位
+  LED_AddStrobe(iroundf(ADCO.DDLEDCurrent)%10,"10");//绿色显示个位
   if(LightMode.LightGroup!=Mode_Off&&LightMode.LightGroup!=Mode_Sleep) //如果手电筒点亮状态则延迟一下再恢复正常显示
 	strncat(LEDModeStr,"D",sizeof(LEDModeStr)-1);
   strncat(LEDModeStr,"E",sizeof(LEDModeStr)-1);//结束闪烁
   ExtLEDIndex=&LEDModeStr[0];//传指针过去	
 	}
-
+//初始化电池电压检测缓存	
+static void InitBatteryDetectBuf(void)
+  {
+	int i;
+	ADCOutTypeDef ADCO;
+	//获取结果
+	ADC_GetResult(&ADCO);	
+	//填充
+	for(i=0;i<32;i++)VbattFilter[i]=ADCO.BatteryVoltage;
+	BatteryVolt=ADCO.BatteryVoltage;
+	}
+	
 //显示电池电压
 void DisplayBatteryVoltage(void)
   {
@@ -56,7 +69,7 @@ void DisplayBatteryVoltage(void)
   if(ADCO.BatteryVoltage<10)
 	  {
 		ADCO.BatteryVoltage*=10;//放大10倍使用9.99量程
-		strncat(LEDModeStr,"120010D",sizeof(LEDModeStr)-1);  //红切换到绿色，熄灭然后马上红色闪一下，延迟1秒(表示电压读数为9.99方式) 
+		strncat(LEDModeStr,"120010D",sizeof(LEDModeStr)-1);  //红切换到绿色，熄灭然后马上绿色闪一下，延迟1秒(表示电压读数为9.99方式) 
     }
 	else strncat(LEDModeStr,"120030D",sizeof(LEDModeStr)-1);  //红切换到绿色，熄灭然后马上黄色闪一下，延迟1秒(表示电压读数为99.9方式)
   LED_AddStrobe((int)(ADCO.BatteryVoltage)/10,"20");//红色显示个位
@@ -140,44 +153,59 @@ void CellCountDetectHandler(void)
   while(CurrentLEDIndex==13)delay_ms(1);//等待
   getSideKeyShortPressCount(true);  //清除按键操作			
 	#endif
+	//电池串数设定结束，使用当前电池电压填充测试缓存
+	InitBatteryDetectBuf();
+	}	
+//电池电压LPF函数	
+void BatteryLPFHandler(void)
+  {
+	ADCOutTypeDef ADCO;
+	//初始化变量并转换
+  ADCO.BatteryVoltage=0;
+  ADC_GetResult(&ADCO);
+	//填写数值
+	BatteryVolt=LEDFilter(ADCO.BatteryVoltage,VbattFilter,32);
 	}	
 	
 //低压告警处理函数
 void BatteryMonitorHandler(void)
   {
-	ADCOutTypeDef ADCO;
   float BattLowThr=3.3,BattMidThr=3.7;
-	//初始化变量并转换
-  ADCO.BatteryVoltage=0;
-  ADC_GetResult(&ADCO);
-  //当手电处于运行状态时，判断电池电压是否低于警告门限	
-	//控制侧按LED的电量显示
+  //在极亮和爆闪模式下自动下调检测阈值避免错误黄灯
 	if(LightMode.LightGroup==Mode_Turbo||LightMode.LightGroup==Mode_Strobe)
 	   {
 		 BattMidThr-=0.2;
-	   BattLowThr-=0.2; //在极亮和爆闪模式下自动下调检测阈值避免错误黄灯
+	   BattLowThr-=0.2; 
 		 }
-  switch(LightMode.LightGroup) //根据模式控制LED
+	//根据当前模式控制侧按LED指示电量
+  switch(LightMode.LightGroup) 
     {
 	  case Mode_Locked:break;
 		case Mode_Off:break;
 		case Mode_Sleep:CurrentLEDIndex=0;break; //手电处于关机状态，关闭指示灯
 		default:
+			 #ifdef Debug_NoBatteryProt
+		   //特殊调试模式，禁止电量检测
+		   CurrentLEDIndex=1; //电量充足，绿灯
+		   BattStatus=Batt_OK; //电池电压始终OK，不做检测
+		   #else
 			 //处理电量报警
 		   #ifndef UsingLiFePO4Batt
-		   if(ADCO.BatteryVoltage<=(2.7*CellCount))BattStatus=Batt_LVFault;
-		   else if(ADCO.BatteryVoltage<=(3.01*CellCount))BattStatus=Batt_LVAlert;		
-       else if(ADCO.BatteryVoltage>(3.2*CellCount))BattStatus=Batt_OK; //电池电压大于3.2，解除警报		
+		   if(BatteryVolt<=(2.7*CellCount))BattStatus=Batt_LVFault;
+		   else if(BatteryVolt<=(3.01*CellCount))BattStatus=Batt_LVAlert;		
+       else if(BatteryVolt>(3.2*CellCount))BattStatus=Batt_OK; //电池电压大于3.2，解除警报		
 		   #else	
-		   if(ADCO.BatteryVoltage<=(2.15*BatteryCellCount))BattStatus=Batt_LVFault;
-		   else if(ADCO.BatteryVoltage<=(2.6*BatteryCellCount))BattStatus=Batt_LVAlert;	
-	      else if(ADCO.BatteryVoltage>(2.8*CellCount))BattStatus=Batt_OK; //电池电压大于3.2，解除警报		
+		   if(BatteryVolt<=(2.15*BatteryCellCount))BattStatus=Batt_LVFault;
+		   else if(BatteryVolt<=(2.6*BatteryCellCount))BattStatus=Batt_LVAlert;	
+	      else if(BatteryVolt>(2.8*CellCount))BattStatus=Batt_OK; //电池电压大于3.2，解除警报		
 		   #endif
 		   //显示电量	
 		   if(BattStatus==Batt_LVFault||BattStatus==Batt_LVAlert)CurrentLEDIndex=12; //警告置起，电量严重不足
-		   else if(ADCO.BatteryVoltage<=(BattLowThr*CellCount))CurrentLEDIndex=3; //电量不足，红灯
-		   else if(ADCO.BatteryVoltage<=(BattMidThr*CellCount))CurrentLEDIndex=2; //电量较充足，黄灯
+		   else if(BatteryVolt<=(BattLowThr*CellCount))CurrentLEDIndex=3; //电量不足，红灯
+		   else if(BatteryVolt<=(BattMidThr*CellCount))CurrentLEDIndex=2; //电量较充足，黄灯
 		   else CurrentLEDIndex=1; //电量充足，绿灯
+
+		   #endif
 		}
 	//如果温控降档发生则指示灯index +13使得侧按开始频闪指示降档
   if(LightMode.MainLEDThrottleRatio<100&&CurrentLEDIndex>0&&CurrentLEDIndex<4)CurrentLEDIndex+=13;

@@ -16,6 +16,10 @@
 #define _MOS_NTC_Ch STRCAT2(ADC_CH_,MOS_NTC_Ch)
 #define _IMON_Ch STRCAT2(ADC_CH_,IMON_Ch)
 
+#ifdef Debug_NoBatteryProt
+  #warning "Disable battery protection will cause the battery to over-discharge!"
+#endif
+
 //系统ADC的参数
 #define ADC_AVRef 2.500
 #define ADCAvg 5  //ADC平均次数和参考电压

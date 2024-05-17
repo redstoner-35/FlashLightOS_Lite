@@ -9,14 +9,14 @@ static float Current_Lasterror=0;
 static float PIDDutyOut=10; //调节的占空比输出
 
 //debug用的define
-//#define DDContstantDutyEnable //特殊调试模式，此时禁止PID运算，返回恒定占空比用于测量比例系数
-#define DDConstDutyVal 50 //禁止PID运算，返回占空比时的固定值
+#define DDContstantDutyEnable //特殊调试模式，此时禁止PID运算，返回恒定占空比用于测量比例系数
+#define DDConstDutyVal 50 //禁止PID运算，返回占空比时的固定值(%)
 
 //极亮直驱的PID平均电流恒流运算
 float CalcDirectDriveDuty(float Current)
   {
 	#ifdef DDContstantDutyEnable
-  #return DDConstDutyVal
+  return DDConstDutyVal;
 	#else
 	ADCOutTypeDef ADCO;
 	float error,buf;

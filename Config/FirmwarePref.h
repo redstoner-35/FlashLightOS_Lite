@@ -50,7 +50,7 @@
 #define MOSThermalTrip 105 //驱动自身的过热关机保护温度
 #define LEDThermalTrip 80 //LED过热关机保护温度
 
-#define EnableDriverNTC //使能驱动的热敏电阻检测
+//#define EnableDriverNTC //使能驱动的热敏电阻检测
 #define EnableLEDNTC //使能LED的热敏电阻检测
 //#define NTCStrictMode //严格NTC自检模式，在此模式下任意NTC自检失败都会导致驱动无法开机
 
@@ -62,6 +62,7 @@
 #define BatteryCellCount 1 //该固件所适用的锂电的节数
 //#define NoAutoBatteryDetect //禁用固件的自动电池节数检测功能
 //#define UsingLiFePO4Batt //如果固件需要使用磷酸铁锂电池，则请去除此宏的注释（警告！磷酸铁锂下电池最少需要2节）
+//#define Debug_NoBatteryProt //debug用的特殊功能，禁止电池电量显示和保护功能（警告！该设置仅用于debug，会导致电池过度放电！）
 
 #define VbattUpResK 100 //电池检测分压电阻上端阻值(KΩ)
 #define VbattDownResK 10 //电池检测分压电阻下端阻值(KΩ)

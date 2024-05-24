@@ -17,9 +17,8 @@ extern volatile LightStateDef LightMode; //全局变量
 static float err_last_temp = 0.0;	//上一温度误差
 static float integral_temp = 0.0; //积分后的温度误差值
 static bool TempControlEnabled = false; //是否激活温控
-static bool CalculatePIDRequest = false; //PID计算请求
-float ThermalLowPassFilter[8*ThermalLPFTimeConstant]={0}; //低通滤波器
-float PIDInputTemp=0.0; //PID输入温度
+float ThermalLowPassFilter[24]; //低通滤波器
+static float PIDAdjustVal=100; //PID调节值
 
 //关于温度控制模块的自动定义(严禁修改！)
 #ifdef NTCStrictMode
@@ -60,52 +59,49 @@ float LEDFilter(float DIN,float *BufIN,int bufsize)
  buf/=(float)(bufsize-2);//去掉最高和最低值，取剩下的8个值里面的平均值
  return buf;
 }
+//计算实际加权温度的函数
+float CalculateInputTemp(ADCOutTypeDef *ADCResult)
+  {
+	float Temp,Weight;
+  //获取加权值
+  Weight=LEDThermalWeight;
+  if(ADCResult->MOSNTCState==NTC_OK&&ADCResult->MOSFETTemp>MOSThermalAlert)
+    Weight-=2*(ADCResult->MOSFETTemp-MOSThermalAlert); //当MOS过热后，减少LED热量的权重	
+  if(Weight>80)Weight=80;
+  if(Weight<5)Weight=5; //权重值限幅		
+  //LED和驱动温度都正常，按照驱动温度计算
+  if(ADCResult->MOSNTCState==NTC_OK&&ADCResult->LEDNTCState==NTC_OK)
+    {
+	  Temp=ADCResult->LEDTemp*Weight/100;
+	  Temp+=ADCResult->MOSFETTemp*(100-Weight)/100; //进行加权平均计算
+	  }
+  else if(ADCResult->MOSNTCState==NTC_OK) //MOS温度OK，按照MOSFET温度计算
+    Temp=ADCResult->MOSFETTemp;
+  else //否则使用LED温度
+	  Temp=ADCResult->LEDTemp; 
+	//计算结束，返回结果
+	return Temp;
+	}
 
 //自检协商完毕之后填充温度滤波器
 void FillThermalFilterBuf(ADCOutTypeDef *ADCResult)
   {
 	int i;
-	float Temp;
+  float Temp;
 	//写缓冲区
-	if(ADCResult->MOSNTCState==NTC_OK&&ADCResult->LEDNTCState==NTC_OK)
-		{
-		Temp=ADCResult->LEDTemp*LEDThermalWeight/100;
-		Temp+=ADCResult->MOSFETTemp*(100-LEDThermalWeight)/100; //进行加权平均计算
-		}
-	else if(ADCResult->MOSNTCState==NTC_OK)
-    Temp=ADCResult->MOSFETTemp;
-	else
-		Temp=ADCResult->LEDTemp; //如果MOSFET温度正常就用MOSFET的，否则用LED温度
-	PIDInputTemp=Temp; //存储温度值
-  for(i=0;i<(8*ThermalLPFTimeConstant);i++)ThermalLowPassFilter[i]=Temp;
+	Temp=CalculateInputTemp(ADCResult);
+  for(i=0;i<24;i++)ThermalLowPassFilter[i]=Temp;
 	}	
 
-//计算实际温度的处理
-void CalculateActualTemp(void)
+//过热保护处理函数
+void OverHeatProtectionHandler(void)
  {
- float ActualTemp,DriverTemp,LEDTemp;
- float Weight;
+ float DriverTemp,LEDTemp;
  static bool IsOHAlertAsserted=false; //过热警报是否触发
  ADCOutTypeDef ADCO;
  //读取数据
  ADC_GetResult(&ADCO);
- //获取加权值
- Weight=LEDThermalWeight;
- if(ADCO.MOSNTCState==NTC_OK&&ADCO.MOSFETTemp>MOSThermalAlert)
-    Weight-=2*(ADCO.MOSFETTemp-MOSThermalAlert); //当MOS过热后，减少LED热量的权重	
- if(Weight>80)Weight=80;
- if(Weight<5)Weight=5; //权重值限幅		
- //LED和驱动温度都正常，按照驱动温度计算
- if(ADCO.MOSNTCState==NTC_OK&&ADCO.LEDNTCState==NTC_OK)
-   {
-	 ActualTemp=ADCO.LEDTemp*Weight/100;
-	 ActualTemp+=ADCO.MOSFETTemp*(100-Weight)/100; //进行加权平均计算
-	 }
- else if(ADCO.MOSNTCState==NTC_OK) //MOS温度OK，按照MOSFET温度计算
-   ActualTemp=ADCO.MOSFETTemp;
- else //否则使用LED温度
-	 ActualTemp=ADCO.LEDTemp; 
- //过热警报
+ //过热警报核心逻辑
  DriverTemp=ADCO.MOSNTCState==NTC_OK?ADCO.MOSFETTemp:0;
  LEDTemp=ADCO.LEDNTCState==NTC_OK?ADCO.LEDTemp:0; //获取温度数据
  if(DriverTemp>MOSThermalTrip)TempState=Systemp_DriverHigh; //驱动过热
@@ -117,9 +113,6 @@ void CalculateActualTemp(void)
 	 TempState=SysTemp_OK;
 	 IsOHAlertAsserted=false;
 	 }
- //计算结束，返回结果
- PIDInputTemp=LEDFilter(ActualTemp,ThermalLowPassFilter,8*ThermalLPFTimeConstant); //开始载入结果
- CalculatePIDRequest = true; //请求PID计算
  }
 #ifdef EnableTempQuery
 //显示降档情况
@@ -144,12 +137,12 @@ void DisplaySystemTemp(void)
 	if(ExtLEDIndex!=NULL)return; //当前还未完成显示，不进行操作
 	ADC_GetResult(&ADCO);
 	IsPowerON=LightMode.LightGroup!=Mode_Off&&LightMode.LightGroup!=Mode_Sleep?true:false;
+	LEDTemp=CalculateInputTemp(&ADCO); //将ADC转换结果输入到换算函数内，换算出实际温度		 
  	//开始显示结果
 	LED_Reset();//复位LED管理器
   memset(LEDModeStr,0,sizeof(LEDModeStr));//清空内存
 	strncat(LEDModeStr,IsPowerON?"D":"0",sizeof(LEDModeStr)-1);
 	strncat(LEDModeStr,"2310020",sizeof(LEDModeStr)-1); //红黄绿切换之后熄灭,然后绿色闪一次表示LED温度
-	LEDTemp=PIDInputTemp; //显示加权平均温度		 
 	if(LEDTemp<0)
 	 {
 	 LEDTemp=-LEDTemp;//取正数
@@ -193,7 +186,11 @@ void DisplaySystemTemp(void)
 void PIDStepdownCalc(void)
  {
  bool IsPIDEnabled; 
- float err_temp,AdjustValue;
+ float err_temp,PIDInputTemp;
+ ADCOutTypeDef ADCO;
+ //运行读取函数获取最新的LED温度数据
+ ADC_GetResult(&ADCO);
+ PIDInputTemp=LEDFilter(CalculateInputTemp(&ADCO),ThermalLowPassFilter,24);		  
  //判断PID温控是否需要启用
  if(LightMode.LightGroup==Mode_Strobe||LightMode.LightGroup==Mode_Turbo)IsPIDEnabled=true; //极亮和爆闪，启用温控
  else if(LightMode.LightGroup==Mode_Cycle&&LightMode.CycleModeCount==4)IsPIDEnabled=true; //高档，启用温控
@@ -207,18 +204,23 @@ void PIDStepdownCalc(void)
 	  integral_temp=0;
 	  err_last_temp=0; 
     LightMode.MainLEDThrottleRatio=100;
+		PIDAdjustVal=100;
 		return; //PID不需要运算,复位积分器和微分器
 		}
- //温控运算
+ //温控PID的误差计算以及Kp和Kd项调节
  err_temp=MaintainTemp-PIDInputTemp; //计算误差值
-	if(CalculatePIDRequest)
-	  {
-		integral_temp+=(err_temp*((float)2/(float)ThermalLPFTimeConstant)); //积分限幅(拓展系数取低通滤波器时间常数的0.5倍)
-	  if(integral_temp>10)integral_temp=10;
-	  if(integral_temp<-85)integral_temp=-85; //积分和积分限幅
-		CalculatePIDRequest=false; //积分统计完成
+ PIDAdjustVal+=err_temp*ThermalPIDKp/100; //Kp(比例项)
+ if(fabsf(err_temp)>2) //温度误差的绝对值大于2℃，进行微分调节
+	  {	
+		PIDAdjustVal+=(err_temp-err_last_temp)*ThermalPIDKd/100; //Kd(微分项)
+		err_last_temp=err_temp;//记录上一个误差值
 		}
-	AdjustValue=ThermalPIDKp*err_temp+ThermalPIDKi*integral_temp+ThermalPIDKd*(err_temp-err_last_temp); //PID算法算出调节值
-	err_last_temp=err_temp;//记录上一个误差值
- 	LightMode.MainLEDThrottleRatio=90+AdjustValue;//设置降档数值
+ if(PIDAdjustVal>100)PIDAdjustVal=100;
+ if(PIDAdjustVal<5)PIDAdjustVal=5; //PID调节值限幅
+ //温控PID的Ki(积分项)
+ integral_temp+=(err_temp/(float)150); //积分累加
+ if(integral_temp>25)integral_temp=25;
+ if(integral_temp<-25)integral_temp=-25; //积分限幅
+ //返回计算结束的调节值
+ LightMode.MainLEDThrottleRatio=PIDAdjustVal+ThermalPIDKi*integral_temp; //返回比例和微分结果以及积分结果相加的调节值
  }

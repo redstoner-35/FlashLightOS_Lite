@@ -57,11 +57,11 @@ int main(void)
 	 LightModeStateMachine();//处理灯具开关机和挡位逻辑
 	 PIDStepdownCalc();//PID降档计算
 	 ControlMainLEDHandler();//控制灯具的主LED
-	 FanSpeedControlHandler();//控制风扇速度
 	 //0.125S软件定时处理
 	 if(!SensorRefreshFlag)continue;
+	 FanSpeedControlHandler();//控制风扇速度
 	 BatteryLPFHandler();//低通滤波
-	 CalculateActualTemp();//计算温度数值
+	 OverHeatProtectionHandler();//处理驱动和LED过热警报的逻辑
 	 LEDMgmt_CallBack();//处理电量指示灯的逻辑
 	 #ifndef CarLampMode
 	 ReverseModeCycleOpHandler();//处理用户单击+长按令循环档反向换挡的逻辑

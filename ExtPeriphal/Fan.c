@@ -2,20 +2,25 @@
 #include "Fan.h"
 #include "ModeLogic.h"
 #include "FirmwarePref.h"
+#include "ADC.h"
+#include "TempControl.h"
 
 #ifdef EnableFanControl
 //外部和全局变量声明
-extern float PIDInputTemp; //PID输入温度（作为风扇的控制温度）
 extern volatile LightStateDef LightMode; //全局变量
 extern BatteryAlertDef BattStatus;//电池状态
 bool IsFanNeedtoSpin=false; //全局变量，风扇是否旋转
+static float FanTempFilter[32]; //风扇温度计算处理
 #endif
 
 //初始化风扇控制
 void FanOutputInit(void)
  {
  #ifdef EnableFanControl
+ ADCOutTypeDef ADCO;
  TM_OutputInitTypeDef MCTM_OutputInitStructure;
+ float Temp;
+ int i;
  //配置GPIO
  AFIO_GPxConfig(FanPWMO_IOB,FanPWMO_IOP, AFIO_FUN_MCTM_GPTM);//配置为MCTM0 CH3复用GPIO
  GPIO_DirectionConfig(FanPWMO_IOG,FanPWMO_IOP,GPIO_DIR_OUT);//输出	
@@ -38,6 +43,10 @@ void FanOutputInit(void)
  TM_OutputInit(HT_MCTM0, &MCTM_OutputInitStructure); //配置输出比较
  //配置完毕，使能风扇让风扇开始旋转
  GPIO_SetOutBits(FanPWREN_IOG,FanPWREN_IOP);  //启用输出比较，电源使能=1
+ //使用当前驱动所算出的加权温度填充风扇控制器的滤波缓存
+ ADC_GetResult(&ADCO);
+ Temp=CalculateInputTemp(&ADCO);
+ for(i=0;i<32;i++)FanTempFilter[i]=Temp;
  #endif
  }
 
@@ -55,7 +64,11 @@ void ForceDisableFan(void)
 void FanSpeedControlHandler(void)
  {
  #ifdef EnableFanControl
- float PWMVal,delta;
+ float PWMVal,delta,PIDInputTemp;
+ ADCOutTypeDef ADCO;
+ //运行读取函数获取最新的LED和驱动温度数据
+ ADC_GetResult(&ADCO);
+ PIDInputTemp=LEDFilter(CalculateInputTemp(&ADCO),FanTempFilter,32);		  
  //计算风扇是否需要旋转
  if(LightMode.LightGroup==Mode_Turbo)IsFanNeedtoSpin=true; //极亮开启，风扇强制开始旋转
  else if(BattStatus==Batt_LVFault)IsFanNeedtoSpin=false; //电池电量严重过低，此时风扇关闭

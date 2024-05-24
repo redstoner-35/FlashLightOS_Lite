@@ -5,8 +5,7 @@
 #include "ADC.h"
 
 //定义
-#define ThermalLPFTimeConstant 15 //定义温度低通滤波器的时间常数（单位秒）
-#define LEDThermalWeight 90 //LED侧的权重值
+#define LEDThermalWeight 93 //LED侧的权重值
 
 typedef enum
  {
@@ -16,14 +15,16 @@ typedef enum
  }SystempStateDef;
 
 //PID参数
-#define ThermalPIDKp 0.31
-#define ThermalPIDKi 0.86
-#define ThermalPIDKd 0.35 //PID温控的P I D
+#define ThermalPIDKp 4.25
+#define ThermalPIDKi 1.35
+#define ThermalPIDKd 1.05 //PID温控的P I D
 
 //函数
 void PIDStepdownCalc(void);//PID温控计算
-void CalculateActualTemp(void);//计算实际温度
+void OverHeatProtectionHandler(void);//过热保护处理函数
 void FillThermalFilterBuf(ADCOutTypeDef *ADCResult);//填充温度数据
 void DisplaySystemTemp(void);//显示系统温度
-
+float CalculateInputTemp(ADCOutTypeDef *ADCResult);//计算实际加权温度
+float LEDFilter(float DIN,float *BufIN,int bufsize);//温度检测的简易数字滤波器（低通）
+ 
 #endif

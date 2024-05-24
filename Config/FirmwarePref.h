@@ -67,7 +67,6 @@
 #define VbattUpResK 100 //电池检测分压电阻上端阻值(KΩ)
 #define VbattDownResK 10 //电池检测分压电阻下端阻值(KΩ)
 
-#define BatteryQueryDivision_10V //设置双击+长按查看电池电压功能的精度，如果去除该注释则电压显示范围为0.01-9.99V,保留则为0.1-99.9V
 //#define Debug_NoBatteryProt //debug用的特殊功能，禁止电池电量显示和保护功能（警告！该设置仅用于debug，会导致电池过度放电！）
 
 /***************** 固件风扇温控模块配置 ******************

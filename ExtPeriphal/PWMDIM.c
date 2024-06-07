@@ -26,6 +26,42 @@ void GenerateMainLEDStrobe(int count)
  GPIO_ClearOutBits(VgsBoot_IOG,VgsBoot_IOP); //禁用电荷泵
  }
 
+//生成自检结束闪烁一下的提示 
+void GenerateStrobeAfterPOST(void)
+ {
+ #ifndef DCDCEN_Remap_FUN_TurboSel 
+ //IO为DCDC-EN
+ int count=2;
+ GPIO_SetOutBits(VgsBoot_IOG,VgsBoot_IOP); //启用电荷泵
+ GPIO_SetOutBits(AUXV33_IOG,AUXV33_IOP); //启用DCDC 
+ delay_ms(1);
+ while(count>0) //开始循环制造闪烁	 
+   {
+   SetPWMDuty(5.0);
+	 delay_ms(200);
+	 SetPWMDuty(0.0); //制造5%占空比的闪烁
+	 delay_ms(200);
+	 count--;
+	 }	 
+ GPIO_ClearOutBits(AUXV33_IOG,AUXV33_IOP); 
+ GPIO_ClearOutBits(VgsBoot_IOG,VgsBoot_IOP); //禁用DCDC和电荷泵	 
+ #else
+ //IO为极亮直驱和恒流输出选择
+ GPIO_SetOutBits(VgsBoot_IOG,VgsBoot_IOP); //启用电荷泵
+ GPIO_SetOutBits(AUXV33_IOG,AUXV33_IOP); //选择为恒流buck模式
+ SetPWMDuty(10.0); 
+ delay_ms(200);
+ SetPWMDuty(0.0); //制造使用恒流buck的10%占空比的闪烁
+ delay_ms(200);
+ GPIO_ClearOutBits(AUXV33_IOG,AUXV33_IOP); //选择为极亮直驱模式 
+ SetPWMDuty(5.0); 
+ delay_ms(200);
+ SetPWMDuty(0.0); //制造使用直驱的5%占空比的闪烁
+ delay_ms(200); 	 
+ GPIO_ClearOutBits(VgsBoot_IOG,VgsBoot_IOP); //禁用电荷泵	  
+ #endif	 
+ }
+ 
 //设置占空比
 void SetPWMDuty(float Duty)
  { 

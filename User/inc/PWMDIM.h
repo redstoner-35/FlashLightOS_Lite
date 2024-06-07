@@ -18,5 +18,6 @@
 void PWMTimerInit(void);//启动定时器
 void SetPWMDuty(float Duty);//设置定时器输出值
 void GenerateMainLEDStrobe(int count);//执照主LED闪烁
+void GenerateStrobeAfterPOST(void);//自检结束后启动主LED运行一下
 
 #endif

@@ -45,6 +45,7 @@ int main(void)
  FanOutputInit();//启动风扇
  LightLogicSetup();//初始化灯具逻辑模块
  CellCountDetectHandler();//检测接入的电池节数
+ GenerateStrobeAfterPOST();//自检闪两下
  EnteredMainApp=true; //已进入主APP
  //主循环
  while(1)

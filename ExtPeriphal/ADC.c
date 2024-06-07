@@ -53,7 +53,7 @@ bool ADC_GetResult(ADCOutTypeDef *ADCOut)
   //计算LED温度
 	buf=(float)ADCResult[LED_NTC_Ch]*(ADC_AVRef/(float)4096);//将AD值转换为电压
 	Rt=((float)NTCUpperResValueK*buf)/(ADC_AVRef-buf);//得到NTC的电阻
-	buf=1/((1/(273.15+(float)NTCT0))+log(Rt/(float)NTCUpperResValueK)/(float)NTCBValue);//计算出温度
+	buf=1/((1/(273.15+(float)NTCT0))+log(Rt/(float)NTCT0ResValueK)/(float)NTCBValue);//计算出温度
 	buf-=273.15;//减去开氏温标常数变为摄氏度
 	buf+=(float)LEDNTCTRIM;//加上修正值	
 	if(buf<(-40)||buf>125)	//温度传感器异常
@@ -69,7 +69,7 @@ bool ADC_GetResult(ADCOutTypeDef *ADCOut)
   //计算MOS温度
 	buf=(float)ADCResult[MOS_NTC_Ch]*(ADC_AVRef/(float)4096);//将AD值转换为电压
 	Rt=((float)NTCUpperResValueK*buf)/(ADC_AVRef-buf);//得到NTC的电阻
-	buf=1/((1/(273.15+(float)NTCT0))+log(Rt/(float)NTCUpperResValueK)/(float)NTCBValue);//计算出温度
+	buf=1/((1/(273.15+(float)NTCT0))+log(Rt/(float)NTCT0ResValueK)/(float)NTCBValue);//计算出温度
 	buf-=273.15;//减去开氏温标常数变为摄氏度
 	buf+=(float)MOSNTCTRIM;//加上修正值	
 	if(buf<(-40)||buf>125)	//温度传感器异常

@@ -38,7 +38,8 @@
 *********************************************************/
 #define NTCBValue 3950  //NTCb值
 #define NTCUpperResValueK 10 //NTC上拉到VDD的电阻阻值(KΩ)
-#define NTCT0 25   //NTC阻值=10K时的标定温度
+#define NTCT0 25   //NTC阻在标称值时的标定温度
+#define NTCT0ResValueK 10 //NTC在T0标定温度下的标称阻值(KΩ)
 
 #define LEDNTCTRIM 0.5
 #define MOSNTCTRIM 0.5 //LED和驱动自身温度测量的修正值(℃)
@@ -61,7 +62,7 @@
 固件的配置为单节三元锂离子电池(满电4.2V，通常电压3.7)
 *********************************************************/
 #define BatteryCellCount 1 //该固件所适用的锂电的节数
-#define NoAutoBatteryDetect //禁用固件的自动电池节数检测功能
+//#define NoAutoBatteryDetect //禁用固件的自动电池节数检测功能
 //#define UsingLiFePO4Batt //如果固件需要使用磷酸铁锂电池，则请去除此宏的注释（警告！磷酸铁锂下电池最少需要2节）
 
 #define VbattUpResK 100 //电池检测分压电阻上端阻值(KΩ)

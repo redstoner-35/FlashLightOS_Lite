@@ -5,6 +5,7 @@
 #include "LEDMgmt.h"
 #include <string.h>
 #include "FirmwarePref.h"
+#include "Delay.h"
 
 //声明函数
 float fmaxf(float x,float y);
@@ -222,5 +223,6 @@ void PIDStepdownCalc(void)
  if(integral_temp>25)integral_temp=25;
  if(integral_temp<-25)integral_temp=-25; //积分限幅
  //返回计算结束的调节值
+ delay_ms(10); //额外的延时，限制PID调节的速度避免超调
  LightMode.MainLEDThrottleRatio=PIDAdjustVal+ThermalPIDKi*integral_temp; //返回比例和微分结果以及积分结果相加的调节值
  }

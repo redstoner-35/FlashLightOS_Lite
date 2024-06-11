@@ -187,7 +187,7 @@ void DisplaySystemTemp(void)
 void PIDStepdownCalc(void)
  {
  bool IsPIDEnabled; 
- float err_temp,PIDInputTemp;
+ float err_temp,PIDInputTemp,integral_Limit;
  ADCOutTypeDef ADCO;
  //运行读取函数获取最新的LED温度数据
  ADC_GetResult(&ADCO);
@@ -217,11 +217,17 @@ void PIDStepdownCalc(void)
 		err_last_temp=err_temp;//记录上一个误差值
 		}
  if(PIDAdjustVal>100)PIDAdjustVal=100;
- if(PIDAdjustVal<5)PIDAdjustVal=5; //PID调节值限幅
+ if(PIDAdjustVal<ThermalStepDownMinDuty)PIDAdjustVal=ThermalStepDownMinDuty; //PID调节值限幅
  //温控PID的Ki(积分项)
- integral_temp+=(err_temp/(float)150); //积分累加
- if(integral_temp>25)integral_temp=25;
- if(integral_temp<-25)integral_temp=-25; //积分限幅
+ integral_Limit=(PIDAdjustVal-(float)ThermalStepDownMinDuty)>0?(PIDAdjustVal-(float)ThermalStepDownMinDuty):0; //动态计算积分上限
+ if(integral_Limit>0)
+   {	 
+	 if(integral_Limit>15)integral_Limit=15; //积分上限不高于15
+   integral_temp+=(err_temp/(float)150); //积分累加
+   if(integral_temp>integral_Limit)integral_temp=integral_Limit;
+   if(integral_temp<(-integral_Limit))integral_temp=(-integral_Limit); //积分限幅
+	 }
+ else integral_temp=0; //积分上下限制幅度为0，禁止积分部分进行累加
  //返回计算结束的调节值
  delay_ms(10); //额外的延时，限制PID调节的速度避免超调
  LightMode.MainLEDThrottleRatio=PIDAdjustVal+ThermalPIDKi*integral_temp; //返回比例和微分结果以及积分结果相加的调节值

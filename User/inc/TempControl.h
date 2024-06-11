@@ -18,7 +18,8 @@ typedef enum
 #define ThermalPIDKp 4.25
 #define ThermalPIDKi 1.35
 #define ThermalPIDKd 1.05 //PID温控的P I D
-
+#define ThermalStepDownMinDuty 10 //温控降档最低的占空比限制(%)
+ 
 //函数
 void PIDStepdownCalc(void);//PID温控计算
 void OverHeatProtectionHandler(void);//过热保护处理函数

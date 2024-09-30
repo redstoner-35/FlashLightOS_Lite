@@ -131,4 +131,9 @@ void PWMTimerInit(void)
  AFIO_GPxConfig(VgsBoot_IOB,VgsBoot_IOP, AFIO_FUN_GPIO);//配置为GPIO
  GPIO_DirectionConfig(VgsBoot_IOG,VgsBoot_IOP,GPIO_DIR_OUT);//输出
  GPIO_ClearOutBits(VgsBoot_IOG,VgsBoot_IOP);//电荷泵IO 默认输出0	
+ //初始化LD和LED控制的IO
+ AFIO_GPxConfig(LDLEDMUX_IOB,LDLEDMUX_IOP, AFIO_FUN_GPIO);//配置为GPIO
+ GPIO_DirectionConfig(LDLEDMUX_IOG,LDLEDMUX_IOP,GPIO_DIR_OUT);//输出
+ GPIO_ClearOutBits(LDLEDMUX_IOG,LDLEDMUX_IOP);//默认输出0选择LED输出
+ 
  }

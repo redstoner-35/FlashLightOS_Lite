@@ -18,6 +18,7 @@ static bool IsKeyStillPressed=false; //标志位，按键是否依然按下
 static bool AdjustDir=false; //调节方向，false=低到高，true=高到低
 static bool TacticalMode=false; //战术模式
 static char LVAlertTimer=0; //低电压警报定时器
+bool IsEnabledLaserOut=false; //是否启用激光输出
 
 //常数
 const float CycleModeRatio[5]={CycleMode1Duty,CycleMode2Duty,CycleMode3Duty,CycleMode4Duty,CycleMode5Duty}; //5个循环挡位的占空比设置(百分比)
@@ -119,6 +120,7 @@ void LightModeStateMachine(void)
 	    break;
 	 /* 锁定模式 */
 	 case Mode_Locked:
+			IsEnabledLaserOut=false; //进入锁定模式后强制关闭激光
 		  #ifndef CarLampMode
 		  if(DeepSleepTimer<=0) //深度睡眠定时器倒计时结束
 				 {
@@ -162,6 +164,12 @@ void LightModeStateMachine(void)
 		  #ifdef EnableFanControl
 		  else if(Click==6)IsFanNeedtoSpin=IsFanNeedtoSpin?false:true; //关机状态6击强制启动和关闭风扇
 		  #endif
+			else if(getSideKeyQuadClickAndHoldEvent()) //4击+长按切换LD和LED输出
+				{
+				if(CurrentLEDIndex==22)break; //正在切换图中禁止响应
+				CurrentLEDIndex=22; //提示用户切换
+				IsEnabledLaserOut=IsEnabledLaserOut?0:1; //翻转
+				}
 			else if(Click==5) //五击锁定
 			  {
 				LightMode.IsLocked=true;
@@ -198,21 +206,21 @@ void LightModeStateMachine(void)
 				AdjustDir=false; //复位方向
 				SetupRTCForCounter(false);	//开机，禁止自动锁定检测
 				}
-	    else if(Click==1)
+	    else if((!IsEnabledLaserOut&&Click==1)||(IsEnabledLaserOut&&getSideKeyHoldEvent()))
 			  {
 			  LightMode.LightGroup=Mode_Cycle; //单击开机进入循环档
 				SetupRTCForCounter(false);	//开机，禁止自动锁定检测
 				if(BattStatus==Batt_LVAlert)LightMode.CycleModeCount=0; //电池低压警报触发，开机锁定0档
 				}		  
 			#ifdef EnableInstantTurbo
-	    else if(Click==2&&BattStatus!=Batt_LVAlert)//在电池电量充足的情况下双击开机直接一键极亮
+	    else if(!IsEnabledLaserOut&&Click==2&&BattStatus!=Batt_LVAlert)//在电池电量充足的情况下双击开机直接一键极亮
 			  {
 				LightMode.LightGroup=Mode_Turbo; 
 			  SetupRTCForCounter(false);	//开机，禁止自动锁定检测
 				}
 			#endif
       #ifdef EnableInstantStrobe				
-	    else if(Click==3) //三击开机进入爆闪
+	    else if(!IsEnabledLaserOut&&Click==3) //三击开机进入爆闪
 			  {
 			  SetupRTCForCounter(false);	//开机，禁止自动锁定检测
 			  LightMode.LightGroup=Mode_Strobe; 
@@ -367,6 +375,9 @@ void ControlMainLEDHandler(void)
  #ifdef DCDCEN_Remap_FUN_TurboSel
  bool IsTurbomode;
  #endif
+ //设置激光控制输出 
+ if(IsEnabledLaserOut)GPIO_SetOutBits(LDLEDMUX_IOG,LDLEDMUX_IOP); //激光模式开启后，选择激光输出
+ else GPIO_ClearOutBits(LDLEDMUX_IOG,LDLEDMUX_IOP);//默认输出0选择LED输出	 
  //设置DCDC-EN
  switch(LightMode.LightGroup)
    {

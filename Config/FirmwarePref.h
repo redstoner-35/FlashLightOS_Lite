@@ -28,7 +28,7 @@
 #define EnableVoltageQuery //启用双击+长按查看电压的功能
 
 #define DeepSleepTimeOut 10 //设定驱动在无操作后进入深度睡眠前的延时(s)
-#define AutoLockTimeOut 5 //设定驱动在无操作后自动锁定的延时(分钟)
+//#define AutoLockTimeOut 5 //设定驱动在无操作后自动锁定的延时(分钟),如果注释掉此行则关闭自动锁定
 
 /***************** 固件温度控制模块配置 ******************
 这部分的宏定义负责配置固件的温度测量系统和PID温度控制器的

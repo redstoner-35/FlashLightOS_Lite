@@ -45,6 +45,11 @@ typedef enum
 #define VgsBoot_IOG STRCAT2(HT_GPIO,VgsBoot_IOBank)
 #define VgsBoot_IOP STRCAT2(GPIO_PIN_,VgsBoot_IOPinNum)
  
+#define LDLEDMUX_IOB STRCAT2(GPIO_P,LDLEDMUX_IOBank) 
+#define LDLEDMUX_IOG STRCAT2(HT_GPIO,LDLEDMUX_IOBank)
+#define LDLEDMUX_IOP STRCAT2(GPIO_PIN_,LDLEDMUX_IOPinNum)
+ 
+ 
 //函数 
 void SetupRTCForCounter(bool IsRTCStartCount);//设置RTC时钟
 void DisplayBatteryVoltage(void);//显示电池电压

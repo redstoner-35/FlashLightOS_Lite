@@ -46,6 +46,7 @@ void SideKeyInit(void)
 	Keyevent.PressAndHoldEvent=false;
 	Keyevent.DoubleClickAndHoldEvent=false;
 	Keyevent.TripleClickAndHold=false;
+	Keyevent.QuadClickAndHold=false;
 	}
 #ifndef CarLampMode
 //侧按按键计时模块
@@ -103,8 +104,10 @@ void SideKey_Callback(void)
 		if(Keyevent.LongPressDetected||
 		Keyevent.PressAndHoldEvent||
 		Keyevent.TripleClickAndHold||
+		Keyevent.QuadClickAndHold||
 		Keyevent.DoubleClickAndHoldEvent)//如果已经检测到长按事件则下面什么都不做
 		  {
+			Keyevent.QuadClickAndHold=false;
 			Keyevent.TripleClickAndHold=false;
 			Keyevent.DoubleClickAndHoldEvent=false;
 			Keyevent.PressAndHoldEvent=false;
@@ -131,6 +134,8 @@ static void ClickAndHoldEventHandler(int PressCount)
 	Keyevent.DoubleClickAndHoldEvent=(PressCount==2)?true:false;
   //三击+长按
 	Keyevent.TripleClickAndHold=(PressCount==3)?true:false;
+	//四击+长按
+	Keyevent.QuadClickAndHold=(PressCount==4)?true:false;
 	}
 //侧按键逻辑处理函数
 void SideKey_LogicHandler(void)
@@ -148,6 +153,7 @@ void SideKey_LogicHandler(void)
 			Keyevent.DoubleClickAndHoldEvent=false;
       Keyevent.PressAndHoldEvent=false;
 			Keyevent.TripleClickAndHold=false; //只是长按没有发生事件
+			Keyevent.QuadClickAndHold=false;
 			Keyevent.LongPressEvent=true;//长按事件发生
 	    Keyevent.LongPressDetected=true;//长按检测到了  
 			}
@@ -180,6 +186,7 @@ int getSideKeyShortPressCount(bool IsRemoveResult)
 //获取任意的长按操作
 bool getSideKeyAnyHoldEvent(void)
   {
+	if(Keyevent.QuadClickAndHold)return true;
 	if(Keyevent.LongPressDetected)return true;
   if(Keyevent.PressAndHoldEvent)return true;
 	if(Keyevent.DoubleClickAndHoldEvent)return true;
@@ -212,5 +219,10 @@ bool getSideKeyDoubleClickAndHoldEvent(void)
 bool getSideKeyTripleClickAndHoldEvent(void)
   {
 	return Keyevent.TripleClickAndHold;
+	}
+//获取侧按按键是否有四击并长按的事件
+bool getSideKeyQuadClickAndHoldEvent(void)
+	{
+	return Keyevent.QuadClickAndHold;
 	}
 #endif

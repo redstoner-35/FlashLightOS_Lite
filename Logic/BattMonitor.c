@@ -13,6 +13,7 @@ float CellCount;
 static float VbattFilter[32];
 static float BatteryVolt;
 extern volatile LightStateDef LightMode;
+extern bool IsEnabledLaserOut; //是否启用激光输出
 
 //自己实现的四舍五入以及LPF函数声明
 int iroundf(float IN);
@@ -170,7 +171,10 @@ void BatteryMonitorHandler(void)
   switch(LightMode.LightGroup) 
     {
 	  case Mode_Locked:break;
-		case Mode_Off:break;
+		case Mode_Off:
+			 if(!IsEnabledLaserOut)break; //激光输出关闭
+			 if(CurrentLEDIndex==0)CurrentLEDIndex=23; //如果激光输出开启，则在显示结束的时候重新调用显示，使指示灯每2秒闪一次
+		   break;
 		case Mode_Sleep:CurrentLEDIndex=0;break; //手电处于关机状态，关闭指示灯
 		default:
 			 #ifdef Debug_NoBatteryProt

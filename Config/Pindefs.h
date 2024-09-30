@@ -39,8 +39,10 @@ PB8：预留给MCTM的PWM output channel#3
 #define VgsBoot_IOBank B
 #define VgsBoot_IOPinNum 4  //极亮直驱模式下控制电荷泵抬高Vgs的EN Pin=PB4
 
-//#define DCDCEN_Remap_FUN_TurboSel //保留此宏将会把DCDC-EN引脚重映射为降压恒流+极亮直驱的驱动器选择PIN（极亮时输出低电平，恒流时输出高电平）
+#define LDLEDMUX_IOBank B
+#define LDLEDMUX_IOPinNum 5  //LD和LED切换的输出=PB5
 
+//#define DCDCEN_Remap_FUN_TurboSel //保留此宏将会把DCDC-EN引脚重映射为降压恒流+极亮直驱的驱动器选择PIN（极亮时输出低电平，恒流时输出高电平）
 
 //风扇控制输出
 #define FanPWREN_IOBank B

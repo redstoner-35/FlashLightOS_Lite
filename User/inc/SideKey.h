@@ -26,6 +26,7 @@ bool ShortPressEvent;
 bool PressAndHoldEvent;
 bool DoubleClickAndHoldEvent;
 bool TripleClickAndHold;
+bool QuadClickAndHold;
 }KeyEventStrDef;
 
 //函数
@@ -37,6 +38,7 @@ bool getSideKeyClickAndHoldEvent(void);//获得侧按按钮短按一下立即长
 bool getSideKeyDoubleClickAndHoldEvent(void);//获取侧按按键是否有双击并长按的事件
 bool getSideKeyTripleClickAndHoldEvent(void);//获取侧按按键是否有三击并长按的事件
 bool getSideKeyAnyHoldEvent(void);//获取侧按的任意长按事件
+bool getSideKeyQuadClickAndHoldEvent(void); //获取四击+长按事件
 
 //回调处理
 void SideKey_Callback(void);//中断回调处理

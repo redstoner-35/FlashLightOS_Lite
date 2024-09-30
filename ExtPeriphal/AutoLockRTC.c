@@ -13,6 +13,7 @@ extern int DeepSleepTimer; //深度睡眠计时器
 //设置RTC时钟
 void SetupRTCForCounter(bool IsRTCStartCount)
   {
+	#ifdef AutoLockTimeOut
   //关闭RTC
 	if(!IsRTCStartCount)
 	  {
@@ -29,6 +30,7 @@ void SetupRTCForCounter(bool IsRTCStartCount)
 		HT_RTC->IWEN=0x02; //比较中断使能
 	  HT_RTC->CR|=0x01; //启动RTC开始计时
 		}
+	#endif
 	}
 //重启RTC定时器
 void RestartRTCTimer(void)
